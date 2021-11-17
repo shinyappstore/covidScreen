@@ -1,0 +1,23 @@
+Package: covidtest
+Title: COVID-19 Testing Strategy Assessment
+Version: 0.0.0.9000
+Authors@R: person('Jesse', 'Smith', email = 'jesse.smith@stjude.org', role = c('cre', 'aut'))
+Description: Covidtest is a Shiny app that allows decision-makers to assess the benefits of performing asymptomatic testing in their organizations. It is primarily aimed at healthcare organizations, though it is applicable in a much wider range of settings.
+License: MIT + file LICENSE
+Imports: 
+    config (>= 0.3.1),
+    data.table,
+    golem (>= 0.3.1),
+    processx,
+    shiny (>= 1.7.1)
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.1.1
+Suggests: 
+    rmarkdown,
+    knitr,
+    spelling,
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
+Language: en-US
+VignetteBuilder: knitr
