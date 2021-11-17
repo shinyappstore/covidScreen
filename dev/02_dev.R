@@ -54,36 +54,14 @@ devtools::build_vignettes()
 usethis::use_github()
 
 # GitHub Actions
-usethis::use_github_action()
 # See https://usethis.r-lib.org/reference/use_github_action.html
 usethis::use_github_action_check_standard()
 # Add action for PR
 usethis::use_github_action_pr_commands()
 
-# Travis CI
-usethis::use_travis()
-usethis::use_travis_badge()
-
-# AppVeyor
-usethis::use_appveyor()
-usethis::use_appveyor_badge()
-
-# Circle CI
-usethis::use_circleci()
-usethis::use_circleci_badge()
-
-# Jenkins
-usethis::use_jenkins()
-
-# GitLab CI
-usethis::use_gitlab_ci()
-
 ## Code Coverage----
 ## Set the code coverage service ("codecov" or "coveralls")
 usethis::use_coverage("codecov")
-
-# Create a summary readme for the testthat subdirectory
-covrpage::covrpage()
 
 # You're now set! ----
 # go to dev/03_deploy.R

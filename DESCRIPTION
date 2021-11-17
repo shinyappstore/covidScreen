@@ -8,16 +8,20 @@ Imports:
     config (>= 0.3.1),
     data.table,
     golem (>= 0.3.1),
+    magrittr,
     processx,
     shiny (>= 1.7.1)
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
 Suggests: 
     rmarkdown,
     knitr,
     spelling,
-    testthat (>= 3.0.0)
+    testthat (>= 3.0.0),
+    covr
 Config/testthat/edition: 3
 Language: en-US
 VignetteBuilder: knitr
+URL: https://github.com/jesse-smith/covidtest
+BugReports: https://github.com/jesse-smith/covidtest/issues
