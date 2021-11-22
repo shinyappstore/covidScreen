@@ -1,4 +1,4 @@
-#' Add a Hyperlinked Item to a Navbar or Navbar Menu
+#' Add a Hyper-linked Item to a Navbar or Navbar Menu
 #'
 #' @param title The title of the item
 #' @param href The URL to link to
