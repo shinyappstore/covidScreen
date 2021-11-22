@@ -8,10 +8,63 @@ app_ui <- function(request) {
   tagList(
     # Leave this function for adding external resources
     golem_add_external_resources(),
-    # Your application UI logic
-    fluidPage(
-      h1("covidtest")
+    navbarPage(h3("covidtest"), theme = ct_theme(), fluid = TRUE,
+      bslib::nav_spacer(),
+      # Home/landing page
+      tabPanel("", icon = ct_h5(icon("home"), tooltip = "Home")),
+      ct_nav_pad("3rem"),
+      # Scenario calculation
+      tabPanel(
+        ct_h5("Scenarios", tooltip = "Explore your risks and the potential benefits of regular testing"),
+        mod_scenarios_ui("scenarios")
+      ),
+      ct_nav_pad("3rem"),
+      # Input profiling
+      tabPanel(ct_h5("Inputs", tooltip = "See risks and benefits change across input values")),
+      ct_nav_pad("3rem"),
+      # Tutorial and explanation of use
+      tabPanel(ct_h5("Tutorial", tooltip = "A walkthrough of covidtest functionality")),
+      ct_nav_pad("3rem"),
+      # FAQs
+      tabPanel(ct_h5("FAQs", tooltip = "Frequently Asked Questions")),
+      ct_nav_pad("3rem"),
+      # More links
+      navbarMenu("",
+        icon = ct_h5(icon("external-link-alt"), tooltip = "External links"),
+        align = "right",
+        ct_nav_ext_link("Paper",
+          href = NULL,
+          icon = icon("file-alt")
+        ),
+        ct_nav_ext_link("Package",
+          href = "https://jesse-smith.github.io/covidtest",
+          icon = icon("r-project")
+        ),
+        ct_nav_ext_link("Source Code",
+          href = "https://github.com/jesse-smith/covidtest",
+          icon = icon("github")
+        )
+      ),
+      bslib::nav_spacer()
     )
+  )
+}
+
+#' Bootstrap Theme for {covidtest} Shiny App
+#'
+#' Wrapper for `bslib::bs_theme()` with options set to the covidtest theme.
+#'
+#' @return A `bs_theme`
+#' @noRd
+ct_theme <- function() {
+  bslib::bs_theme(
+    bootswatch = "litera",
+    fg = "#29434e", bg = "#ffffff",
+    primary = "#29434e", secondary = "#29434e",
+    success = "#98ee99", info = "#0077c2",
+    warning = "#ffa726", danger = "#b61827",
+    base_font = bslib::font_google("Roboto"),
+    code_font = bslib::font_google("Roboto Mono")
   )
 }
 
