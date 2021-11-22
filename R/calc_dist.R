@@ -71,30 +71,9 @@ calc_dist <- function(
     # Set key and reorder columns
     setcolorder(c("p", "vac", "inf", "symp", "test", "detect")) %>%
     setorderv(order = -1L, na.last = TRUE) %>%
-    #
+    # Convert to `dist_table`
     as_dist_table(vac = dt_vac, inf = dt_inf, symp = dt_symp,
                   test = dt_test, detect = dt_detect)
-}
-
-#' Cached `calc_dist()`
-#'
-#' A version of `calc_dist()` that caches outputs based on previous inputs. This
-#' is done using `bindCache()`, which allows the cache to be shared across user
-#' sessions. It returns a reactive expression.
-#'
-#' @param params A named `list` of arguments to `calc_dist()`
-#'
-#' @return A `reactive` expression
-#'
-#' @keywords internal
-#'
-#' @export
-calc_dist_cache <- function(params) {
-  bindCache(
-    x = reactive(do.call(calc_dist, args = params)),
-    params,
-    cache = "app"
-  )
 }
 
 # Join Distributions -----------------------------------------------------------

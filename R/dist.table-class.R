@@ -10,12 +10,13 @@ dist_table <- function(
   key = NULL,
   stringsAsFactors = FALSE
 ) {
-
   dt <- data.table(...,
     keep.rownames = keep.rownames, check.names = check.names,
     key = key, stringsAsFactors = stringsAsFactors)
 
-  as_dist_table(dt, keep.rownames = keep.rownames)
+  as_dist_table(dt,
+    vac = .vac, inf = .inf, symp = .symp, test = .test, detect = .detect,
+    keep.rownames = keep.rownames)
 }
 
 as_dist_table <- function(
@@ -34,7 +35,8 @@ as_dist_table <- function(
 
   attributes(dt) <- c(
     attributes(dt),
-    vac = .vac, inf = .inf, symp = .symp, test = .test, detect = .detect)
+    vac = list(vac), inf = list(inf), symp = list(symp),
+    test = list(test), detect = list(detect))
 
   validate_dist_table(dt)
 }

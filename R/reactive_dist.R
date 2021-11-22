@@ -4,9 +4,9 @@
 #'   by `calc_dist()`
 #' @inheritParams calc_dist
 #'
-#' @return An `observer` containing the updated distribution
-update_dist <- function(
-  data,
+#' @return A `reactive` containing the updated distribution
+reactive_dist <- function(
+  data = calc_dist(),
   vac,
   inf,
   symp,
@@ -14,18 +14,18 @@ update_dist <- function(
   detect
 ) {
   # Create conditional distributions
-  dt_vac    <- observe(dist_vac(vac))
-  dt_inf    <- observe(dist_inf(inf, .vac = vac))
-  dt_symp   <- observe(dist_symp(symp, .inf = inf))
-  dt_test   <- observe(dist_test(test))
-  dt_detect <- observe(dist_detect(detect))
+  dt_vac    <- reactive(dist_vac(vac))
+  dt_inf    <- reactive(dist_inf(inf, .vac = vac))
+  dt_symp   <- reactive(dist_symp(symp, .inf = inf))
+  dt_test   <- reactive(dist_test(test))
+  dt_detect <- reactive(dist_detect(detect))
 
-  dt <- observe(data)
-  dt <- observe(join_dist_update(dt(), dt_vac()))
-  dt <- observe(join_dist_update(dt(), dt_inf()))
-  dt <- observe(join_dist_update(dt(), dt_symp()))
-  dt <- observe(join_dist_update(dt(), dt_test()))
-  dt <- observe(join_dist_update(dt(), dt_detect()))
+  dt <- reactive(data)
+  dt <- reactive(update_p(dt(), "vac", dt_vac()))
+  dt <- reactive(update_p(dt(), "inf", dt_inf()))
+  dt <- reactive(update_p(dt(), "symp", dt_symp()))
+  dt <- reactive(update_p(dt(), "test", dt_test()))
+  dt <- reactive(update_p(dt(), "detect", dt_detect()))
 
   dt
 }
@@ -41,8 +41,8 @@ update_dist <- function(
 update_p <- function(data, var, dt_p) {
   # Get original probabilities for variable
   dt_var <- attr(data, var)
-  # Create multiplier for new probabilities (shallow copy)
-  dt_var$p <- dt_p$p / dt_var$p
+  # Create multiplier for new probabilities
+  dt_var["p" := dt_p$p / .SD$p]
 
   # Join to data to update probabilities
   dt <- join_dist(data, dt_var)
