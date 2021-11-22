@@ -1,18 +1,26 @@
-scenarios_input <- function(id) {
+#' scenarios_input UI Function
+#'
+#' @description A shiny Module.
+#'
+#' @param id,input,output,session Internal parameters for {shiny}.
+#'
+#' @noRd
+#'
+#' @importFrom shiny NS tagList
+scenarios_input_ui <- function(id) {
   ns <- NS(id)
-
   tagList(
     shinyWidgets::chooseSliderSkin("Flat", color = "#29434e"),
     actionLink(ns("input_org_link"), label = h5(icon("user-shield"), "Organization")),
     conditionalPanel("input.input_org_link % 2 == 0", ns = ns,
-      num_input(ns("input_freq_vac"),   "Vaccinated Testing (Days)"),
-      num_input(ns("input_freq_unvac"), "Unvaccinated Testing (Days)"),
-      slider_pct(ns("input_org_vac"), "% Vaccinated (in Organization)"),
+      num_input(ns("input_test_f_asymp_vac"),   "Vaccinated Testing (Days)"),
+      num_input(ns("input_test_f_asymp_unvac"), "Unvaccinated Testing (Days)"),
+      slider_pct(ns("input_vac_p_org"), "% Vaccinated (in Organization)"),
       tags$br()),
     actionLink(ns("input_comm_link"), label = h5(icon("users"), "Community")),
     conditionalPanel("input.input_comm_link % 2 == 0", ns = ns,
-      num_input(ns("input_case_rate"), "Case Rate (per 100k per Day)"),
-      slider_pct(ns("input_comm_vac"), "% Vaccinated (in Community)"),
+      num_input(ns("input_inf_r_incid"), "Case Rate (per 100k per Day)"),
+      slider_pct(ns("input_vac_p_comm"), "% Vaccinated (in Community)"),
       tags$br()),
     actionLink(ns("input_advanced_link"), label = h5(icon("cog"), "Advanced")),
     conditionalPanel("input.input_advanced_link % 2 == 0", ns = ns,
@@ -28,18 +36,18 @@ scenarios_input <- function(id) {
         ct_info_ui(ns("input_symp_info"))),
       conditionalPanel("input.input_symp_link % 2 == 1", ns = ns,
         tags$br(),
-        num_input(ns("input_t_symp"),
+        num_input(ns("input_inf_t_symp"),
           label = tags$span("Symptomatic Period (Days)", ct_info_ui(ns("input_t_symp_info"))),
           value = 10),
-        num_input(ns("input_t_presymp"),
+        num_input(ns("input_inf_t_presymp"),
           label = tags$span("Pre-Symptomatic Period (Days)", ct_info_ui(ns("input_t_presymp_info"))),
           value = 3),
-        slider_pct(ns("input_p_symp_unvac"),
+        slider_pct(ns("input_symp_p_inf_unvac"),
           label = tags$span("% Symptomatic: Unvaccinated Cases", ct_info_ui(ns("input_p_symp_unvac_info")))),
-        slider_pct(ns("input_p_symp_vac"),
+        slider_pct(ns("input_symp_p_inf_vac"),
           label = tags$span("% Symptomatic: Vaccinated Cases", ct_info_ui(ns("input_p_symp_vac_info"))),
           value = 30),
-        slider_pct(ns("input_p_symp_uninf"),
+        slider_pct(ns("input_symp_p_uninf"),
           label = tags$span("% Symptomatic: Non-Cases", ct_info_ui(ns("input_p_symp_uninf_info"))),
           value = 2, max = 10, step = 0.1)
       ),
@@ -49,18 +57,28 @@ scenarios_input <- function(id) {
         ct_info_ui(ns("input_test_info"))),
       conditionalPanel("input.input_test_link % 2 == 1", ns = ns,
         tags$br(),
-        slider_pct(ns("input_test_sens"),
+        slider_pct(ns("input_detect_sens"),
           label = tags$span("Test Sensitivity (%)", ct_info_ui(ns("input_test_sens_info"))),
           value = 85, min = 50),
-        slider_pct(ns("input_test_spec"),
+        slider_pct(ns("input_detect_spec"),
           label = tags$span("Test Specificity (%)", ct_info_ui(ns("input_test_spec_info"))),
           value = 99.5, min = 90, step = 0.1),
-        slider_pct(ns("input_test_symp"),
+        slider_pct(ns("input_test_p_symp"),
           label = tags$span("% Symptomatics Tested", ct_info_ui(ns("input_test_symp_info"))),
           value = 95)
         )
     )
   )
+}
+
+#' scenarios_input Server Functions
+#'
+#' @noRd
+mod_scenarios_input_server <- function(id){
+  moduleServer( id, function(input, output, session){
+    ns <- session$ns
+
+  })
 }
 
 num_input <- function(
