@@ -2,7 +2,8 @@
 #'
 #' @param data A `data.table` containing the current distribution, as created
 #'   by `calc_dist()`
-#' @inheritParams calc_dist
+#' @param vac,inf,symp,test,detect Reactives containing lists corresponding
+#'   to the arguments of `calc_dist()`
 #'
 #' @return A `reactive` containing the updated distribution
 reactive_dist <- function(
@@ -14,11 +15,11 @@ reactive_dist <- function(
   detect
 ) {
   # Create conditional distributions
-  dt_vac    <- reactive(dist_vac(vac))
-  dt_inf    <- reactive(dist_inf(inf, .vac = vac))
-  dt_symp   <- reactive(dist_symp(symp, .inf = inf))
-  dt_test   <- reactive(dist_test(test))
-  dt_detect <- reactive(dist_detect(detect))
+  dt_vac    <- reactive(dist_vac(vac()))
+  dt_inf    <- reactive(dist_inf(inf(), .vac = vac()))
+  dt_symp   <- reactive(dist_symp(symp(), .inf = inf()))
+  dt_test   <- reactive(dist_test(test()))
+  dt_detect <- reactive(dist_detect(detect()))
 
   dt <- reactive(data)
   dt <- reactive(update_p(dt(), "vac", dt_vac()))

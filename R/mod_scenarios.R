@@ -23,7 +23,7 @@ mod_scenarios_ui <- function(id){
              h3("Testing Benefit (Infection Risk Reduction)",
                 ct_info_ui(ns("benefit_plot_info"))),
              plotOutput(ns("benefit_plot"))),
-      column(width = 4, scenarios_input(id))
+      column(width = 4, mod_scenarios_input_ui(ns("input")))
     ),
     tags$br()
   )
@@ -40,6 +40,12 @@ mod_scenarios_ui <- function(id){
 mod_scenarios_server <- function(id){
   moduleServer(id, function(input, output, session){
     ns <- session$ns
+
+    dist_args <- mod_scenarios_input_server("input")
+
+    observe(print(dist_args()))
+
+
     # Risk plot
     output$risk_plot <- renderPlot(shinipsum::random_ggplot("bar"))
     # Risk help
