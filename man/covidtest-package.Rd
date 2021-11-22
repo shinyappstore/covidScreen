@@ -17,7 +17,12 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Jesse Smith \email{jesse.smith@stjude.org}
+\strong{Maintainer}: Jesse Smith \email{Jesse.Smith@stjude.org}
+
+Authors:
+\itemize{
+  \item Tomi Mori \email{Tomi.Mori@stjude.org}
+}
 
 }
 \keyword{internal}
