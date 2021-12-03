@@ -7,7 +7,7 @@
 
 [![Lifecycle:
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
-[![R-CMD-check](https://github.com/jesse-smith/covidtest/workflows/R-CMD-check/badge.svg)](https://github.com/jesse-smith/covidtest/actions)
+[![R-CMD-check](https://github.com/jesse-smith/covidtest/workflows/CI-CD/badge.svg)](https://github.com/jesse-smith/covidtest/actions)
 [![Codecov test
 coverage](https://codecov.io/gh/jesse-smith/covidtest/branch/master/graph/badge.svg)](https://codecov.io/gh/jesse-smith/covidtest?branch=master)
 <!-- badges: end -->
@@ -32,6 +32,9 @@ If you are using R on Windows, you will need to first install Rtools
 
 ``` r
 library(covidtest)
+#> Registered S3 method overwritten by 'quantmod':
+#>   method            from
+#>   as.zoo.data.frame zoo
 ```
 
 To run the Shiny app, you can use `run_app()` or visit an [online
