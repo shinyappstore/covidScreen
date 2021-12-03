@@ -46,6 +46,7 @@ jobs:
       - uses: r-lib/actions/check-r-package@v1
 
   shiny-deploy:
+    needs: R-CMD-check
     runs-on: ubuntu-latest
 
     env:
