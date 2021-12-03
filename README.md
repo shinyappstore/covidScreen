@@ -7,7 +7,7 @@
 
 [![Lifecycle:
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
-[![R-CMD-check](https://github.com/jesse-smith/covidtest/workflows/CI-CD/badge.svg)](https://github.com/jesse-smith/covidtest/actions)
+[![CI-CD](https://github.com/jesse-smith/covidtest/workflows/CI-CD/badge.svg)](https://github.com/jesse-smith/covidtest/actions)
 [![Codecov test
 coverage](https://codecov.io/gh/jesse-smith/covidtest/branch/master/graph/badge.svg)](https://codecov.io/gh/jesse-smith/covidtest?branch=master)
 <!-- badges: end -->
