@@ -1,0 +1,15 @@
+url: https://jesse-smith.github.io/covidtest
+template:
+  bootstrap: 5
+  bootswatch: litera
+  bslib:
+    fg: "#29434e"
+    bg: "#ffffff"
+    primary: "#29434e"
+    secondary: "#29434e"
+    success: "#98ee99"
+    info: "#0077c2"
+    warning: "#ffa726"
+    danger: "#b61827"
+    base_font: {google: "Roboto"}
+    code_font: {google: "Roboto Mono"}
