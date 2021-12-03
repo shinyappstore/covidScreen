@@ -1,6 +1,8 @@
 plot_vac <- function(data_vac) {
   data_vac %>%
-    hchart("column", hcaes(x = x, y = benefit, color = color)) %>%
+    hchart("column",
+      hcaes(x = .data$x, y = .data$benefit, color = .data$color)
+    ) %>%
     hc_xAxis(categories = data_vac$group)
 }
 
@@ -16,6 +18,9 @@ prep_vac <- function(data_test0, data_test1) {
 }
 
 calc_vac_slopes <- function(data_test0, data_test1) {
+  # Deal with R CMD CHECK NOTE
+  vac <- inf <- test <- detect <- NULL
+
   # Vaccinated - no testing
   p_t_v_t0 <- data_test0[vac == TRUE & test == TRUE, sum(.SD$p)][[1]]
   p_d_v_t0 <- data_test0[vac == TRUE & inf == TRUE & detect == TRUE,

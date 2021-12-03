@@ -1,7 +1,7 @@
 plot_risk <- function(data_risk) {
   data_risk %>%
     hchart("item",
-      hcaes(name = group, y = n, color = color),
+      hcaes(name = .data$group, y = .data$n, color = .data$color),
       layout = "horizontal",
       itemPadding = 0
     ) %>%
@@ -16,6 +16,8 @@ plot_risk <- function(data_risk) {
 }
 
 prep_risk <- function(data_test, data_no_test, n) {
+  # Remove R CMD CHECK NOTE
+  inf <- symp <- detect <- pct <- lbl <- i <- NULL
 
   # Prob of being detected b/c of symptoms only when infected
   p_d_symp <- data_no_test[inf & symp & detect, sum(.SD$p)][[1]]

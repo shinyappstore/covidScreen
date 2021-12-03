@@ -7,8 +7,8 @@
 reactive_dist(dist_args)
 }
 \arguments{
-\item{data}{A `data.table` containing the current distribution, as created
-by `calc_dist()`}
+\item{dist_args}{`[reactiveValues]` A `reactiveValues` object containing
+reactives corresponding to the inputs to `calc_dist()`}
 }
 \value{
 A `reactive` containing the updated distribution

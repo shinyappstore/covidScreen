@@ -1,7 +1,7 @@
 plot_benefit <- function(data_benefit) {
   data_benefit %>%
     hchart("column",
-      hcaes(y = n, group = group, color = color),
+      hcaes(y = .data$n, group = .data$group, color = .data$color),
       showInLegend = FALSE,
       stacking = "normal",
       dataLabels = list(
@@ -21,6 +21,9 @@ plot_benefit <- function(data_benefit) {
 }
 
 prep_benefit <- function(data_test, data_no_test, n) {
+  # Remove R CMD CHECK NOTE
+  inf <- symp <- detect <- pct <- pct_lbl <- lbl <- NULL
+
   # Prob of being detected b/c of symptoms only when infected
   p_d_symp <- data_no_test[inf & symp & detect, sum(.SD$p)][[1]]
   # Prob of being detected when infected

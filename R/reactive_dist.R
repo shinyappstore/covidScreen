@@ -1,8 +1,7 @@
 #' Update the Joint Distribution in Shiny
 #'
-#' @param data A `data.table` containing the current distribution, as created
-#'   by `calc_dist()`
-#' @inheritParams calc_dist
+#' @param dist_args `[reactiveValues]` A `reactiveValues` object containing
+#'   reactives corresponding to the inputs to `calc_dist()`
 #'
 #' @return A `reactive` containing the updated distribution
 reactive_dist <- function(dist_args) {
@@ -77,7 +76,7 @@ reactive_dist_d <- function(dt) {
 }
 
 reactive_dist_vis <- function(dt) {
-  dt_vis <- reactive(join_dist(join_dist(dt$vac(), dt$inf(), dt$symp())),
+  dt_vis <- reactive(join_dist(join_dist(dt$vac(), dt$inf()), dt$symp()),
                      label = "dt_vis()")
   dt_td <- reactive(join_dist(dt$test(), dt$detect()), label = "dt_itd()")
 
@@ -85,7 +84,7 @@ reactive_dist_vis <- function(dt) {
 }
 
 reactive_dist_vt <- function(dt) {
-  dt_vit <- reactive(join_dist(join_dist(dt$vac(), dt$inf(), dt$test())),
+  dt_vit <- reactive(join_dist(join_dist(dt$vac(), dt$inf()), dt$test()),
                      label = "dt_vit()")
   dt_sd <- reactive(join_dist(dt$symp(), dt$detect()), label = "dt_sd()")
 
@@ -93,7 +92,7 @@ reactive_dist_vt <- function(dt) {
 }
 
 reactive_dist_vd <- function(dt) {
-  dt_vid <- reactive(join_dist(join_dist(dt$vac(), dt$inf(), dt$detect())),
+  dt_vid <- reactive(join_dist(join_dist(dt$vac(), dt$inf()), dt$detect()),
                      label = "dt_vit()")
   dt_st <- reactive(join_dist(dt$symp(), dt$test()), label = "dt_st()")
 
