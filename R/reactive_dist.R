@@ -2,54 +2,100 @@
 #'
 #' @param data A `data.table` containing the current distribution, as created
 #'   by `calc_dist()`
-#' @param vac,inf,symp,test,detect Reactives containing lists corresponding
-#'   to the arguments of `calc_dist()`
+#' @inheritParams calc_dist
 #'
 #' @return A `reactive` containing the updated distribution
-reactive_dist <- function(
-  data = calc_dist(),
-  vac,
-  inf,
-  symp,
-  test,
-  detect
-) {
-  # Create conditional distributions
-  dt_vac    <- reactive(dist_vac(vac()))
-  dt_inf    <- reactive(dist_inf(inf(), .vac = vac()))
-  dt_symp   <- reactive(dist_symp(symp(), .inf = inf()))
-  dt_test   <- reactive(dist_test(test()))
-  dt_detect <- reactive(dist_detect(detect()))
+reactive_dist <- function(dist_args) {
+  # Update conditional distributions
+  dt <- reactive_conditional(dist_args)
 
-  dt <- reactive(data)
-  dt <- reactive(update_p(dt(), "vac", dt_vac()))
-  dt <- reactive(update_p(dt(), "inf", dt_inf()))
-  dt <- reactive(update_p(dt(), "symp", dt_symp()))
-  dt <- reactive(update_p(dt(), "test", dt_test()))
-  dt <- reactive(update_p(dt(), "detect", dt_detect()))
+  dt_sd <- reactive(join_dist(dt$symp(), dt$detect()), label = "dt_sd()")
+  dt_isd <- reactive(join_dist(dt$inf(), dt_sd()), label = "dt_isd()")
+  dt_visd <- reactive(join_dist(dt$vac(), dt_isd()), label = "dt_visd()")
 
+  reactive({
+    join_dist(dt_visd(), dt$test()) %>%
+      setcolorder(c("p", "vac", "inf", "symp", "test", "detect")) %>%
+      setorderv(order = -1L, na.last = TRUE)
+  }, label = "dt_vistd()")
+}
+
+reactive_conditional <- function(dist_args) {
+  dt <- reactiveValues()
+
+  dt$vac <- reactive(dist_vac(dist_args$vac()),
+                     label = "dt$vac()")
+  dt$inf <- reactive(dist_inf(dist_args$inf(), .vac = dist_args$vac()),
+                     label = "dt$inf()")
+  dt$symp <- reactive(dist_symp(dist_args$symp(), .inf = dist_args$inf()),
+                      label = "dt$symp()")
+  dt$test <- reactive(dist_test(dist_args$test()),
+                      label = "dt$test()")
+  dt$detect <- reactive(dist_detect(dist_args$detect()),
+                        label = "dt$detect()")
   dt
 }
 
-#' Update the Probabilities for the Joint Distribution
-#'
-#' @param data A `data.table` containing the current distribution, as created
-#'   by `calc_dist()`
-#' @param var A string indicating the variable probability to update
-#' @param dt_p A `data.table` of probabilities and variable values for joining
-#'
-#' @return The data with updated probabilities
-update_p <- function(data, var, dt_p) {
-  # Get original probabilities for variable
-  dt_var <- attr(data, var)
-  # Create multiplier for new probabilities
-  dt_var["p" := dt_p$p / .SD$p]
+reactive_dist_v <- function(dt) {
+  dt_vi <- reactive(join_dist(dt$vac(), dt$inf()), label = "dt_vi()")
+  dt_std <- reactive(join_dist(join_dist(dt$symp(), dt$test()), dt$detect()),
+                     label = "dt_std()")
 
-  # Join to data to update probabilities
-  dt <- join_dist(data, dt_var)
+  reactive(order_dist(join_dist(dt_vi(), dt_std())), label = "dist_v()")
+}
 
-  # Update var attribute
-  attr(data, var) <- dt_p
+reactive_dist_is <- function(dt) {
+  dt_is <- reactive(join_dist(dt$inf(), dt$symp()), label = "dt_is()")
+  dt_vtd <- reactive(join_dist(join_dist(dt$vac(), dt$test()), dt$detect()),
+                     label = "dt_vtd()")
 
-  dt
+  reactive(order_dist(join_dist(dt_is(), dt_vtd())), label = "dist_i()")
+}
+
+reactive_dist_s <- function(dt) {
+  dt_vitd <- reactive(
+    join_dist(join_dist(join_dist(dt$vac(), dt$inf()), dt$test()), dt$detect()),
+    label = "dt_vitd()")
+
+  reactive(order_dist(join_dist(dt_vitd(), dt$symp())), label = "dist_s()")
+}
+
+reactive_dist_t <- function(dt) {
+  dt_visd <- reactive(
+    join_dist(join_dist(join_dist(dt$vac(), dt$inf()), dt$symp()), dt$detect()),
+    label = "dt_visd()")
+
+  reactive(order_dist(join_dist(dt_visd(), dt$test())), label = "dist_t()")
+}
+
+reactive_dist_d <- function(dt) {
+  dt_vist <- reactive(
+    join_dist(join_dist(join_dist(dt$vac(), dt$inf()), dt$symp()), dt$test()),
+    label = "dt_vist()")
+
+  reactive(order_dist(join_dist(dt_vist(), dt$detect())), label = "dist_d()")
+}
+
+reactive_dist_vis <- function(dt) {
+  dt_vis <- reactive(join_dist(join_dist(dt$vac(), dt$inf(), dt$symp())),
+                     label = "dt_vis()")
+  dt_td <- reactive(join_dist(dt$test(), dt$detect()), label = "dt_itd()")
+
+  reactive(order_dist(join_dist(dt_vis(), dt_td())), label = "dist_vis()")
+}
+
+reactive_dist_vt <- function(dt) {
+  dt_vit <- reactive(join_dist(join_dist(dt$vac(), dt$inf(), dt$test())),
+                     label = "dt_vit()")
+  dt_sd <- reactive(join_dist(dt$symp(), dt$detect()), label = "dt_sd()")
+
+  reactive(order_dist(join_dist(dt_vit(), dt_sd())), label = "dist_vt()")
+}
+
+reactive_dist_vd <- function(dt) {
+  dt_vid <- reactive(join_dist(join_dist(dt$vac(), dt$inf(), dt$detect())),
+                     label = "dt_vit()")
+  dt_st <- reactive(join_dist(dt$symp(), dt$test()), label = "dt_st()")
+
+  reactive(order_dist(join_dist(dt_vid(), dt_st())), label = "dist_vd()")
 }

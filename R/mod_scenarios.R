@@ -16,13 +16,7 @@ mod_scenarios_ui <- function(id){
       "risk profile and testing strategies"
       ),
     fluidRow(
-      column(width = 8,
-             h3("Infection Risk (Active COVID-19 Cases)",
-                ct_info_ui(ns("risk_plot_info"))),
-             plotOutput(ns("risk_plot")),
-             h3("Testing Benefit (Infection Risk Reduction)",
-                ct_info_ui(ns("benefit_plot_info"))),
-             plotOutput(ns("benefit_plot"))),
+      column(width = 8, mod_scenarios_output_ui(ns("output"))),
       column(width = 4, mod_scenarios_input_ui(ns("input")))
     ),
     tags$br()
@@ -43,33 +37,8 @@ mod_scenarios_server <- function(id){
 
     dist_args <- mod_scenarios_input_server("input")
 
-    observe(print(dist_args()))
+    mod_scenarios_output_server("output", dist_args = dist_args)
 
-
-    # Risk plot
-    output$risk_plot <- renderPlot(shinipsum::random_ggplot("bar"))
-    # Risk help
-    observeEvent(input$risk_plot_info, ct_info_server(p(HTML(
-      "Infection risk is controlled by the number of people in an organization",
-      " who have COVID-19. We call these people <b>active cases</b>.",
-      " For an active case to contribute to organizational risk,",
-      " they must be in physical proximity with others in the organization.",
-      " Some cases will develop symptoms and seek",
-      " testing themselves; assuming a correct test result,",
-      " these cases will not contribute to organizational infection risk.",
-      " Other cases will only develop mild symptoms, or none at all.",
-      " Regular testing allows organizations to detect and isolate",
-      " the people who may not know they are spreading COVID-19.",
-      "<br><br>",
-      "This plot shows three levels of risk for the scenario given.",
-      " The first is the expected number of active cases in the organization;",
-      " this is the organizational risk if no one isolated.",
-      " The second is the expected number of cases without symptoms;",
-      " this is the organizational risk if symptomatic people isolated",
-      " (possibly imperfectly). The last is the expected number of cases",
-      " that remain undetected after implementing the chosen testing strategy;",
-      " even with testing, there will be a certain amount of unavoidable risk."
-      ))))
     # Benefit plot
     output$benefit_plot <- renderPlot(shinipsum::random_ggplot("bar"))
     # Benefit help

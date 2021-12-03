@@ -3,6 +3,7 @@
 export(calc_dist)
 export(run_app)
 import(data.table)
+import(highcharter)
 import(shiny)
 importFrom(golem,activate_js)
 importFrom(golem,add_resource_path)

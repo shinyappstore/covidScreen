@@ -15,6 +15,7 @@ Imports:
     config (>= 0.3.1),
     data.table,
     golem (>= 0.3.1),
+    highcharter,
     magrittr,
     processx,
     rlang,

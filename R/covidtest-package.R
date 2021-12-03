@@ -7,3 +7,10 @@
 #' @importFrom magrittr %>%
 ## usethis namespace: end
 NULL
+
+#' {highcharter} for Interactive Plotting
+#'
+#' All functions are prefixed with `hc_` to avoid namespace collisions
+#'
+#' @import highcharter
+NULL

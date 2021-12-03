@@ -69,11 +69,7 @@ calc_dist <- function(
     join_dist(dt_test) %>%
     join_dist(dt_detect) %>%
     # Set key and reorder columns
-    setcolorder(c("p", "vac", "inf", "symp", "test", "detect")) %>%
-    setorderv(order = -1L, na.last = TRUE) %>%
-    # Convert to `dist_table`
-    as_dist_table(vac = dt_vac, inf = dt_inf, symp = dt_symp,
-                  test = dt_test, detect = dt_detect)
+    order_dist()
 }
 
 # Join Distributions -----------------------------------------------------------
@@ -82,6 +78,7 @@ join_dist <- function(x, y) {
   # Join by all common columns except probability (`p`)
   cols_common <- intersect(colnames(x), colnames(y))
   by <- cols_common[!cols_common %chin% "p"]
+
   # Left join distribution data tables
   d <- merge.data.table(
     x,
@@ -95,7 +92,7 @@ join_dist <- function(x, y) {
   # Fill missing conditional probs
   setnafill(d, fill = 1, cols = "p_y")
   # Multiply probabilities and remove conditional probs
-  d[, "p" := .SD$p * .SD$p_y][, "p_y" := NULL]
+  d[, "p" := .SD$p * .SD$p_y][, "p_y" := NULL][]
 }
 
 # Create Distributions ---------------------------------------------------------
@@ -139,7 +136,7 @@ dist_test <- function(.test) {
 
 dist_detect <- function(.detect) {
   create_dist(
-    # Probabilities conditional on infection, testing, and detection
+    # Probs conditional on infection, testing, and detection
     inf    = c(TRUE, FALSE, TRUE, FALSE, TRUE, FALSE, TRUE, FALSE),
     test   = c(TRUE, TRUE, FALSE, FALSE, TRUE, TRUE, FALSE, FALSE),
     detect = c(TRUE, TRUE, TRUE, TRUE, FALSE, FALSE, FALSE, FALSE),
@@ -150,9 +147,11 @@ dist_detect <- function(.detect) {
 create_dist <- function(..., .p) {
   # Create data table
   dt  <- data.table(..., p = .p)
+
   # Create key from all columns except `p`
   cols <- colnames(dt)
   key  <- cols[!cols %chin% "p"]
+
   # Set key and return
   setkeyv(dt, cols = key)
 }
@@ -168,10 +167,13 @@ probs_inf <- function(inf, vac) {
   # Uncorrected incidence "probabilities" within each group (may be > 1)
   p_incid_u <- inf$p_incid / (1 - vac$p_comm * vac$eff)
   p_incid_v <- p_incid_u * (1 - vac$eff)
+
   # Combine
   p_incid <- c(v = p_incid_v, u = p_incid_u)
+
   # Scale from incidence to infection probabilities (assuming constant t_inf)
   p_inf   <- pmin(1, p_incid * (inf$t_symp + inf$t_presymp))
+
   # Add complements and return
   # (order is {inf_vac, inf_unvac, uninf_vac, uninf_unvac})
   c(p_inf, 1 - p_inf)
@@ -180,11 +182,14 @@ probs_inf <- function(inf, vac) {
 probs_symp <- function(symp, inf) {
   # Account for presymptomatic illness
   p_presymp <- (1 - inf$t_presymp / (inf$t_presymp + inf$t_symp))
+
   # Combine symptoms probs for infections into scaled vector
   p_symp_inf <- c(symp$p_inf_vac, symp$p_inf_unvac) * p_presymp
+
   # Combine all symptom probs
   # (order is {inf_vac, inf_unvac, uninf_vac, uninf_unvac})
   p_symp <- c(p_symp_inf, symp$p_uninf, symp$p_uninf)
+
   # Add complement and return
   c(p_symp, 1 - p_symp)
 }
@@ -192,11 +197,14 @@ probs_symp <- function(symp, inf) {
 probs_test <- function(test) {
   # Combine asymptomatic probabilities
   p_asymp <- c(test$p_asymp_vac, test$p_asymp_unvac)
+
   # Symptomatic is <= asymptomatic (and length 2)
-  p_symp <- pmax(test$p_symp, p_asymp)
+  p_symp <- test$p_symp + (1 - test$p_symp) * p_asymp
+
   # Combine symptomatic and asymptomatic
   # (order is {vac_symp, unvac_symp, vac_asymp, unvac_asymp})
   p_test <- c(p_symp, p_asymp)
+
   # Add complements and return
   c(p_test, 1 - p_test)
 }
@@ -204,6 +212,16 @@ probs_test <- function(test) {
 probs_detect <- function(detect) {
   # Combine and add probabilities for not tested (0)
   p_d <- c(detect$sens, 1 - detect$spec, 0, 0)
+
   # Add complements and return
   c(p_d, 1 - p_d)
+}
+
+order_dist <- function(dist) {
+  # Set column and row orders
+  setcolorder(dist, c("p", "vac", "inf", "symp", "test", "detect"))
+  setorderv(dist, order = -1L, na.last = TRUE)
+
+  # Return visibly after modify-by-reference
+  dist[]
 }

@@ -47,6 +47,5 @@ ct_h6 <- function(..., tooltip = NULL) {
 #'
 #' @return A `div` element
 ct_tooltip <- function(..., tooltip = NULL) {
-
   tags$div(title = tooltip, ...)
 }

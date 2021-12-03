@@ -8,15 +8,15 @@ app_ui <- function(request) {
   tagList(
     # Leave this function for adding external resources
     golem_add_external_resources(),
+    # UI definition
     navbarPage(h3("covidtest"), theme = ct_theme(), fluid = TRUE,
       bslib::nav_spacer(),
       # Home/landing page
       tabPanel("", icon = ct_h5(icon("home"), tooltip = "Home")),
       ct_nav_pad("3rem"),
       # Scenario calculation
-      tabPanel(
-        ct_h5("Scenarios", tooltip = "Explore your risks and the potential benefits of regular testing"),
-        mod_scenarios_ui("scenarios")
+      tabPanel(ct_h5("Scenarios", tooltip = "Explore your risks and the potential benefits of regular testing"),
+               mod_scenarios_ui("scenarios")
       ),
       ct_nav_pad("3rem"),
       # Input profiling
@@ -33,16 +33,16 @@ app_ui <- function(request) {
         icon = ct_h5(icon("external-link-alt"), tooltip = "External links"),
         align = "right",
         ct_nav_ext_link("Paper",
-          href = NULL,
-          icon = icon("file-alt")
+                        href = NULL,
+                        icon = icon("file-alt")
         ),
         ct_nav_ext_link("Package",
-          href = "https://jesse-smith.github.io/covidtest",
-          icon = icon("r-project")
+                        href = "https://jesse-smith.github.io/covidtest",
+                        icon = icon("r-project")
         ),
         ct_nav_ext_link("Source Code",
-          href = "https://github.com/jesse-smith/covidtest",
-          icon = icon("github")
+                        href = "https://github.com/jesse-smith/covidtest",
+                        icon = icon("github")
         )
       ),
       bslib::nav_spacer()
