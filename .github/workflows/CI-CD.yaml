@@ -58,7 +58,7 @@ jobs:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
 
     steps:
-      - Checkout repository
+      - name: Checkout repository
         uses: actions/checkout@v2
 
       - name: Setup pandoc
