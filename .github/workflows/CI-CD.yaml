@@ -46,7 +46,8 @@ jobs:
 
 
   R-CMD-check-for-deploy:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
+    name: windows-latest
 
     strategy:
       fail-fast: false
