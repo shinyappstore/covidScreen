@@ -33,7 +33,8 @@ mod_scenarios_output_ui <- function(id){
                       label = "Testing Benefit (Vaccinated vs Unvaccinated)",
                       tag_fn = h3,
       fluidRow(
-        column(width = 6, highchartOutput(ns("vac_plot")))
+        column(width = 6, highchartOutput(ns("vac_plot"))),
+        column(width = 6, uiOutput(ns("vac_expl")))
       )
     )
   )
@@ -77,6 +78,7 @@ mod_scenarios_output_server <- function(id, dist_args){
       data_test1 = data_test1()
     ))
     output$vac_plot <- renderHighchart(plot_vac(data_vac()))
+    output$vac_expl <- renderUI(explain_vac(data_vac()))
 
   })
 }
@@ -124,6 +126,29 @@ benefit_plot_info <- function() {
       " Some cases will identify themselves when they become symptomatic, but",
       " many cases never develop symptoms. Even cases that develop symptoms",
       " are often most infectious just before showing symptoms."
+    )
+  )
+}
+
+vac_plot_info <- function() {
+  ct_info_server(
+    tags$p(
+      "The bars represent the expected number of cases identified by testing",
+      " 100 people with that vaccination status in the organization. The ",
+      tags$b(style = "color: #64b5f6", "blue"), "bar represents detected cases",
+      " in 100 vaccinated people; the ",
+      tags$b(style = "color: #78909c", "blue-gray"), "bar represents detected",
+      " cases in 100 unvaccinated people. The multiplier is the amount of",
+      " additional benefit gained from testing the group with a higher",
+      " detection percenage."
+    ),
+    h6("Explanation"),
+    tags$p(
+      "Both vaccinated and unvaccinated people contract COVID-19, but",
+      " vaccinated people generally have a lower chance of doing so, and an",
+      " even lower chance of showing symptoms. This means that vaccinated case",
+      " rates tend be lower, but vaccinated cases are often harder to detect",
+      " based on symptoms."
     )
   )
 }

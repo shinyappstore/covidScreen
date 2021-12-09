@@ -1,9 +1,20 @@
 plot_vac <- function(data_vac) {
   data_vac %>%
     hchart("column",
-      hcaes(x = .data$x, y = .data$benefit, color = .data$color)
+      hcaes(name = .data$group, x = .data$x, y = .data$benefit, color = .data$color),
+      showInLegend = FALSE,
+      dataLabels = list(
+        enabled = TRUE,
+        format = "<span style='color: {point.color}'>{point.y:.1f}%</span>",
+        style = list(textOutline = "none")
+      )
     ) %>%
-    hc_xAxis(categories = data_vac$group)
+    hc_xAxis(categories = data_vac$group, title = list(enabled = FALSE)) %>%
+    hc_yAxis(title = list(text = "Cases Detected per 100 Tests")) %>%
+    hc_tooltip(
+      headerFormat = "<span style='color: {point.color}'>{point.key}</span><br>",
+      pointFormat = "<b>Detection Rate: {point.y:.1f}%</b>"
+    )
 }
 
 prep_vac <- function(data_test0, data_test1) {
