@@ -79,7 +79,7 @@ mod_scenarios_output_server <- function(id, dist_args){
     ))
     output$vac_plot <- renderHighchart(plot_vac(data_vac()))
     output$vac_expl <- renderUI(explain_vac(data_vac()))
-
+    observeEvent(input$vac_info, vac_plot_info())
   })
 }
 
