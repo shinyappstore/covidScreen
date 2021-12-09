@@ -266,35 +266,6 @@ slider_pct <- function(
     min = min, max = max, post = "%", ticks = FALSE)
 }
 
-conditional_panel <- function(
-  id,
-  ...,
-  label = NULL,
-  icon = NULL,
-  tag_fn = NULL,
-  init_visible = FALSE
-) {
-
-  id_quo <- rlang::enquo(id)
-
-  if (rlang::quo_is_call(id_quo)) {
-    ns <- rlang::call_fn(id_quo)
-    id_chr <- eval(rlang::call_args(id_quo)[[1]])
-  } else {
-    ns <- NS(NULL)
-    id_chr <- id
-  }
-
-  condition <- paste0(
-    "input.", id_chr, " % 2 == ", if (init_visible) "0" else "1"
-  )
-
-  tags$div(
-    action_link(id, label = label, icon = icon, tag_fn = tag_fn),
-    conditionalPanel(condition = condition, ns = ns, ...)
-  )
-}
-
 action_link <- function(id, label, icon = NULL, tag_fn = NULL) {
 
   icon_label_info <- tags$span(icon, label, ct_info_ui(paste0(id, "_info")))
