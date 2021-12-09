@@ -25,6 +25,7 @@ Imports:
     purrr,
     rlang,
     shiny (>= 1.7.1),
+    shinyjs,
     shinyvalidate,
     shinyWidgets
 Suggests: 

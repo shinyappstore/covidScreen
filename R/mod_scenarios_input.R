@@ -13,8 +13,11 @@ mod_scenarios_input_ui <- function(id) {
     # Make sliders nicer-looking
     shinyWidgets::chooseSliderSkin("Flat", color = "#29434e"),
     # Organizational inputs (interventions)
-    conditional_panel(ns("org_link"), init_visible = TRUE,
-      label = "Organization", icon = icon("user-shield"), tag_fn = h5,
+    toggle_panel(ns("org_link"),
+                 init_visible = TRUE,
+                 label = "Organization",
+                 icon = icon("user-shield"),
+                 tag_fn = h5,
       # People in organization
       num_input(ns("n_org"), "Organization Size (People)", 1e3),
       # Unvaccinated testing frequency
@@ -26,11 +29,11 @@ mod_scenarios_input_ui <- function(id) {
       tags$br()
     ),
     # Community inputs (local context)
-    conditional_panel(ns("comm_link"),
-                      init_visible = TRUE,
-                      label = "Community",
-                      icon = icon("users"),
-                      tag_fn = h5,
+    toggle_panel(ns("comm_link"),
+                 init_visible = TRUE,
+                 label = "Community",
+                 icon = icon("users"),
+                 tag_fn = h5,
       # Case rate per 100k per day in community
       num_input(ns("inf_r_incid"), "Case Rate (per 100k per Day)", 250),
       # % Vaccinated in community
@@ -38,26 +41,26 @@ mod_scenarios_input_ui <- function(id) {
       tags$br()
     ),
     # Advanced inputs (illness, tests, and vaccinations)
-    conditional_panel(ns("advanced_link"),
-                      init_visible = TRUE,
-                      label = "Advanced",
-                      icon = icon("cog"),
-                      tag_fn = h5,
+    toggle_panel(ns("advanced_link"),
+                 init_visible = TRUE,
+                 label = "Advanced",
+                 icon = icon("cog"),
+                 tag_fn = h5,
       # Vaccine efficacy
-      conditional_panel(ns("vac_eff_link"),
-                        init_visible = FALSE,
-                        label = "Vaccine Efficacy",
-                        icon = icon("syringe"),
-                        tag_fn = h6,
+      toggle_panel(ns("vac_eff_link"),
+                   init_visible = FALSE,
+                   label = "Vaccine Efficacy",
+                   icon = icon("syringe"),
+                   tag_fn = h6,
         slider_pct(ns("vac_eff"), label = NULL, value = 70),
         tags$br()
       ),
       # Test-related inputs
-      conditional_panel(ns("test_link"),
-                        init_visible = FALSE,
-                        label = "Testing",
-                        icon = icon("vial"),
-                        tag_fn = h6,
+      toggle_panel(ns("test_link"),
+                   init_visible = FALSE,
+                   label = "Testing",
+                   icon = icon("vial"),
+                   tag_fn = h6,
         tags$br(),
         # Test sensitivity
         slider_pct(ns("detect_sens"),
@@ -78,11 +81,11 @@ mod_scenarios_input_ui <- function(id) {
         )
       ),
       # Symptom-related inputs
-      conditional_panel(ns("symp_link"),
-                        init_visible = FALSE,
-                        label  = "Symptoms",
-                        icon   = icon("head-side-cough"),
-                        tag_fn = h6,
+      toggle_panel(ns("symp_link"),
+                   init_visible = FALSE,
+                   label  = "Symptoms",
+                   icon   = icon("head-side-cough"),
+                   tag_fn = h6,
         tags$br(),
         # Symptomatic period
         num_input(ns("inf_t_symp"),
@@ -122,6 +125,15 @@ mod_scenarios_input_ui <- function(id) {
 mod_scenarios_input_server <- function(id){
   moduleServer(id, function(input, output, session){
     ns <- session$ns
+
+    # Show/hide input panels
+    toggle_panel_server("org_link", input, time = 0.5)
+    toggle_panel_server("comm_link", input, time = 0.3)
+    toggle_panel_server("advanced_link", input, time = 0.4)
+    toggle_panel_server("vac_eff_link", input, time = 0.2)
+    toggle_panel_server("test_link", input, time = 0.4)
+    toggle_panel_server("symp_link", input, time = 0.6)
+
 
     # Organizational inputs info
     observeEvent(input$org_link_info, ct_info_server(p(HTML(

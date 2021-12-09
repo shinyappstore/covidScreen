@@ -8,6 +8,10 @@ app_ui <- function(request) {
   tagList(
     # Leave this function for adding external resources
     golem_add_external_resources(),
+    # Set up shinyjs
+    shinyjs::useShinyjs(),
+    # Set up other JS
+    head_js(),
     # UI definition
     navbarPage(h3("covidtest"), theme = ct_theme(), fluid = TRUE,
       bslib::nav_spacer(),
@@ -61,11 +65,21 @@ ct_theme <- function() {
     bootswatch = "litera",
     fg = "#29434e", bg = "#ffffff",
     primary = "#29434e", secondary = "#29434e",
-    success = "#98ee99", info = "#0077c2",
+    success = "#98ee99", info = "#e0e0e0",
     warning = "#ffa726", danger = "#b61827",
     base_font = bslib::font_google("Roboto"),
     code_font = bslib::font_google("Roboto Mono")
   )
+}
+
+head_js <- function() {
+  tags$head(HTML(JS("
+    <script>
+    $(document).ready(function(){
+      $('[data-toggle=\"tooltip\"]').tooltip();
+    });
+    </script>
+  ")))
 }
 
 #' Add external Resources to the Application

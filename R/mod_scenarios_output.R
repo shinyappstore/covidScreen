@@ -10,28 +10,28 @@
 mod_scenarios_output_ui <- function(id){
   ns <- NS(id)
   tagList(
-    conditional_panel(ns("risk"),
-                      init_visible = TRUE,
-                      label = "Infection Risk (Undetected Cases)",
-                      tag_fn = h3,
+    toggle_panel(ns("risk"),
+                 init_visible = TRUE,
+                 label = "Infection Risk (Undetected Cases)",
+                 tag_fn = h3,
       fluidRow(
         column(width = 6, highchartOutput(ns("risk_plot"))),
         column(width = 6, uiOutput(ns("risk_expl")))
       )
     ),
-    conditional_panel(ns("benefit"),
-                      init_visible = TRUE,
-                      label = "Testing Benefit (Undetected Case Reduction)",
-                      tag_fn = h3,
+    toggle_panel(ns("benefit"),
+                 init_visible = TRUE,
+                 label = "Testing Benefit (Undetected Case Reduction)",
+                 tag_fn = h3,
       fluidRow(
         column(width = 6, highchartOutput(ns("benefit_plot"))),
         column(width = 6, uiOutput(ns("benefit_expl")))
       )
     ),
-    conditional_panel(ns("vac"),
-                      init_visible = TRUE,
-                      label = "Testing Benefit (Vaccinated vs Unvaccinated)",
-                      tag_fn = h3,
+    toggle_panel(ns("vac"),
+                 init_visible = TRUE,
+                 label = "Testing Benefit (Vaccinated vs Unvaccinated)",
+                 tag_fn = h3,
       fluidRow(
         column(width = 6, highchartOutput(ns("vac_plot"))),
         column(width = 6, uiOutput(ns("vac_expl")))
@@ -47,12 +47,13 @@ mod_scenarios_output_server <- function(id, dist_args){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
 
-    data_test    <- reactive_dist(dist_args)
-    data_test1  <- reactive_dist(const_testing(dist_args, 1, 1))
+    data_test  <- reactive_dist(dist_args)
+    data_test1 <- reactive_dist(const_testing(dist_args, 1, 1))
     data_test0 <- reactive_dist(const_testing(dist_args))
 
 
     # Infection risk (# of active cases)
+    toggle_panel_server("risk", input)
     data_risk <- reactive(prep_risk(
       data_test = data_test(),
       data_no_test = data_test0(),
@@ -63,6 +64,7 @@ mod_scenarios_output_server <- function(id, dist_args){
     observeEvent(input$risk_info, risk_plot_info())
 
     # Testing benefit (reduction in active cases)
+    toggle_panel_server("benefit", input)
     data_benefit <- reactive(prep_benefit(
       data_test = data_test(),
       data_no_test = data_test0(),
@@ -73,6 +75,7 @@ mod_scenarios_output_server <- function(id, dist_args){
     observeEvent(input$benefit_info, benefit_plot_info())
 
     # Vaccination comparison
+    toggle_panel_server("vac", input)
     data_vac <- reactive(prep_vac(
       data_test0 = data_test0(),
       data_test1 = data_test1()
@@ -169,4 +172,36 @@ const_testing <- function(dist_args, p_vac = 0, p_unvac = 0) {
   ))
 
   c_test_args
+}
+
+toggle_panel <- function(
+  id,
+  ...,
+  label = NULL,
+  icon = NULL,
+  tag_fn = NULL,
+  init_visible = FALSE
+) {
+  panel <- tags$div(id = paste0(id, "_panel"), ...)
+  tags$div(
+    action_link(id, label = label, icon = icon, tag_fn = tag_fn),
+    if (init_visible) panel else shinyjs::hidden(panel)
+  )
+}
+
+toggle_panel_server <- function(
+  id,
+  input,
+  anim = TRUE,
+  animType = "slide",
+  time = 0.5
+) {
+  bindEvent(
+    observe(shinyjs::toggle(paste0(id, "_panel"),
+                            anim = anim,
+                            animType = animType,
+                            time = time
+    )),
+    input[[id]]
+  )
 }
