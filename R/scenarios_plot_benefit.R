@@ -1,7 +1,7 @@
 plot_benefit <- function(data_benefit) {
   data_benefit %>%
     hchart("column",
-      hcaes(y = .data$n, group = .data$group, color = .data$color),
+      hcaes(y = .data$n, name = .data$group, group = .data$group, color = .data$color),
       showInLegend = FALSE,
       stacking = "normal",
       dataLabels = list(
@@ -17,6 +17,10 @@ plot_benefit <- function(data_benefit) {
     ) %>%
     hc_yAxis(
       title = list(text = "N")
+    ) %>%
+    hc_tooltip(
+      headerFormat = "<span style='color: {point.color}'>{point.key}</span><br>",
+      pointFormat = "<b>N = {point.y:.0f}</b>"
     )
 }
 
@@ -36,7 +40,7 @@ prep_benefit <- function(data_test, data_no_test, n) {
   p_asymp <- p_d_test + p_not_d
 
   data_benefit <- data.table(
-    group = c("undetected", "detected"),
+    group = c("Undetected", "Detected"),
     n     = c(p_not_d, p_d_test) * n,
     color = c("#ef9a9a", "#64b5f6")
   )
