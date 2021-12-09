@@ -2,8 +2,9 @@ Package: covidtest
 Title: COVID-19 Testing Strategy Assessment
 Version: 0.0.0.9000
 Authors@R: c(
-    person('Jesse', 'Smith', email = 'Jesse.Smith@stjude.org', role = c('cre', 'aut')),
-    person('Tomi',  'Mori',  email = 'Tomi.Mori@stjude.org',   role = 'aut'))
+    person("Jesse", "Smith", , "Jesse.Smith@stjude.org", role = c("cre", "aut")),
+    person("Tomi", "Mori", , "Tomi.Mori@stjude.org", role = "aut")
+  )
 Description: Covidtest is a Shiny app that allows decision-makers to
     assess the benefits of performing asymptomatic testing in their
     organizations. It is primarily aimed at healthcare organizations,
@@ -32,6 +33,7 @@ Suggests:
     covr,
     knitr,
     rmarkdown,
+    shinipsum,
     spelling,
     testthat (>= 3.0.0)
 VignetteBuilder: 

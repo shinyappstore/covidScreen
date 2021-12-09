@@ -24,7 +24,9 @@ app_ui <- function(request) {
       ),
       ct_nav_pad("3rem"),
       # Input profiling
-      tabPanel(ct_h5("Profiling", tooltip = "See risks and benefits change across input values")),
+      tabPanel(ct_h5("Profiling", tooltip = "See risks and benefits change across input values"),
+               mod_profiling_ui("profiling")
+      ),
       ct_nav_pad("3rem"),
       # Tutorial and explanation of use
       tabPanel(ct_h5("Tutorial", tooltip = "A walkthrough of covidtest functionality")),
