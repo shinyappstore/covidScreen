@@ -33,7 +33,7 @@ prep_risk <- function(data_test, data_no_test, n) {
   p_not_i <- data_test[inf == FALSE, sum(.SD$p)][[1]]
 
   # Create data.table with groups
-  data_risk <- data.table(
+  d <- data.table(
     group = c(
       "Undetected",
       "Detected w/ Testing",
@@ -44,10 +44,8 @@ prep_risk <- function(data_test, data_no_test, n) {
     color = c("#e57373", "#90caf9", "#b0bec5", "#e0e0e0")
   )
 
-  data_risk[,
-      pct := format_number(100 * .SD$n / sum(.SD$n))
-  ][, n   := round(.SD$n)
-  ][, lbl := fifelse(.SD$n == 1, yes = "person", no = "people")
-  ][, i   := seq_len(.N)
-  ][]
+  set(d, j = "pct", value = format_number(100 * d$n / sum(d$n)))
+  set(d, j = "n",   value = round(d$n))
+  set(d, j = "lbl", value = fifelse(d$n == 1, yes = "person", no = "people"))
+  set(d, j = "i",   value = seq_len(NROW(d)))
 }

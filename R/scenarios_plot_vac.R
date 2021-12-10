@@ -32,28 +32,32 @@ calc_vac_slopes <- function(data_test0, data_test1) {
   # Deal with R CMD CHECK NOTE
   vac <- inf <- test <- detect <- NULL
 
-  # Vaccinated - no testing
-  p_t_v_t0 <- data_test0[vac == TRUE & test == TRUE, sum(.SD$p)][[1]]
-  p_d_v_t0 <- data_test0[vac == TRUE & inf == TRUE & detect == TRUE,
-                         sum(.SD$p)][[1]]
+  # No testing
+  p_t_t0 <- setorderv(
+    data_test0[test == TRUE, sum(.SD$p), by = "vac"],
+    cols = "vac",
+    order = -1L
+  )[[2]]
+  p_d_t0 <- setorderv(
+    data_test0[inf & detect, sum(.SD$p), by = "vac"],
+    cols = "vac",
+    order = -1L
+  )[[2]]
 
-  # Vaccinated - testing
-  p_t_v_t1 <- data_test1[vac == TRUE & test == TRUE, sum(.SD$p)][[1]]
-  p_d_v_t1 <- data_test1[vac == TRUE & inf == TRUE & detect == TRUE,
-                         sum(.SD$p)][[1]]
+  # Testing
+  p_t_t1 <- setorderv(
+    data_test1[test == TRUE, sum(.SD$p), by = "vac"],
+    cols = "vac",
+    order = -1L
+  )[[2]]
+  p_d_t1 <- setorderv(
+    data_test1[inf & detect, sum(.SD$p), by = "vac"],
+    cols = "vac",
+    order = -1L
+  )[[2]]
 
-  # Unvaccinated - no testing
-  p_t_u_t0 <- data_test0[vac == FALSE & test == TRUE, sum(.SD$p)][[1]]
-  p_d_u_t0 <- data_test0[vac == FALSE & inf == TRUE & detect == TRUE,
-                         sum(.SD$p)][[1]]
-
-  # Unvaccinated - testing
-  p_t_u_t1 <- data_test1[vac == FALSE & test == TRUE, sum(.SD$p)][[1]]
-  p_d_u_t1 <- data_test1[vac == FALSE & inf == TRUE & detect == TRUE,
-                         sum(.SD$p)][[1]]
-
-  c(
-    v = (p_d_v_t1 - p_d_v_t0) / (p_t_v_t1 - p_t_v_t0),
-    u = (p_d_u_t1 - p_d_u_t0) / (p_t_u_t1 - p_t_u_t0)
-  )
+  # Calculate slopes and return
+  slopes <- (p_d_t1 - p_d_t0) / (p_t_t1 - p_t_t0)
+  names(slopes) <- c("v", "u")
+  slopes
 }

@@ -39,15 +39,17 @@ prep_benefit <- function(data_test, data_no_test, n) {
   p_not_d <- data_test[inf & !detect, sum(.SD$p)][[1]]
   p_asymp <- p_d_test + p_not_d
 
-  data_benefit <- data.table(
+  d <- data.table(
     group = c("Undetected", "Detected"),
     n     = c(p_not_d, p_d_test) * n,
     color = c("#ef9a9a", "#64b5f6")
   )
 
-  data_benefit[,
-      pct := 100 * .SD$n / sum(.SD$n)
-  ][, pct_lbl := paste0(round(.SD$pct), "% ")
-  ][, lbl := fifelse(.SD$pct < 1, NA_character_, paste0(.SD$pct_lbl, .SD$group))
-  ]
+  # Create columns
+  set(d, j = "pct",     value = 100 * d$n / sum(d$n))
+  set(d, j = "pct_lbl", value = paste0(round(d$pct), "%"))
+  set(d, j = "lbl",     value = fifelse(d$pct < 1,
+                                        NA_character_,
+                                        paste0(d$pct_lbl, d$group))
+  )
 }
