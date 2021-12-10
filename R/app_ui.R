@@ -32,6 +32,11 @@ app_ui <- function(request) {
       # FAQs
       tabPanel(ct_h5("FAQs", tooltip = "Frequently Asked Questions")),
       ct_nav_pad("3rem"),
+      # Profiling (Development)
+      tabPanel(ct_h5("Profvis", tooltip = "Development code profiling"),
+               mod_profvis_ui("profvis")
+      ),
+      ct_nav_pad("3rem"),
       # More links
       navbarMenu("",
         icon = ct_h5(icon("external-link-alt"), tooltip = "External links"),
