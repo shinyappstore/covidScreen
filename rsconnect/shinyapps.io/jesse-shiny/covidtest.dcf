@@ -5,7 +5,7 @@ account: jesse-shiny
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 5263578
-bundleId: 5325431
+bundleId: 5352940
 url: https://jesse-shiny.shinyapps.io/covidtest/
-when: 1638574716.42741
-lastSyncTime: 1638574716.42741
+when: 1639094416.9163
+lastSyncTime: 1639094416.9163
