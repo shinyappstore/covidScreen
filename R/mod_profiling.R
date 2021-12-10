@@ -23,7 +23,9 @@ mod_profiling_ui <- function(id){
 mod_profiling_server <- function(id){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
-    mod_profiling_input_server("input")
+
+    dist_args <- mod_profiling_input_server("input")
+
     output$plot <- renderPlot(shinipsum::random_ggplot())
 
   })
