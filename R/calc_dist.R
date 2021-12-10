@@ -64,7 +64,7 @@ calc_dist <- function(
 
   # Create joint distribution
   dt_vac %>%
-    join_dist(dt_inf) %>%
+    join_dist(dt_vac, dt_inf) %>%
     join_dist(dt_symp) %>%
     join_dist(dt_test) %>%
     join_dist(dt_detect) %>%
@@ -75,85 +75,70 @@ calc_dist <- function(
 # Join Distributions -----------------------------------------------------------
 
 join_dist <- function(x, y) {
-  # Join by all common columns except probability (`p`)
-  cols_common <- intersect(colnames(x), colnames(y))
-  by <- cols_common[!cols_common %chin% "p"]
 
-  # Left join distribution data tables
-  d <- merge.data.table(
-    x,
-    y,
-    by = by,
-    all.x = TRUE,
-    suffixes = c("", "_y"),
-    allow.cartesian = TRUE
-  )
+  # Manually add suffix to `p` in `y`
+  setnames(y, "p", "p_y", skip_absent = TRUE)
+
+  # Join by all common columns (now except probability `p`)
+  by <- intersect(colnames(x), colnames(y))
+
+  # Left join
+  d <- y[x, on = by, allow.cartesian = TRUE]
 
   # Fill missing conditional probs
   setnafill(d, fill = 1, cols = "p_y")
+
   # Multiply probabilities and remove conditional probs
-  d[, "p" := .SD$p * .SD$p_y][, "p_y" := NULL][]
+  set(d, j = c("p", "p_y"), value = list(d$p * d$p_y, NULL))
 }
 
 # Create Distributions ---------------------------------------------------------
 
 dist_vac <- function(.vac) {
-  create_dist(
+  data.table(
     # Probs conditional on vaccination status
     vac = c(TRUE, FALSE),
-    .p  = probs_vac(.vac)
+    p   = probs_vac(.vac)
   )
 }
 
 dist_inf <- function(.inf, .vac) {
-  create_dist(
+  data.table(
     # Probs conditional on vaccination and infection status
     vac = c(TRUE, FALSE, TRUE, FALSE),
     inf = c(TRUE, TRUE, FALSE, FALSE),
-    .p   = probs_inf(.inf, vac = .vac)
+    p   = probs_inf(.inf, vac = .vac)
   )
 }
 
 dist_symp <- function(.symp, .inf) {
-  create_dist(
+  data.table(
     # Probs conditional on vaccination, infection, and symptomatic status
     vac  = c(TRUE, FALSE, TRUE, FALSE, TRUE, FALSE, TRUE, FALSE),
     inf  = c(TRUE, TRUE, FALSE, FALSE, TRUE, TRUE, FALSE, FALSE),
     symp = c(TRUE, TRUE, TRUE, TRUE, FALSE, FALSE, FALSE, FALSE),
-    .p   = probs_symp(.symp, .inf)
+    p    = probs_symp(.symp, .inf)
   )
 }
 
 dist_test <- function(.test) {
-  create_dist(
+  data.table(
     # Probs conditional on vaccination, symptom, and test status
     vac  = c(TRUE, FALSE, TRUE, FALSE, TRUE, FALSE, TRUE, FALSE),
     symp = c(TRUE, TRUE, FALSE, FALSE, TRUE, TRUE, FALSE, FALSE),
     test = c(TRUE, TRUE, TRUE, TRUE, FALSE, FALSE, FALSE, FALSE),
-    .p   = probs_test(.test)
+    p    = probs_test(.test)
   )
 }
 
 dist_detect <- function(.detect) {
-  create_dist(
+  data.table(
     # Probs conditional on infection, testing, and detection
     inf    = c(TRUE, FALSE, TRUE, FALSE, TRUE, FALSE, TRUE, FALSE),
     test   = c(TRUE, TRUE, FALSE, FALSE, TRUE, TRUE, FALSE, FALSE),
     detect = c(TRUE, TRUE, TRUE, TRUE, FALSE, FALSE, FALSE, FALSE),
-    .p     = probs_detect(.detect)
+    p      = probs_detect(.detect)
   )
-}
-
-create_dist <- function(..., .p) {
-  # Create data table
-  dt  <- data.table(..., p = .p)
-
-  # Create key from all columns except `p`
-  cols <- colnames(dt)
-  key  <- cols[!cols %chin% "p"]
-
-  # Set key and return
-  setkeyv(dt, cols = key)
 }
 
 # Probability Calculations -----------------------------------------------------
@@ -221,7 +206,4 @@ order_dist <- function(dist) {
   # Set column and row orders
   setcolorder(dist, c("p", "vac", "inf", "symp", "test", "detect"))
   setorderv(dist, order = -1L, na.last = TRUE)
-
-  # Return visibly after modify-by-reference
-  dist[]
 }

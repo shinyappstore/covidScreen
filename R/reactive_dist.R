@@ -12,11 +12,7 @@ reactive_dist <- function(dist_args) {
   dt_isd <- reactive(join_dist(dt$inf(), dt_sd()), label = "dt_isd()")
   dt_visd <- reactive(join_dist(dt$vac(), dt_isd()), label = "dt_visd()")
 
-  reactive({
-    join_dist(dt_visd(), dt$test()) %>%
-      setcolorder(c("p", "vac", "inf", "symp", "test", "detect")) %>%
-      setorderv(order = -1L, na.last = TRUE)
-  }, label = "dt_vistd()")
+  reactive(order_dist(join_dist(dt_visd(), dt$test())), label = "dt_vistd()")
 }
 
 reactive_conditional <- function(dist_args) {

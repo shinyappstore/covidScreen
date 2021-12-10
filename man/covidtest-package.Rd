@@ -12,6 +12,7 @@ Covidtest is a Shiny app that allows decision-makers to assess the benefits of p
 Useful links:
 \itemize{
   \item \url{https://github.com/jesse-smith/covidtest}
+  \item \url{https://jesse-smith.github.io/covidtest}
   \item Report bugs at \url{https://github.com/jesse-smith/covidtest/issues}
 }
 
