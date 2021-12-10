@@ -64,12 +64,30 @@ calc_dist <- function(
 
   # Create joint distribution
   dt_vac %>%
-    join_dist(dt_vac, dt_inf) %>%
+    join_dist(dt_inf) %>%
     join_dist(dt_symp) %>%
     join_dist(dt_test) %>%
     join_dist(dt_detect) %>%
     # Set key and reorder columns
     order_dist()
+}
+
+
+#' Reactive Version of `calc_dist()`
+#'
+#' Takes a `reactiveValues` object and returns a `reactive`
+#'
+#' @param dist_args List of arguments to `calc_dist()`
+#'
+#' @return A `reactive` containing the results of `calc_dist()`
+reactive_dist <- function(dist_args) {
+  reactive(calc_dist(
+    vac = dist_args$vac(),
+    inf = dist_args$inf(),
+    symp = dist_args$symp(),
+    test = dist_args$test(),
+    detect = dist_args$detect()
+  ), label = "reactive_dist()")
 }
 
 # Join Distributions -----------------------------------------------------------
@@ -89,7 +107,8 @@ join_dist <- function(x, y) {
   setnafill(d, fill = 1, cols = "p_y")
 
   # Multiply probabilities and remove conditional probs
-  set(d, j = c("p", "p_y"), value = list(d$p * d$p_y, NULL))
+  set(d, j = "p",   value = d$p * d$p_y)
+  set(d, j = "p_y", value = NULL)
 }
 
 # Create Distributions ---------------------------------------------------------
