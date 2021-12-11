@@ -90,47 +90,6 @@ reactive_dist <- function(dist_args) {
   ), label = "reactive_dist()")
 }
 
-
-#' Create a Version of `calc_dist()` with Some Arguments Constant
-#'
-#' Any passed arguments will be calculated, and a function that takes the
-#' remaining arguments will be returned.
-#'
-#' @inheritParams calc_dist
-#'
-#' @return A function taking any unpassed arguments as parameters
-partial_dist <- function(
-  vac = NULL,
-  inf = NULL,
-  symp = NULL,
-  test = NULL,
-  detect = NULL
-) {
-  # Create conditional distributions
-  dt_vac    <- dist_vac(vac)
-  dt_inf    <- dist_inf(inf, .vac = vac)
-  dt_symp   <- dist_symp(symp, .inf = inf)
-  dt_test   <- dist_test(test)
-  dt_detect <- dist_detect(detect)
-
-  # Create joint distribution
-  dt_dist <- dt_vac %>%
-    join_dist(dt_inf) %>%
-    join_dist(dt_symp) %>%
-    join_dist(dt_test) %>%
-    join_dist(dt_detect)
-
-  # Get non-NULL arguments
-  args <- purrr::map(
-    rlang::fn_fmls_syms(),
-    ~ eval(.x, env = rlang::env_parent())
-  )
-  is_null <- purrr::map_lgl(args, is.null)
-  args_filled <- args[!is_null]
-
-  args_filled
-}
-
 # Join Distributions -----------------------------------------------------------
 
 join_dist <- function(x, y) {
