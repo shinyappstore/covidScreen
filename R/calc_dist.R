@@ -90,9 +90,55 @@ reactive_dist <- function(dist_args) {
   ), label = "reactive_dist()")
 }
 
+
+#' Create a Version of `calc_dist()` with Some Arguments Constant
+#'
+#' Any passed arguments will be calculated, and a function that takes the
+#' remaining arguments will be returned.
+#'
+#' @inheritParams calc_dist
+#'
+#' @return A function taking any unpassed arguments as parameters
+partial_dist <- function(
+  vac = NULL,
+  inf = NULL,
+  symp = NULL,
+  test = NULL,
+  detect = NULL
+) {
+  # Create conditional distributions
+  dt_vac    <- dist_vac(vac)
+  dt_inf    <- dist_inf(inf, .vac = vac)
+  dt_symp   <- dist_symp(symp, .inf = inf)
+  dt_test   <- dist_test(test)
+  dt_detect <- dist_detect(detect)
+
+  # Create joint distribution
+  dt_dist <- dt_vac %>%
+    join_dist(dt_inf) %>%
+    join_dist(dt_symp) %>%
+    join_dist(dt_test) %>%
+    join_dist(dt_detect)
+
+  # Get non-NULL arguments
+  args <- purrr::map(
+    rlang::fn_fmls_syms(),
+    ~ eval(.x, env = rlang::env_parent())
+  )
+  is_null <- purrr::map_lgl(args, is.null)
+  args_filled <- args[!is_null]
+
+  args_filled
+}
+
 # Join Distributions -----------------------------------------------------------
 
 join_dist <- function(x, y) {
+  if (is.null(x)) {
+    return(y)
+  } else if (is.null(y)) {
+    return(x)
+  }
 
   # Manually add suffix to `p` in `y`
   setnames(y, "p", "p_y", skip_absent = TRUE)
@@ -114,6 +160,7 @@ join_dist <- function(x, y) {
 # Create Distributions ---------------------------------------------------------
 
 dist_vac <- function(.vac) {
+  if (is.null(.vac)) return(NULL)
   data.table(
     # Probs conditional on vaccination status
     vac = c(TRUE, FALSE),
@@ -122,6 +169,7 @@ dist_vac <- function(.vac) {
 }
 
 dist_inf <- function(.inf, .vac) {
+  if (is.null(.inf) || is.null(.vac)) return(NULL)
   data.table(
     # Probs conditional on vaccination and infection status
     vac = c(TRUE, FALSE, TRUE, FALSE),
@@ -131,6 +179,7 @@ dist_inf <- function(.inf, .vac) {
 }
 
 dist_symp <- function(.symp, .inf) {
+  if (is.null(.symp) || is.null(.inf)) return(NULL)
   data.table(
     # Probs conditional on vaccination, infection, and symptomatic status
     vac  = c(TRUE, FALSE, TRUE, FALSE, TRUE, FALSE, TRUE, FALSE),
@@ -141,6 +190,7 @@ dist_symp <- function(.symp, .inf) {
 }
 
 dist_test <- function(.test) {
+  if (is.null(.test)) return (NULL)
   data.table(
     # Probs conditional on vaccination, symptom, and test status
     vac  = c(TRUE, FALSE, TRUE, FALSE, TRUE, FALSE, TRUE, FALSE),
@@ -151,6 +201,7 @@ dist_test <- function(.test) {
 }
 
 dist_detect <- function(.detect) {
+  if (is.null(.detect)) return (NULL)
   data.table(
     # Probs conditional on infection, testing, and detection
     inf    = c(TRUE, FALSE, TRUE, FALSE, TRUE, FALSE, TRUE, FALSE),
