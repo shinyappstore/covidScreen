@@ -15,9 +15,14 @@ profile_dist <- function(dist_args, type) {
     # Create partial function using arglist
     calc_dist_profile <- purrr::partial(calc_profile, !!!arg_list, type = type)
 
-    result <- purrr::map_dbl(expand_list(profile_arg, j), calc_dist_profile)
+    # Create sequence
+    x <- seq_profile(profile_arg[[j]])
+    # Insert into list
+    x_arg <- purrr::map(x, ~ magrittr::inset2(profile_arg, j, .x))
+    # Map to output
+    y <- purrr::map_dbl(x_arg, calc_dist_profile)
 
-
+    data.table(x = x, y = y)
   })
 }
 
