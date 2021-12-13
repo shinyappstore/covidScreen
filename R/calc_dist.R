@@ -168,8 +168,11 @@ partial_dist <- function(
     dist_expr
   )
 
+  print(partial_fn)
+
   # Fill passed arguments and return new function
   purrr::partial(partial_fn, !!!arg_list[!is_null])
+  arg_list[!is_null]
 }
 
 # Create Distributions ---------------------------------------------------------
