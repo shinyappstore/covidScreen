@@ -11,7 +11,7 @@ mod_profiling_ui <- function(id){
   ns <- NS(id)
   tags$div(
     style = "max-width: 1280px; margin: auto",
-    plotOutput(ns("plot")),
+    highchartOutput(ns("plot")),
     mod_profiling_input_ui(ns("input")),
     tags$br()
   )
@@ -26,7 +26,11 @@ mod_profiling_server <- function(id){
 
     dist_args <- mod_profiling_input_server("input")
 
-    output$plot <- renderPlot(shinipsum::random_ggplot())
+    dt_profile <- profile_dist(dist_args)
+
+    output$plot <- renderHighchart({
+      hchart(dt_profile(), "line", hcaes(x = x, y = risk))
+    })
 
   })
 }

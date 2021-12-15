@@ -41,7 +41,7 @@ mod_profiling_input_ui <- function(id){
         # Case rate per 100k per day in community
         num_input(ns("inf_r_incid"), "Case Rate (per 100k per Day)", 250),
         # % Vaccinated in community
-        slider_pct(ns("vac_p_comm"), "% Vaccinated (in Community)")
+        slider_pct(ns("vac_p_comm"), "% Vaccinated (in Community)", c(0, 100))
       )),
       # Advanced
       column(width = 4, toggle_panel(ns("advanced_link"),
