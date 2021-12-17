@@ -11,8 +11,8 @@ mod_profiling_ui <- function(id){
   ns <- NS(id)
   tags$div(
     style = "max-width: 1280px; margin: auto",
-    highchartOutput(ns("plot")),
-    mod_profiling_input_ui(ns("input")),
+    mod_profiling_output2_ui(ns("output")),
+    mod_profiling_input2_ui(ns("input")),
     tags$br()
   )
 }
@@ -24,13 +24,8 @@ mod_profiling_server <- function(id){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
 
-    dist_args <- mod_profiling_input_server("input")
-
-    dt_profile <- profile_dist(dist_args)
-
-    output$plot <- renderHighchart({
-      hchart(dt_profile(), "line", hcaes(x = x, y = risk))
-    })
+    inputs <- mod_profiling_input2_server("input")
+    mod_profiling_output2_server("output", inputs)
 
   })
 }

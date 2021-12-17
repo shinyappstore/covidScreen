@@ -80,15 +80,26 @@ calc_dist <- function(
 #' @param dist_args List of arguments to `calc_dist()`
 #'
 #' @return A `reactive` containing the results of `calc_dist()`
-reactive_dist <- function(dist_args) {
-  reactive(calc_dist(
-    vac = dist_args$vac(),
-    inf = dist_args$inf(),
-    symp = dist_args$symp(),
-    test = dist_args$test(),
-    detect = dist_args$detect()
-  ), label = "reactive_dist()")
+reactive_dist <- function(dist_args, isolate = FALSE) {
+  if (isolate) {
+    shiny::isolate(calc_dist(
+      vac = dist_args$vac(),
+      inf = dist_args$inf(),
+      symp = dist_args$symp(),
+      test = dist_args$test(),
+      detect = dist_args$detect()
+    ))
+  } else {
+    reactive(calc_dist(
+      vac = dist_args$vac(),
+      inf = dist_args$inf(),
+      symp = dist_args$symp(),
+      test = dist_args$test(),
+      detect = dist_args$detect()
+    ), label = "reactive_dist()")
+  }
 }
+
 
 # Join Distributions -----------------------------------------------------------
 

@@ -233,16 +233,16 @@ num_input <- function(
   width = "120px"
 ) {
 
-  if (length(label) > 0) {
+  if (NROW(label) > 0 && nchar(label) > 0) {
     label <- tags$span(label, ct_info_ui(paste0(id, "_info")))
   }
 
-  tagList(
-    tags$label(label),
-    numericInput(id,
-      label = NULL, width = width,
-      value = value, min = min, max = max, step = step)
+  input <- numericInput(id,
+    label = NULL, width = width,
+    value = value, min = min, max = max, step = step
   )
+
+  tagList(tags$label(label), input)
 }
 
 slider_pct <- function(
@@ -256,14 +256,15 @@ slider_pct <- function(
   pre = NULL
 ) {
 
-  if (length(label) > 0) {
+  if (NROW(label) > 0 && nchar(label) > 0) {
     label <- tags$span(label, ct_info_ui(paste0(id, "_info")))
   }
 
   sliderInput(id,
     label = label,
     value = value, step = step, width = width, pre = pre,
-    min = min, max = max, post = "%", ticks = FALSE)
+    min = min, max = max, post = "%", ticks = FALSE
+  )
 }
 
 action_link <- function(id, label, icon = NULL, tag_fn = NULL) {
@@ -276,13 +277,11 @@ action_link <- function(id, label, icon = NULL, tag_fn = NULL) {
 }
 
 correct_freq <- function(x) {
-  if (is.infinite(x)) {
-    0
-  } else if (x > 1) {
-    1
-  } else {
-    x
-  }
+  fcase(
+    is.infinite(x),     0,
+    x > 1,              1,
+    rep(TRUE, NROW(x)), x
+  )
 }
 
 sv_not_lt_1 <- function(

@@ -157,19 +157,25 @@ vac_plot_info <- function() {
 }
 
 const_testing <- function(dist_args, p_vac = 0, p_unvac = 0) {
-  c_test_args <- reactiveValues()
+  if (is.reactivevalues(dist_args)) {
+    c_test_args <- reactiveValues(
+      n = dist_args$n,
+      vac = dist_args$vac,
+      inf = dist_args$inf,
+      symp = dist_args$symp,
+      detect = dist_args$detect
+    )
 
-  c_test_args$n <- dist_args$n
-  c_test_args$vac <- dist_args$vac
-  c_test_args$inf <- dist_args$inf
-  c_test_args$symp <- dist_args$symp
-  c_test_args$detect <- dist_args$detect
-
-  c_test_args$test <- reactive(list(
-    p_symp = dist_args$test()$p_symp,
-    p_asymp_vac = p_vac,
-    p_asymp_unvac = p_unvac
-  ))
+    c_test_args$test <- reactive(list(
+      p_symp = dist_args$test()$p_symp,
+      p_asymp_vac = p_vac,
+      p_asymp_unvac = p_unvac
+    ))
+  } else {
+    c_test_args <- dist_args
+    c_test_args$test$p_asymp_vac   <- p_vac
+    c_test_args$test$p_asymp_unvac <- p_unvac
+  }
 
   c_test_args
 }
