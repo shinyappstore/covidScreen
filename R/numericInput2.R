@@ -14,18 +14,18 @@ numericInput2 <- function(
   id_quo <- rlang::enquo(id)
   ns <- if (rlang::quo_is_call(id_quo)) rlang::call_fn(id_quo) else NS(NULL)
 
-  # Split into individual ids
-
-  value <- restoreInput(id, value)[[1]]
+  # Restore inputs after session load
+  value  <- restoreInput(id, value)[[1]]
   value2 <- restoreInput(id, value2)
   if (NROW(value2) == 1) value2 <- rep(value2, 2)
 
-  condition_sngl <- paste0("!(", condition, ")")
+  # Get inverse of condition
+  not_condition <- paste0("!(", condition, ")")
 
   snglTag <- tags$input(type = "number",
                         placeholder = as.character(value),
                         class = "form-control",
-                        `data-display-if` = condition_sngl,
+                        `data-display-if` = not_condition,
                         `data-ns-prefix`  = ns(""),
                         value = formatNoSci(value))
   fromTag <- tags$input(type = "number",
@@ -52,7 +52,7 @@ numericInput2 <- function(
   fromTag  <- set_numeric_input_attribs(fromTag, min, max, step)
   toTag    <- set_numeric_input_attribs(toTag, min, max, step)
 
-  tags$div(
+  tags$div(id = id,
     class = "shiny-numeric-input-2 input-group shiny-input-container",
     style = style,
     shinyInputLabel(label),
