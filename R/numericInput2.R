@@ -34,9 +34,12 @@ numericInput2 <- function(
   value_rst <- restoreInput(id, NULL)
   if (NROW(value_rst) == 1) {
     value  <- value_rst
-  } else if (NROW(value_rst) == 2) {
+  } else if (NROW(value_rst) > 1) {
     value2 <- value_rst
   }
+  
+  # Clean up value2
+  value2 <- range(value2, na.rm = TRUE)
   
   # Invert condition
   not_condition <- paste0("!(", condition, ")")
@@ -51,6 +54,7 @@ numericInput2 <- function(
   rngTag2 <- value2[[2]] %>%
     num_input_tag() %>%
     set_numeric_input_attribs(min, max, step)
+  
   # Create separator tag
   if (is.null(sep) || is.na(sep)) {
     sepTag <- NULL
@@ -92,6 +96,7 @@ numericInput2 <- function(
 }
 
 
+# Convenience function for creating inputs
 num_input_tag <- function(value) {
   value_fmt <- formatNoSci(value)
   tags$input(
@@ -103,24 +108,28 @@ num_input_tag <- function(value) {
 }
 
 
+# Convenience function for setting attributes
 set_numeric_input_attribs <- function(input, min = NA, max = NA, step = NA) {
-  if (!is.na(min)) input$attribs$min <- min
-  if (!is.na(max)) input$attribs$max <- max
+  if (!is.na(min))  input$attribs$min  <- min
+  if (!is.na(max))  input$attribs$max  <- max
   if (!is.na(step)) input$attribs$step <- step
   input
 }
 
 
+# Format values for Shiny numeric inputs
 formatNoSci <- function(x) {
   if (is.null(x)) NULL else format(x, scientific = FALSE, digits = 15)
 }
 
 
+# Create a Shiny input label
 shinyInputLabel <- function(id, label = NULL) {
-  tags$label(label,
-             class = "control-label",
-             class = if (is.null(label)) "shiny-label-null",
-             id = paste0(id, "-label"),
-             `for` = id
-             )
+  tags$label(
+    label,
+    class = "control-label",
+    class = if (is.null(label)) "shiny-label-null",
+    id = paste0(id, "-label"),
+    `for` = id
+  )
 }
