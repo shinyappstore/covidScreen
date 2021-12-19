@@ -16,9 +16,11 @@ mod_profiling_input2_ui <- function(id){
     ),
     fluidRow(
       numericInput2(ns("n_org"),
-                    condition = "input.x_var == 'n_org'",
                     label = "Organization Size (People)",
-                    value = 1e3, value2 = c(1e2, 1e3))
+                    condition = "input.x_var == 'n_org'",
+                    ns = ns,
+                    value = 1e3,
+                    value2 = c(1e2, 1e3))
     )
   )
 }

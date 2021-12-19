@@ -1,70 +1,109 @@
+#' Numeric Input for Point & Range
+#' 
+#' Displays and returns a numeric
+#' scalar or range depending on the
+#' current value of `condition`
+#'
+#' @param id The input id
+#' @param label A label for the input UI
+#' @param value A single number to initalize the point input
+#' @param value2 A length 2 numeric vector to initialize the range input
+#' @param condition Same as in `conditionalPanel()`
+#' @param ns A namespacing function; needed when used inside modules
+#' @param min The minimum value
+#' @param max The maximum value
+#' @param step The input step size
+#' @param sep A separator for the range input boxes
+#' @param style A style attribute for the input element
+#'
+#' @return A UI input element
 numericInput2 <- function(
   id,
+  label,
   value,
   value2,
   condition,
-  label = NULL,
+  ns = NS(NULL),
   min = NA,
   max = NA,
   step = NA,
-  sep = NA,
+  sep = "to",
   style = htmltools::css(width = "240px")
 ) {
-  # Get namespace, if it exists
-  id_quo <- rlang::enquo(id)
-  ns <- if (rlang::quo_is_call(id_quo)) rlang::call_fn(id_quo) else NS(NULL)
-
-  # Restore inputs after session load
-  value  <- restoreInput(id, value)[[1]]
-  value2 <- restoreInput(id, value2)
-  if (NROW(value2) == 1) value2 <- rep(value2, 2)
-
-  # Get inverse of condition
+  # Restore inputs
+  value_rst <- restoreInput(id, NULL)
+  if (NROW(value_rst) == 1) {
+    value  <- value_rst
+  } else if (NROW(value_rst) == 2) {
+    value2 <- value_rst
+  }
+  
+  # Invert condition
   not_condition <- paste0("!(", condition, ")")
-
-  snglTag <- tags$input(type = "number",
-                        placeholder = as.character(value),
-                        class = "form-control",
-                        `data-display-if` = not_condition,
-                        `data-ns-prefix`  = ns(""),
-                        value = formatNoSci(value))
-  fromTag <- tags$input(type = "number",
-                        placeholder = as.character(value2[[1]]),
-                        class = "form-control",
-                        `data-display-if` = condition,
-                        `data-ns-prefix`  = ns(""),
-                        value = formatNoSci(value2[[1]]))
-  toTag <- tags$input(type = "number",
-                      placeholder = as.character(value2[[2]]),
-                      class = "form-control",
-                      `data-display-if` = condition,
-                      `data-ns-prefix`  = ns(""),
-                      value = formatNoSci(value2[[2]]))
-
-  sep <- tags$span(
-    style = htmltools::css(`margin-left` = "0.5rem", `margin-right` = "0.5rem"),
-    `data-display-if` = condition,
-    `data-ns-prefix`  = ns(""),
-    "to"
+  
+  # Create input tags
+  pntTag <- value %>%
+    num_input_tag() %>%
+    set_numeric_input_attribs(min, max, step)
+  rngTag1 <- value2[[1]] %>%
+    num_input_tag() %>%
+    set_numeric_input_attribs(min, max, step)
+  rngTag2 <- value2[[2]] %>%
+    num_input_tag() %>%
+    set_numeric_input_attribs(min, max, step)
+  # Create separator tag
+  if (is.null(sep) || is.na(sep)) {
+    sepTag <- NULL
+  } else {
+    sepTag <- tags$span(
+      style = htmltools::css(
+        `margin-left`  = "0.5rem",
+        `margin-right` = "0.5rem"
+      ),
+      "to"
+    )
+  }
+  
+  # Create input containers
+  pointTag <- tags$div(
+    class = "input-group shiny-input-container",
+    `data-display-if` = not_condition,
+    `data-ns-prefix`  = ns,
+    pntTag
   )
-
-  snglTag <- set_numeric_input_attribs(snglTag, min, max, step)
-  fromTag  <- set_numeric_input_attribs(fromTag, min, max, step)
-  toTag    <- set_numeric_input_attribs(toTag, min, max, step)
-
-  tags$div(id = id,
-    class = "shiny-numeric-input-2 input-group shiny-input-container",
+  rangeTag <- tags$div(
+    class = "input-group shiny-input-container",
+    `data-display-if` = condition,
+    `data-ns-prefix`  = ns,
+    rngTag1,
+    sepTag,
+    rngTag2
+  )
+  
+  # Return input
+  tags$div(
+    id = id,
+    class = "shiny-numeric-input-2 shiny-input-container",
     style = style,
-    shinyInputLabel(label),
-    snglTag,
-    fromTag,
-    sep,
-    toTag
+    shinyInputLabel(id, label),
+    pointTag,
+    rangeTag
   )
 }
 
 
-set_numeric_input_attribs <- function(input, min, max, step) {
+num_input_tag <- function(value) {
+  value_fmt <- formatNoSci(value)
+  tags$input(
+    type  = "number",
+    class = "form-control",
+    placeholder = value_fmt,
+    value = value_fmt
+  )
+}
+
+
+set_numeric_input_attribs <- function(input, min = NA, max = NA, step = NA) {
   if (!is.na(min)) input$attribs$min <- min
   if (!is.na(max)) input$attribs$max <- max
   if (!is.na(step)) input$attribs$step <- step
