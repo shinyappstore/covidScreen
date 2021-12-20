@@ -1,5 +1,5 @@
 #' Numeric Input for Point & Range
-#' 
+#'
 #' Displays and returns a numeric
 #' scalar or range depending on the
 #' current value of `condition`
@@ -37,13 +37,19 @@ numericInput2 <- function(
   } else if (NROW(value_rst) > 1) {
     value2 <- value_rst
   }
-  
+
+  print("inputs restored")
+
   # Clean up value2
   value2 <- range(value2, na.rm = TRUE)
-  
+
+  print("value2 cleaned")
+
   # Invert condition
   not_condition <- paste0("!(", condition, ")")
-  
+
+  print("condition inverted")
+
   # Create input tags
   pntTag <- value %>%
     num_input_tag() %>%
@@ -54,7 +60,7 @@ numericInput2 <- function(
   rngTag2 <- value2[[2]] %>%
     num_input_tag() %>%
     set_numeric_input_attribs(min, max, step)
-  
+
   # Create separator tag
   if (is.null(sep) || is.na(sep)) {
     sepTag <- NULL
@@ -67,23 +73,23 @@ numericInput2 <- function(
       sep
     )
   }
-  
+
   # Create input containers
   pointTag <- tags$div(
     class = "input-group shiny-input-container",
     `data-display-if` = not_condition,
-    `data-ns-prefix`  = ns,
+    `data-ns-prefix`  = ns(""),
     pntTag
   )
   rangeTag <- tags$div(
     class = "input-group shiny-input-container",
     `data-display-if` = condition,
-    `data-ns-prefix`  = ns,
+    `data-ns-prefix`  = ns(""),
     rngTag1,
     sepTag,
     rngTag2
   )
-  
+
   # Return input
   tags$div(
     id = id,
