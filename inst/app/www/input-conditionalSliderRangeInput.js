@@ -1,7 +1,7 @@
-var conditionalNumericRangeInput = new Shiny.InputBinding();
-$.extend(conditionalNumericRangeInput, {
+var conditionalSliderRangeInput = new Shiny.InputBinding();
+$.extend(conditionalSliderRangeInput, {
   find: function(scope) {
-    return $(scope).find(".shiny-conditional-numeric-range-input");
+    return $(scope).find('.shiny-conditional-slider-range-input');
   },
   getType: function(el) {
     return "covidtest.conditionalRangeInput";
@@ -12,8 +12,10 @@ $.extend(conditionalNumericRangeInput, {
 
     // Get input values
     var point = $inputs[0].value;
-    var start = $inputs[1].value;
-    var end = $inputs[2].value;
+    var rangeString = $inputs[1].value;
+
+    var start = rangeString.replace(/[;].*$/, '')
+    var end = rangeString.replace(/^.*[;]/, '')
 
     // Coerce values
     if (/^\s*$/.test(point)) {
@@ -61,14 +63,8 @@ $.extend(conditionalNumericRangeInput, {
     if (value.length == 1) {
       inputs[0] = value;
     } else {
-      inputs[1].value = value[0];
-      inputs[2].value = value[1];
+      inputs[1].value = value;
     }
-  },
-  subscribe: function(el, callback) {
-    $(el).on("change.conditionalNumericRangeInput", function(e) {
-      callback();
-    });
   },
   receiveMessage: function(el, data) {
     var $el = $(el);
@@ -83,12 +79,18 @@ $.extend(conditionalNumericRangeInput, {
 
     $(el).trigger("change");
   },
+  subscribe: function(el, callback) {
+    $(el).on('click.conditionalSliderRangeInput', function(e) {
+      callback();
+    });
+
+  },
   unsubscribe: function(el) {
-    $(el).off(".conditionalNumericRangeInput");
+    $(el).off('.conditionalSliderRangeInput');
   }
 });
 
 Shiny.inputBindings.register(
-  conditionalNumericRangeInput,
-  "covidtest.conditionalNumericRange"
+  conditionalSliderRangeInput,
+  'covidtest.conditionalSliderRangeInput'
 );
