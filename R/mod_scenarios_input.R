@@ -126,38 +126,14 @@ mod_scenarios_input_server <- function(id){
   moduleServer(id, function(input, output, session){
     ns <- session$ns
 
-    # Show/hide input panels
-    toggle_panel_server("org_link", input, time = 0.5)
-    toggle_panel_server("comm_link", input, time = 0.3)
-    toggle_panel_server("advanced_link", input, time = 0.4)
-    toggle_panel_server("vac_eff_link", input, time = 0.2)
-    toggle_panel_server("test_link", input, time = 0.4)
-    toggle_panel_server("symp_link", input, time = 0.6)
+    # Input panel toggles and info
+    org_panel_server()
+    comm_panel_server()
+    advanced_panel_server()
+    vac_eff_panel_server()
+    test_panel_server()
+    symp_panel_server()
 
-
-    # Organizational inputs info
-    observeEvent(input$org_link_info, ct_info_server(p(HTML(
-      "Organizational inputs directly involve the organization. They are",
-      " <b>interventions</b> that can be used to keep COVID-19 under control",
-      " in the organization."
-    ))))
-
-    # Community inputs info
-    observeEvent(input$comm_link_info, ct_info_server(p(
-      "Community inputs define the context in which the organization resides.",
-      " They help determine the baseline infection risk of an organization."
-    )))
-
-    # Advanced inputs info
-    observeEvent(input$advanced_link_info, ct_info_server(p(HTML(
-      "Advanced inputs are related to properties of COVID-19, its tests, and",
-      " it vaccinations. They are 'advanced' in the sense that the average",
-      " user is likely not an expert on COVID-19, and may not know reasonable",
-      " values for these inputs. The defaults should suffice for many",
-      " settings, but users are encouraged to change the defaults if they do",
-      " not match your setting. The <b>Inputs</b> tab allows users to explore",
-      " the effects of these parameters (and others) in detail."
-    ))))
 
     # Input validation
     iv <- shinyvalidate::InputValidator$new()
