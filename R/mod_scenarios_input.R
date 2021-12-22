@@ -13,7 +13,7 @@ mod_scenarios_input_ui <- function(id) {
     # Make sliders nicer-looking
     shinyWidgets::chooseSliderSkin("Flat", color = "#29434e"),
     # Organizational inputs (interventions)
-    toggle_panel(ns("org_link"),
+    toggle_panel_ui(ns("org_link"),
                  init_visible = TRUE,
                  label = "Organization",
                  icon = icon("user-shield"),
@@ -29,7 +29,7 @@ mod_scenarios_input_ui <- function(id) {
       tags$br()
     ),
     # Community inputs (local context)
-    toggle_panel(ns("comm_link"),
+    toggle_panel_ui(ns("comm_link"),
                  init_visible = TRUE,
                  label = "Community",
                  icon = icon("users"),
@@ -41,13 +41,13 @@ mod_scenarios_input_ui <- function(id) {
       tags$br()
     ),
     # Advanced inputs (illness, tests, and vaccinations)
-    toggle_panel(ns("advanced_link"),
+    toggle_panel_ui(ns("advanced_link"),
                  init_visible = TRUE,
                  label = "Advanced",
                  icon = icon("cog"),
                  tag_fn = h5,
       # Vaccine efficacy
-      toggle_panel(ns("vac_eff_link"),
+      toggle_panel_ui(ns("vac_eff_link"),
                    init_visible = FALSE,
                    label = "Vaccine Efficacy",
                    icon = icon("syringe"),
@@ -56,7 +56,7 @@ mod_scenarios_input_ui <- function(id) {
         tags$br()
       ),
       # Test-related inputs
-      toggle_panel(ns("test_link"),
+      toggle_panel_ui(ns("test_link"),
                    init_visible = FALSE,
                    label = "Testing",
                    icon = icon("vial"),
@@ -81,7 +81,7 @@ mod_scenarios_input_ui <- function(id) {
         )
       ),
       # Symptom-related inputs
-      toggle_panel(ns("symp_link"),
+      toggle_panel_ui(ns("symp_link"),
                    init_visible = FALSE,
                    label  = "Symptoms",
                    icon   = icon("head-side-cough"),

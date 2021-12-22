@@ -12,7 +12,7 @@ mod_profiling_ui <- function(id){
   tags$div(
     style = "max-width: 1280px; margin: auto",
     mod_profiling_output2_ui(ns("output")),
-    mod_profiling_input2_ui(ns("input")),
+    mod_profiling_input_ui(ns("input")),
     tags$br()
   )
 }
@@ -21,10 +21,11 @@ mod_profiling_ui <- function(id){
 #'
 #' @noRd
 mod_profiling_server <- function(id){
-  moduleServer( id, function(input, output, session){
+  moduleServer(id, function(input, output, session){
     ns <- session$ns
 
-    inputs <- mod_profiling_input2_server("input")
+    inputs <- mod_profiling_input_server("input")
+    observe(print(inputs$dist_args$detect()))
     mod_profiling_output2_server("output", inputs)
 
   })
