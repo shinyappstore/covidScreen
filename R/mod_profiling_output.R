@@ -1,4 +1,4 @@
-#' profiling_output UI Function
+#' profiling_output2 UI Function
 #'
 #' @description A shiny Module.
 #'
@@ -12,17 +12,12 @@ mod_profiling_output_ui <- function(id){
   highchartOutput(ns("plot"))
 }
 
-#' profiling_output Server Functions
+#' profiling_output2 Server Functions
 #'
 #' @noRd
 mod_profiling_output_server <- function(id, inputs){
   moduleServer(id, function(input, output, session){
     ns <- session$ns
-
-    # Extract reactiveValues objects from inputs
-    n <- inputs$n
-    dist_args <- inputs$dist_args
-    vars <- inputs$vars
 
     # Get name of list that contains profile variable
     i_nm <- reactive(
@@ -36,110 +31,108 @@ mod_profiling_output_server <- function(id, inputs){
     )
 
     # Get profile variable
-    x_arg <- reactive(
-      if (i_nm() == "n") inputs$n$org() else inputs$dist_args[[i_nm()]]()[[j_nm()]],
-      label = "x_arg()"
-    )
-
+    x_arg <- reactive_x_arg(inputs, i_nm = i_nm, j_nm = j_nm)
     # Create x axis points
-    x <- reactive(seq_profile(x_arg()), label = "seq_profile()")
+    x     <- reactive(seq_profile(x_arg()), label = "seq_profile()")
 
-    # Convert test frequencies to probabilities
-    test_p <- reactive(
-      freq_to_prob(inputs$dist_args$test()),
-      label = "freq_to_prob()"
-    )
+    # Transform dist_args to appropriate model input
+    dist_args_t <- trans_dist_args(inputs$dist_args)
+    # Transform x to appropriate model input
+    x_t         <- reactive(trans_x(x(), j_nm()), label = "trans_x()")
+    # Transform j_nm to match model input
+    j_nm_t      <- reactive(trans_j_nm(j_nm()), label = "trans_j_nm()")
 
-    # Insert into dist_args
-    dist_args_p <- insert_args(test_p, inputs$dist_args, "test")
-
-    # Update j_nm if needed
-    j_nm2 <- reactive(stringr::str_replace(j_nm(), "f_", "p_"))
-
-    # Update x if needed
-    x2 <- reactive(if (startsWith(j_nm(), "f_")) correct_freq(1 / x()) else x())
-
-    # Choose profiling function for variable
+    # Create y
     y <- reactive_profile_y(
-      x2,
-      dist_args = dist_args_p,
-      n     = inputs$n$org,
+      x = x_t,
+      dist_args = dist_args_t,
+      n = inputs$n$org,
       y_lbl = inputs$vars$y,
-      i_nm  = i_nm,
-      j_nm  = j_nm2
+      i_nm = i_nm,
+      j_nm = j_nm_t
     )
 
-    # Create data.table of results
-    dt <- reactive(data.table(x = x(), y = y()))
-
-    # Plot results
     output$plot <- renderHighchart(
-      hchart(dt(), "line", hcaes(x = x, y = y))
+      hchart(data.table(x = x(), y = y()), "line", hcaes(x = x, y = y))
     )
   })
 }
 
 
-reactive_profile_y <- function(x, dist_args, n, y_lbl, i_nm, j_nm) {
+reactive_x_arg <- function(inputs, i_nm, j_nm) {
   reactive({
     if (i_nm() == "n") {
-      profile_n(x(),
-                dist_args = dist_args,
-                y_lbl = y_lbl()
-      )
-    } else if (i_nm() == "test" && startsWith(j_nm(), "p_asymp")) {
-      profile_test(x(),
-                   dist_args = dist_args,
-                   n     = n(),
-                   y_lbl = y_lbl(),
-                   j_nm  = j_nm()
-      )()
+      inputs$n$org()
     } else {
-      profile_arg(x(),
-                  dist_args = dist_args,
-                  n     = n(),
-                  y_lbl = y_lbl(),
-                  i_nm  = i_nm(),
-                  j_nm  = j_nm()
-      )()
+      inputs$dist_args[[i_nm()]]()[[j_nm()]]
     }
-  }, label = "profile_y()")
+  }, label = "x_arg()")
 }
 
 
-seq_profile <- function(x, n = 55, intervals = c(1, 2, 5, 10)) {
-  if (NROW(x) == 1) return(x)
-  # Ensure that x is length 2 numeric
-  checkmate::assert_numeric(x, len = 2L, finite = TRUE, any.missing = FALSE)
+trans_dist_args <- function(dist_args) {
+  trans_args <- reactiveValues()
 
-  # Range
-  r <- abs(diff(x))
+  trans_args$vac <- reactive(purrr::map(
+    dist_args$vac(),
+    ~ .x * 1e-2
+  ), label = "trans_vac()")
 
-  # Magnitude of intervals
-  m <- floor(log10(r)) - floor(log10(n))
+  trans_args$inf <- reactive({
+    new_nms <- stringr::str_replace(names(dist_args$inf()), "^r_", "p_")
+    dist_args$inf() %>%
+      purrr::map_if(startsWith(names(.), "r_"), ~ .x * 1e-5) %>%
+      magrittr::set_names(new_nms)
+  }, label = "trans_inf()")
 
-  # Scale candidate intervals
-  intervals <- intervals * 10^m
+  trans_args$symp <- reactive(purrr::map(
+    dist_args$symp(),
+    ~ .x * 1e-2
+  ), label = "trans_symp()")
 
-  # Must yield `n` intervals or fewer; pick smallest from remaining
-  by <- min(intervals[r / intervals <= n])
+  trans_args$test <- reactive({
+    new_nms <- stringr::str_replace(names(dist_args$test()), "^f_", "p_")
+    dist_args$test() %>%
+      purrr::imap(
+        ~ (if (startsWith(.y, "f_")) correct_freq(1 / .x) else .x * 1e-2)
+      ) %>%
+      magrittr::set_names(new_nms)
+  }, label = "trans_test()")
 
-  # Create sequence; count down if x[[1]] is larger than x[[2]]
-  s <- seq(x[[1]], x[[2]], by = if (x[[1]] > x[[2]]) -by else by)
+  trans_args$detect <- reactive(purrr::map(
+    dist_args$detect(),
+    ~ .x * 1e-2
+  ), label = "trans_detect()")
 
-  # Ensure endpoints are always included
-  if (x[[2]] != s[[NROW(s)]]) c(s, x[[2]]) else s
+  trans_args
+}
+
+trans_x <- function(x, j_nm) {
+  if (startsWith(j_nm, "f_")) {
+    correct_freq(1 / x)
+  } else if (startsWith(j_nm, "r_")) {
+    x * 1e-5
+  } else if (startsWith(j_nm, "p_")) {
+    x * 1e-2
+  } else if (j_nm %in% c("eff", "sens", "spec")) {
+    x * 1e-2
+  } else {
+    x
+  }
 }
 
 
-freq_to_prob <- function(x) {
-  p <- purrr::map_if(x, startsWith(names(x), "f_"), ~ correct_freq(1 / .x))
-  names(p) <- stringr::str_replace(names(x), "^f_", "p_")
-  p
+trans_j_nm <- function(j_nm) {
+  if (any(startsWith(j_nm, c("f_", "r_")))) {
+    stringr::str_replace(j_nm, "^[a-z]_", "p_")
+  } else {
+    j_nm
+  }
 }
+
 
 ## To be copied in the UI
-# mod_profiling_output_ui("profiling_output_ui_1")
+# mod_profiling_output2_ui("profiling_output2_ui_1")
 
 ## To be copied in the server
-# mod_profiling_output_server("profiling_output_ui_1")
+# mod_profiling_output2_server("profiling_output2_ui_1")

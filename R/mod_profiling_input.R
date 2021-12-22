@@ -105,32 +105,32 @@ mod_profiling_input_server <- function(id){
     dist_args <- reactiveValues()
     # Vaccination
     dist_args$vac <- reactive(list(
-      p_comm = vac_p_comm() * 1e-2,
-      p_org  = vac_p_org() * 1e-2,
-      eff    = vac_eff() * 1e-2
+      p_comm = vac_p_comm(),
+      p_org  = vac_p_org(),
+      eff    = vac_eff()
     ), label = "dist_args$vac()")
     # Infection
     dist_args$inf <- reactive(list(
-      p_incid   = inf_r_incid() * 1e-5,
+      r_incid   = inf_r_incid(),
       t_symp    = inf_t_symp(),
       t_presymp = inf_t_presymp()
     ), label = "dist_args$inf()")
     # Symptoms
     dist_args$symp <- reactive(list(
-      p_inf_vac   = symp_p_inf_vac() * 1e-2,
-      p_inf_unvac = symp_p_inf_unvac() * 1e-2,
-      p_uninf     = symp_p_uninf() * 1e-2
+      p_inf_vac   = symp_p_inf_vac(),
+      p_inf_unvac = symp_p_inf_unvac(),
+      p_uninf     = symp_p_uninf()
     ), label = "dist_args$symp()")
     # Testing
     dist_args$test <- reactive(list(
-      p_symp        = test_p_symp() * 1e-2,
+      p_symp        = test_p_symp(),
       f_asymp_vac   = test_f_asymp_vac(),
       f_asymp_unvac = test_f_asymp_unvac()
     ), label = "dist_args$test()")
     # Detection
     dist_args$detect <- reactive(list(
-      sens = detect_sens() * 1e-2,
-      spec = detect_spec() * 1e-2
+      sens = detect_sens(),
+      spec = detect_spec()
     ), label = "dist_args$detect()")
 
     # Plotting variables

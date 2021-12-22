@@ -1,12 +1,11 @@
 reactive_profile_y <- function(x, dist_args, n, y_lbl, i_nm, j_nm) {
   reactive({
-    print(dist_args$vac())
     if (i_nm() == "n") {
       profile_n(
         x(),
         dist_args = dist_args,
         y_lbl = y_lbl()
-      )
+      )()
     } else if (i_nm() == "test" && startsWith(j_nm(), "p_asymp")) {
       profile_test(
         x(),
@@ -32,34 +31,82 @@ reactive_profile_y <- function(x, dist_args, n, y_lbl, i_nm, j_nm) {
 profile_n <- function(n, dist_args, y_lbl, pct = FALSE) {
   # Calculate risk
   if (y_lbl == "risk") {
-    p_risk <- dist_args %>%
-      reactive_dist(isolate = TRUE) %>%
-      undetected()
+    d <- reactive_dist(dist_args)
+    p_risk <- reactive(undetected(d()), label = "undetected()")
 
-    p_risk * (if (pct) 100 else n)
+    reactive(p_risk() * (if (pct) 100 else n), label = "return_risk()")
     # Calculate benefit
   } else if (y_lbl == "benefit") {
     dist_args0 <- const_testing(dist_args)
-    p_risk0 <- dist_args0 %>%
-      reactive_dist(isolate = TRUE) %>%
-      undetected()
-    p_risk  <- dist_args %>%
-      reactive_dist(isolate = TRUE) %>%
-      undetected()
-    p_benefit <- p_risk0 - p_risk
+    d0 <- reactive_dist(dist_args0)
+    d  <- reactive_dist(dist_args)
+    p_risk0   <- reactive(undetected(d0()), label = "undetected(d0)")
+    p_risk    <- reactive(undetected(d()),  label = "undetected(d)")
+    p_benefit <- reactive(p_risk0() - p_risk(), label = "p_benefit()")
 
-    p_benefit * (if (pct) 100 else n)
+    reactive(p_benefit() * (if (pct) 100 else n))
     # Calculate relative benefit in vac groups
   } else if (y_lbl == "vac") {
     dist_args0 <- const_testing(dist_args)
     dist_args1 <- const_testing(dist_args, 1, 1)
-    d0 <- reactive_dist(dist_args0, isolate = TRUE)
-    d1 <- reactive_dist(dist_args1, isolate = TRUE)
-    slopes <- calc_vac_slopes(d0, d1)
+    d0 <- reactive_dist(dist_args0)
+    d1 <- reactive_dist(dist_args1)
+    slopes <- reactive(calc_vac_slopes(d0(), d1()), label = "calc_slopes()")
 
-    rep(slopes[[2]] / slopes[[1]], times = NROW(n))
+    reactive(rep(slopes()[[2]] / slopes()[[1]], times = NROW(n)))
   }
 }
+
+
+profile_test <- function(x, dist_args, n, y_lbl, j_nm, pct = FALSE) {
+  if (y_lbl == "risk") {
+    p_risk <- reactive_map_undetected(
+      x,
+      dist_args = dist_args,
+      i_nm = "test",
+      j_nm = j_nm
+    )
+
+
+    if (pct) reactive(p_risk() * 100) else reactive(p_risk() * n)
+  } else if (y_lbl == "benefit") {
+    dist_args0 <- const_testing(dist_args)
+    d0     <- reactive_dist(dist_args0)
+    p_risk0 <- reactive(undetected(d0()), label = "undetected()")
+    p_risk <- reactive_map_undetected(
+      x,
+      dist_args = dist_args,
+      i_nm = "test",
+      j_nm = j_nm
+    )
+    p_benefit <- reactive(p_risk0() - p_risk(), label = "p_benefit()")
+
+    if (pct) reactive(p_benefit() * 100) else reactive(p_benefit() * n)
+  } else if (y_lbl == "vac") {
+    dist_args0 <- const_testing(dist_args)
+    dist_args1 <- const_testing(dist_args, 1, 1)
+    d0 <- reactive_dist(dist_args0)
+    d1 <- reactive_dist(dist_args1)
+    slopes <- reactive(calc_vac_slopes(d0(), d1()), label = "calc_vac_slopes()")
+
+    reactive(
+      rep(slopes()[[2]] / slopes()[[1]], times = NROW(x)),
+      label = "ratio()"
+    )
+  }
+}
+
+
+reactive_map_undetected <- function(new_arg_seq, dist_args, i_nm, j_nm) {
+  reactive(
+    purrr::map_dbl(
+      new_arg_seq,
+      ~ undetected(reactive_dist(insert_args(.x, dist_args, i_nm, j_nm))())
+    ),
+    label = "map_arg_undetected()"
+  )
+}
+
 
 
 undetected <- function(dt) {
@@ -91,11 +138,4 @@ seq_profile <- function(x, n = 55, intervals = c(1, 2, 5, 10)) {
 
   # Ensure endpoints are always included
   if (x[[2]] != s[[NROW(s)]]) c(s, x[[2]]) else s
-}
-
-
-freq_to_prob <- function(x) {
-  p <- purrr::map_if(x, startsWith(names(x), "f_"), ~ correct_freq(1 / .x))
-  names(p) <- stringr::str_replace(names(x), "^f_", "p_")
-  p
 }
