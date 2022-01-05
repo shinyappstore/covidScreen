@@ -2,8 +2,9 @@ Package: covidtest
 Title: COVID-19 Testing Strategy Assessment
 Version: 0.0.0.9000
 Authors@R: c(
-    person('Jesse', 'Smith', email = 'Jesse.Smith@stjude.org', role = c('cre', 'aut')),
-    person('Tomi',  'Mori',  email = 'Tomi.Mori@stjude.org',   role = 'aut'))
+    person("Jesse", "Smith", , "Jesse.Smith@stjude.org", role = c("cre", "aut")),
+    person("Tomi", "Mori", , "Tomi.Mori@stjude.org", role = "aut")
+  )
 Description: Covidtest is a Shiny app that allows decision-makers to
     assess the benefits of performing asymptomatic testing in their
     organizations. It is primarily aimed at healthcare organizations,
@@ -14,11 +15,14 @@ URL: https://github.com/jesse-smith/covidtest,
 BugReports: https://github.com/jesse-smith/covidtest/issues
 Imports: 
     bslib,
+    checkmate,
     config (>= 0.3.1),
     data.table,
+    forcats,
     glue,
     golem (>= 0.3.1),
     highcharter,
+    htmltools,
     magrittr,
     pkgload,
     processx,
@@ -27,17 +31,22 @@ Imports:
     shiny (>= 1.7.1),
     shinyjs,
     shinyvalidate,
-    shinyWidgets
+    shinyWidgets,
+    stringr
 Suggests: 
     covr,
     knitr,
     rmarkdown,
+    shinipsum,
     spelling,
     testthat (>= 3.0.0)
 VignetteBuilder: 
     knitr
+ByteCompile: true
 Config/testthat/edition: 3
 Encoding: UTF-8
 Language: en-US
 LazyData: true
 RoxygenNote: 7.1.2
+Depends: 
+    R (>= 2.10)

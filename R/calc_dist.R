@@ -78,22 +78,34 @@ calc_dist <- function(
 #' Takes a `reactiveValues` object and returns a `reactive`
 #'
 #' @param dist_args List of arguments to `calc_dist()`
+#' @param isolate Should the reactive expression be isolated? Will not return
+#'   a reactive or take reactive dependencies if `TRUE`.
 #'
 #' @return A `reactive` containing the results of `calc_dist()`
-reactive_dist <- function(dist_args) {
-  reactive(calc_dist(
-    vac = dist_args$vac(),
-    inf = dist_args$inf(),
-    symp = dist_args$symp(),
-    test = dist_args$test(),
-    detect = dist_args$detect()
-  ), label = "reactive_dist()")
+reactive_dist <- function(dist_args, isolate = FALSE) {
+  if (isolate) {
+    shiny::isolate(calc_dist(
+      vac = dist_args$vac(),
+      inf = dist_args$inf(),
+      symp = dist_args$symp(),
+      test = dist_args$test(),
+      detect = dist_args$detect()
+    ))
+  } else {
+    reactive(calc_dist(
+      vac = dist_args$vac(),
+      inf = dist_args$inf(),
+      symp = dist_args$symp(),
+      test = dist_args$test(),
+      detect = dist_args$detect()
+    ), label = "reactive_dist()")
+  }
 }
+
 
 # Join Distributions -----------------------------------------------------------
 
 join_dist <- function(x, y) {
-
   # Manually add suffix to `p` in `y`
   setnames(y, "p", "p_y", skip_absent = TRUE)
 
@@ -110,6 +122,7 @@ join_dist <- function(x, y) {
   set(d, j = "p",   value = d$p * d$p_y)
   set(d, j = "p_y", value = NULL)
 }
+
 
 # Create Distributions ---------------------------------------------------------
 
@@ -222,7 +235,9 @@ probs_detect <- function(detect) {
 }
 
 order_dist <- function(dist) {
+  all_cols <- c("p", "vac", "inf", "symp", "test", "detect")
+  cols     <- intersect(all_cols, colnames(dist))
   # Set column and row orders
-  setcolorder(dist, c("p", "vac", "inf", "symp", "test", "detect"))
+  setcolorder(dist, cols)
   setorderv(dist, order = -1L, na.last = TRUE)
 }

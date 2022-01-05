@@ -19,12 +19,14 @@ app_ui <- function(request) {
       tabPanel("", icon = ct_h5(icon("home"), tooltip = "Home")),
       ct_nav_pad("3rem"),
       # Scenario calculation
-      tabPanel(ct_h5("Scenarios", tooltip = "Explore your risks and the potential benefits of regular testing"),
+      tabPanel(ct_h5("Scenarios", tooltip = "Explore infection risks and potential benefits of regular testing"),
                mod_scenarios_ui("scenarios")
       ),
       ct_nav_pad("3rem"),
       # Input profiling
-      tabPanel(ct_h5("Inputs", tooltip = "See risks and benefits change across input values")),
+      tabPanel(ct_h5("Profiling", tooltip = "See risks and benefits change across input values"),
+               mod_profiling_ui("profiling")
+      ),
       ct_nav_pad("3rem"),
       # Tutorial and explanation of use
       tabPanel(ct_h5("Tutorial", tooltip = "A walkthrough of covidtest functionality")),

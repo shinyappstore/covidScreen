@@ -13,7 +13,7 @@ mod_scenarios_input_ui <- function(id) {
     # Make sliders nicer-looking
     shinyWidgets::chooseSliderSkin("Flat", color = "#29434e"),
     # Organizational inputs (interventions)
-    toggle_panel(ns("org_link"),
+    toggle_panel_ui(ns("org_link"),
                  init_visible = TRUE,
                  label = "Organization",
                  icon = icon("user-shield"),
@@ -29,7 +29,7 @@ mod_scenarios_input_ui <- function(id) {
       tags$br()
     ),
     # Community inputs (local context)
-    toggle_panel(ns("comm_link"),
+    toggle_panel_ui(ns("comm_link"),
                  init_visible = TRUE,
                  label = "Community",
                  icon = icon("users"),
@@ -41,22 +41,22 @@ mod_scenarios_input_ui <- function(id) {
       tags$br()
     ),
     # Advanced inputs (illness, tests, and vaccinations)
-    toggle_panel(ns("advanced_link"),
+    toggle_panel_ui(ns("advanced_link"),
                  init_visible = TRUE,
                  label = "Advanced",
                  icon = icon("cog"),
                  tag_fn = h5,
       # Vaccine efficacy
-      toggle_panel(ns("vac_eff_link"),
+      toggle_panel_ui(ns("vac_eff_link"),
                    init_visible = FALSE,
                    label = "Vaccine Efficacy",
                    icon = icon("syringe"),
                    tag_fn = h6,
-        slider_pct(ns("vac_eff"), label = NULL, value = 70),
+        slider_pct(ns("vac_eff"), label = NULL, value = 30),
         tags$br()
       ),
       # Test-related inputs
-      toggle_panel(ns("test_link"),
+      toggle_panel_ui(ns("test_link"),
                    init_visible = FALSE,
                    label = "Testing",
                    icon = icon("vial"),
@@ -81,7 +81,7 @@ mod_scenarios_input_ui <- function(id) {
         )
       ),
       # Symptom-related inputs
-      toggle_panel(ns("symp_link"),
+      toggle_panel_ui(ns("symp_link"),
                    init_visible = FALSE,
                    label  = "Symptoms",
                    icon   = icon("head-side-cough"),
@@ -126,38 +126,14 @@ mod_scenarios_input_server <- function(id){
   moduleServer(id, function(input, output, session){
     ns <- session$ns
 
-    # Show/hide input panels
-    toggle_panel_server("org_link", input, time = 0.5)
-    toggle_panel_server("comm_link", input, time = 0.3)
-    toggle_panel_server("advanced_link", input, time = 0.4)
-    toggle_panel_server("vac_eff_link", input, time = 0.2)
-    toggle_panel_server("test_link", input, time = 0.4)
-    toggle_panel_server("symp_link", input, time = 0.6)
+    # Input panel toggles and info
+    org_panel_server()
+    comm_panel_server()
+    advanced_panel_server()
+    vac_eff_panel_server()
+    test_panel_server()
+    symp_panel_server()
 
-
-    # Organizational inputs info
-    observeEvent(input$org_link_info, ct_info_server(p(HTML(
-      "Organizational inputs directly involve the organization. They are",
-      " <b>interventions</b> that can be used to keep COVID-19 under control",
-      " in the organization."
-    ))))
-
-    # Community inputs info
-    observeEvent(input$comm_link_info, ct_info_server(p(
-      "Community inputs define the context in which the organization resides.",
-      " They help determine the baseline infection risk of an organization."
-    )))
-
-    # Advanced inputs info
-    observeEvent(input$advanced_link_info, ct_info_server(p(HTML(
-      "Advanced inputs are related to properties of COVID-19, its tests, and",
-      " it vaccinations. They are 'advanced' in the sense that the average",
-      " user is likely not an expert on COVID-19, and may not know reasonable",
-      " values for these inputs. The defaults should suffice for many",
-      " settings, but users are encouraged to change the defaults if they do",
-      " not match your setting. The <b>Inputs</b> tab allows users to explore",
-      " the effects of these parameters (and others) in detail."
-    ))))
 
     # Input validation
     iv <- shinyvalidate::InputValidator$new()
@@ -233,16 +209,16 @@ num_input <- function(
   width = "120px"
 ) {
 
-  if (length(label) > 0) {
+  if (NROW(label) > 0 && nchar(label) > 0) {
     label <- tags$span(label, ct_info_ui(paste0(id, "_info")))
   }
 
-  tagList(
-    tags$label(label),
-    numericInput(id,
-      label = NULL, width = width,
-      value = value, min = min, max = max, step = step)
+  input <- numericInput(id,
+    label = NULL, width = width,
+    value = value, min = min, max = max, step = step
   )
+
+  tagList(tags$label(label), input)
 }
 
 slider_pct <- function(
@@ -256,42 +232,14 @@ slider_pct <- function(
   pre = NULL
 ) {
 
-  if (length(label) > 0) {
+  if (NROW(label) > 0 && nchar(label) > 0) {
     label <- tags$span(label, ct_info_ui(paste0(id, "_info")))
   }
 
   sliderInput(id,
     label = label,
     value = value, step = step, width = width, pre = pre,
-    min = min, max = max, post = "%", ticks = FALSE)
-}
-
-conditional_panel <- function(
-  id,
-  ...,
-  label = NULL,
-  icon = NULL,
-  tag_fn = NULL,
-  init_visible = FALSE
-) {
-
-  id_quo <- rlang::enquo(id)
-
-  if (rlang::quo_is_call(id_quo)) {
-    ns <- rlang::call_fn(id_quo)
-    id_chr <- eval(rlang::call_args(id_quo)[[1]])
-  } else {
-    ns <- NS(NULL)
-    id_chr <- id
-  }
-
-  condition <- paste0(
-    "input.", id_chr, " % 2 == ", if (init_visible) "0" else "1"
-  )
-
-  tags$div(
-    action_link(id, label = label, icon = icon, tag_fn = tag_fn),
-    conditionalPanel(condition = condition, ns = ns, ...)
+    min = min, max = max, post = "%", ticks = FALSE
   )
 }
 
@@ -305,13 +253,11 @@ action_link <- function(id, label, icon = NULL, tag_fn = NULL) {
 }
 
 correct_freq <- function(x) {
-  if (is.infinite(x)) {
-    0
-  } else if (x > 1) {
-    1
-  } else {
-    x
-  }
+  fcase(
+    is.infinite(x),     0,
+    x > 1,              1,
+    rep(TRUE, NROW(x)), x
+  )
 }
 
 sv_not_lt_1 <- function(

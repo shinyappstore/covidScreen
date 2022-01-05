@@ -50,6 +50,6 @@ prep_benefit <- function(data_test, data_no_test, n) {
   set(d, j = "pct_lbl", value = paste0(round(d$pct), "%"))
   set(d, j = "lbl",     value = fifelse(d$pct < 1,
                                         NA_character_,
-                                        paste0(d$pct_lbl, d$group))
+                                        paste(d$pct_lbl, d$group))
   )
 }

@@ -4,10 +4,13 @@
 \alias{reactive_dist}
 \title{Reactive Version of `calc_dist()`}
 \usage{
-reactive_dist(dist_args)
+reactive_dist(dist_args, isolate = FALSE)
 }
 \arguments{
 \item{dist_args}{List of arguments to `calc_dist()`}
+
+\item{isolate}{Should the reactive expression be isolated? Will not return
+a reactive or take reactive dependencies if `TRUE`.}
 }
 \value{
 A `reactive` containing the results of `calc_dist()`
