@@ -4,7 +4,7 @@
 \alias{reactive_dist}
 \title{Reactive Version of `calc_dist()`}
 \usage{
-reactive_dist(dist_args)
+reactive_dist(dist_args, isolate = FALSE)
 }
 \arguments{
 \item{dist_args}{List of arguments to `calc_dist()`}
