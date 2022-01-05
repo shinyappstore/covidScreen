@@ -13,7 +13,7 @@ plot_vac <- function(data_vac) {
     hc_yAxis(title = list(text = "Cases Detected per 100 Tests")) %>%
     hc_tooltip(
       headerFormat = "<span style='color: {point.color}'>{point.key}</span><br>",
-      pointFormat = "<b>Detection Rate: {point.y:.1f}%</b>"
+      pointFormat = "<b>% Positive Tests: {point.y:.1f}%</b>"
     )
 }
 

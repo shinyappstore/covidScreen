@@ -7,6 +7,7 @@ profiling_plot_risk <- function(data, i_nm, j_nm) {
       hcaes(
         name  = forcats::as_factor(.data$group),
         group = forcats::as_factor(.data$group),
+        color = .data$color,
         x = .data$x,
         y = .data$n
       ),
@@ -16,7 +17,15 @@ profiling_plot_risk <- function(data, i_nm, j_nm) {
     hc_colors(c("#b0bec5", "#90caf9", "#e57373")) %>%
     hc_xAxis(title = list(text = x_title)) %>%
     hc_yAxis(title = list(text = "Cases")) %>%
-    hc_tooltip(shared = TRUE, valueDecimals = tt_decimals)
+    hc_tooltip(
+      shared = TRUE,
+      valueDecimals = tt_decimals,
+      headerFormat = paste0("<b>", x_title, ": {point.x}</b><br>"),
+      pointFormat = paste0(
+        "<span style='color: {point.color}; font-weight: bold'>",
+        "{point.name}: {point.y}</span> people<br>"
+      )
+    )
 }
 
 profiling_prep_risk <- function(x, x_t, n, dist_args, i_nm, j_nm) {
@@ -40,7 +49,8 @@ profiling_prep_risk <- function(x, x_t, n, dist_args, i_nm, j_nm) {
       x = rep(x, each = 3),
       n = x_t %>%
         purrr::map(~ .x * c(p_d_symp(), p_d_test(), p_not_d())) %>%
-        purrr::flatten_dbl()
+        purrr::flatten_dbl(),
+      color = rep(c("#b0bec5", "#90caf9", "#e57373"), NROW(x))
     ))
   } else if (i_nm == "test" && startsWith(j_nm, "p_asymp")) {
     d0 <- reactive_dist(const_testing(dist_args))
@@ -66,8 +76,9 @@ profiling_prep_risk <- function(x, x_t, n, dist_args, i_nm, j_nm) {
       ), NROW(x_t)),
       x = rep(x, each = 3),
       n = list(p_d_symp(), p_d_test(), p_not_d()) %>%
-        purrr::pmap(~ c(..1, ..2, ..3)) %>%
-        purrr::flatten_dbl()
+        purrr::pmap(~ n * c(..1, ..2, ..3)) %>%
+        purrr::flatten_dbl(),
+      color = rep(c("#b0bec5", "#90caf9", "#e57373"), NROW(x))
     ))
   } else {
     dist_args0 <- const_testing(dist_args)
@@ -99,8 +110,9 @@ profiling_prep_risk <- function(x, x_t, n, dist_args, i_nm, j_nm) {
       ), NROW(x_t)),
       x = rep(x, each = 3),
       n = list(p_d_symp(), p_d_test(), p_not_d()) %>%
-        purrr::pmap(~ c(..1, ..2, ..3)) %>%
-        purrr::flatten_dbl()
+        purrr::pmap(~ n * c(..1, ..2, ..3)) %>%
+        purrr::flatten_dbl(),
+      color = rep(c("#b0bec5", "#90caf9", "#e57373"), NROW(x))
     ))
   }
 }

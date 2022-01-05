@@ -52,7 +52,7 @@ mod_scenarios_input_ui <- function(id) {
                    label = "Vaccine Efficacy",
                    icon = icon("syringe"),
                    tag_fn = h6,
-        slider_pct(ns("vac_eff"), label = NULL, value = 70),
+        slider_pct(ns("vac_eff"), label = NULL, value = 30),
         tags$br()
       ),
       # Test-related inputs
