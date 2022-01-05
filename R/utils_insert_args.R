@@ -5,6 +5,7 @@
 #' an entire sublist or a selected vector within a sub-list.
 #'
 #' @param new_arg The replacement for the argument to be updated
+#' @param dist_args Existing arguments for `calc_dist()`
 #' @param i_nm The name of the sub-list to be updated
 #' @param j_nm The name of the specific vector to be updated, if any
 #'

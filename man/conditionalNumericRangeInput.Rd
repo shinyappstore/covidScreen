@@ -38,8 +38,6 @@ point and range}
 \item{step}{The step size}
 
 \item{sep}{The separator between the range input boxes}
-
-\item{style}{Styling to apply to the UI tag}
 }
 \value{
 A UI element

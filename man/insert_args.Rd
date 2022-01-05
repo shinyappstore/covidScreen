@@ -14,6 +14,8 @@ insert_args(
 \arguments{
 \item{new_arg}{The replacement for the argument to be updated}
 
+\item{dist_args}{Existing arguments for `calc_dist()`}
+
 \item{i_nm}{The name of the sub-list to be updated}
 
 \item{j_nm}{The name of the specific vector to be updated, if any}

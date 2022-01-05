@@ -16,7 +16,6 @@
 #' @param max The maximum allowable value of the inputs
 #' @param step The step size
 #' @param sep The separator between the range input boxes
-#' @param style Styling to apply to the UI tag
 #'
 #' @return A UI element
 conditionalNumericRangeInput <- function(

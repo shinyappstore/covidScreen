@@ -30,6 +30,8 @@ profiling_plot_benefit <- function(data, i_nm, j_nm) {
 
 
 profiling_prep_benefit <- function(data_risk) {
+  # Remove R CMD CHECK notes
+  group <- NULL
   d <- data_risk[
     group != "Detected w/ Symptoms",
     list(

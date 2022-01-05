@@ -18,9 +18,30 @@ slider_pct2(
 )
 }
 \arguments{
+\item{id}{The input element ID}
+
+\item{label}{The input element label}
+
+\item{value}{`[numeric(1)]` The point value for the single handle}
+
+\item{value2}{`[numeric(2)]` The range of the double handles}
+
+\item{min}{The minimum slider value}
+
+\item{max}{The maximum slider value}
+
+\item{step}{The step size of the slider}
+
+\item{trigger}{`[character(1)]` The trigger variable}
+
+\item{prefix}{A prefix to prepend to the value labels}
+
 \item{br}{Add a line break below the input element}
 }
+\value{
+A UI element
+}
 \description{
-Wraps the `conditonalSliderRangeInput()` defined elsewhere in covidtest for
+Wraps the `conditionalSliderRangeInput()` defined elsewhere in covidtest for
 brevity.
 }

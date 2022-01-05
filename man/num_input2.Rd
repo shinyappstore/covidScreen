@@ -2,7 +2,7 @@
 % Please edit documentation in R/mod_profiling_input.R
 \name{num_input2}
 \alias{num_input2}
-\title{Wrap `conditonalNumericRangeInput()` for Ease of Use}
+\title{Wrap `conditionalNumericRangeInput()` for Ease of Use}
 \usage{
 num_input2(
   id,
@@ -17,9 +17,29 @@ num_input2(
 )
 }
 \arguments{
+\item{id}{The element ID}
+
+\item{label}{A label for the UI element}
+
+\item{value}{`[numeric(1)]` The initial "point" value}
+
+\item{value2}{`[numeric(2)]` The initial "range" value}
+
+\item{min}{The minimum allowable value of the inputs}
+
+\item{max}{The maximum allowable value of the inputs}
+
+\item{step}{The step size}
+
+\item{trigger}{`[character(1)]` The variable that triggers the switch between
+point and range}
+
 \item{br}{Add a line break below the input element}
 }
+\value{
+A UI element
+}
 \description{
-Wraps the `conditonalNumericRangeInput()` defined elsewhere in covidtest for
+Wraps the `conditionalNumericRangeInput()` defined elsewhere in covidtest for
 brevity.
 }

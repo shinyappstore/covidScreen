@@ -43,7 +43,7 @@ conditionalSliderRangeInput <- function(
   # Set `min`, `max`, and `step` if not already
   if (is.null(min) || is.na(min)) min <- base::min(value2, value, na.rm = TRUE)
   if (is.null(max) || is.na(max)) max <- base::max(value2, value, na.rm = TRUE)
-  if (is.null(step) || is.na(step)) step <- find_step_size(step, min, max)
+  if (is.null(step) || is.na(step)) step <- findStepSize(step, min, max)
 
   # Create conditions
   id_chr <- stringr::str_remove(id, stringr::fixed(ns("")))

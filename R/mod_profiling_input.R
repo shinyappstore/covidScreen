@@ -220,15 +220,15 @@ select_output <- function(id) {
 # Helpers (wrappers) -----------------------------------------------------------
 
 
-#' Wrap `conditonalNumericRangeInput()` for Ease of Use
+#' Wrap `conditionalNumericRangeInput()` for Ease of Use
 #'
-#' Wraps the `conditonalNumericRangeInput()` defined elsewhere in covidtest for
+#' Wraps the `conditionalNumericRangeInput()` defined elsewhere in covidtest for
 #' brevity.
 #'
-#' @inheritParam conditonalNumericRangeInput
+#' @inheritParams conditionalNumericRangeInput
 #' @param br Add a line break below the input element
 #'
-#' @inherit return conditonalNumericRangeInput
+#' @inherit conditionalNumericRangeInput return
 num_input2 <- function(
   id,
   label,
@@ -261,13 +261,13 @@ num_input2 <- function(
 
 #' Wrap `conditionalSliderRangeInput()` for Ease of Use
 #'
-#' Wraps the `conditonalSliderRangeInput()` defined elsewhere in covidtest for
+#' Wraps the `conditionalSliderRangeInput()` defined elsewhere in covidtest for
 #' brevity.
 #'
-#' @inheritParam conditonalSliderRangeInput
+#' @inheritParams conditionalSliderRangeInput
 #' @param br Add a line break below the input element
 #'
-#' @inherit return conditonalSliderRangeInput
+#' @inherit conditionalSliderRangeInput return
 slider_pct2 <- function(
   id,
   label,
@@ -305,7 +305,7 @@ slider_pct2 <- function(
 #'
 #' @inheritParams reactivePointRange
 #'
-#' @inherit return reactivePointRange
+#' @inherit reactivePointRange return
 reactive_range <- function(id) {
   reactivePointRange(id)
 }

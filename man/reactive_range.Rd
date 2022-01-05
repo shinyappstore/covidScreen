@@ -9,6 +9,9 @@ reactive_range(id)
 \arguments{
 \item{id}{The ID of the input}
 }
+\value{
+A reactive expression containing the chose input value
+}
 \description{
 Wrap `reactivePointRange()` for Consistent Nomenclature in Main App
 }

@@ -78,6 +78,8 @@ calc_dist <- function(
 #' Takes a `reactiveValues` object and returns a `reactive`
 #'
 #' @param dist_args List of arguments to `calc_dist()`
+#' @param isolate Should the reactive expression be isolated? Will not return
+#'   a reactive or take reactive dependencies if `TRUE`.
 #'
 #' @return A `reactive` containing the results of `calc_dist()`
 reactive_dist <- function(dist_args, isolate = FALSE) {
