@@ -70,7 +70,6 @@ profile_test <- function(x, dist_args, n, y_lbl, j_nm, pct = FALSE) {
       j_nm = j_nm
     )
 
-
     if (pct) reactive(p_risk() * 100) else reactive(p_risk() * n)
   } else if (y_lbl == "benefit") {
     dist_args0 <- const_testing(dist_args)
@@ -141,9 +140,31 @@ profile_arg <- function(x, dist_args, n, y_lbl, i_nm, j_nm, pct = FALSE) {
 # Helpers ----------------------------------------------------------------------
 
 
+reactive_map_vac <- function(new_arg_seq, dist_args, i_nm, j_nm) {
+  reactive(purrr::flatten_dbl(purrr::map(
+    new_arg_seq,
+    ~ reactive_vac_mapper(
+      .x,
+      dist_args = dist_args,
+      i_nm = i_nm,
+      j_nm = j_nm
+    )()
+  )))
+}
+
+
+reactive_vac_mapper <- function(new_arg, dist_args, i_nm, j_nm) {
+  args <- insert_args(new_arg, dist_args = dist_args, i_nm = i_nm, j_nm = j_nm)
+  d0 <- reactive_dist(const_testing(args))
+  d1 <- reactive_dist(const_testing(args, 1, 1))
+
+  reactive(calc_vac_slopes(data_test0 = d0(), data_test1 = d1()))
+}
+
+
 reactive_map_ratio <- function(x_args0, x_args1) {
   reactive(
-    purrr::map2_dbl(
+    purrr::map2(
       x_args0,
       x_args1,
       ~ calc_ratio(calc_vac_slopes(reactive_dist(.x)(), reactive_dist(.y)()))
@@ -159,19 +180,56 @@ calc_ratio <- function(slopes) {
 
 
 reactive_map_undetected <- function(new_arg_seq, dist_args, i_nm, j_nm) {
-  reactive(
-    purrr::map_dbl(
+  reactive(purrr::map_dbl(
       new_arg_seq,
-      ~ undetected(reactive_dist(insert_args(.x, dist_args, i_nm, j_nm))())
+      ~ undetected(reactive_map_dist(.x, dist_args, i_nm, j_nm)())
     ),
-    label = "map_arg_undetected()"
+    label = "map_undetected()"
   )
 }
 
 
-undetected <- function(dt) {
-  dt[inf & !detect, sum(.SD$p)][[1]]
+reactive_map_detect <- function(new_arg_seq, dist_args, i_nm, j_nm) {
+  reactive(rbindlist(purrr::map(
+    new_arg_seq,
+    ~ reactive_detect_mapper(
+      .x,
+      dist_args = dist_args,
+      i_nm = i_nm,
+      j_nm = j_nm
+    )()
+  )), label = "map_detect()")
 }
+
+
+reactive_detect_mapper <- function(new_arg, dist_args, i_nm, j_nm) {
+  d <- reactive_dist(insert_args(new_arg, dist_args, i_nm, j_nm))
+
+  reactive(data.table(
+      p_risk = undetected(d()),
+      p_d_all  = detected(d()),
+      p_d_symp = detected(d(), symp = TRUE),
+      p_d_test = detected(d(), symp = FALSE)
+  ), label = "detect_mapper()")
+}
+
+
+undetected <- function(dt) {
+  sum(dt$p[dt$inf & !dt$detect])
+}
+
+
+detected <- function(dt, symp = NULL) {
+  if (is.null(symp) || is.na(symp)) {
+    sum(dt$p[dt$inf & dt$detect])
+  } else if (symp) {
+    sum(dt$p[dt$inf & dt$detect & dt$symp])
+  } else {
+    sum(dt$p[dt$inf & dt$detect & !dt$symp])
+  }
+}
+
+
 
 
 seq_profile <- function(x, n = 55, intervals = c(1, 2, 5, 10)) {

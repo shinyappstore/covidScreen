@@ -9,9 +9,10 @@
 #' @importFrom shiny NS tagList
 mod_profiling_ui <- function(id){
   ns <- NS(id)
+  id_input <- ns("input")
   tags$div(
     style = "max-width: 1280px; margin: auto",
-    mod_profiling_output_ui(ns("output")),
+    mod_profiling_output_ui(ns("output"), id_input),
     mod_profiling_input_ui(ns("input")),
     tags$br()
   )

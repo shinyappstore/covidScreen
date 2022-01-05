@@ -7,9 +7,26 @@
 #' @noRd
 #'
 #' @importFrom shiny NS tagList
-mod_profiling_output_ui <- function(id){
+mod_profiling_output_ui <- function(id, id_input){
   ns <- NS(id)
-  highchartOutput(ns("plot"))
+  ns_input  <- NS(id_input)
+  tagList(
+    conditionalPanel(
+      condition = "input.y_var == 'risk'",
+      ns = ns_input,
+      highchartOutput(ns("risk_plot"))
+    ),
+    conditionalPanel(
+      condition = "input.y_var == 'benefit'",
+      ns = ns_input,
+      highchartOutput(ns("benefit_plot"))
+    ),
+    conditionalPanel(
+      condition = "input.y_var == 'vac'",
+      ns = ns_input,
+      highchartOutput(ns("vac_plot"))
+    )
+  )
 }
 
 #' profiling_output2 Server Functions
@@ -42,19 +59,29 @@ mod_profiling_output_server <- function(id, inputs){
     # Transform j_nm to match model input
     j_nm_t      <- reactive(trans_j_nm(j_nm()), label = "trans_j_nm()")
 
-    # Create y
-    y <- reactive_profile_y(
-      x = x_t,
-      dist_args = dist_args_t,
-      n = inputs$n$org,
-      y_lbl = inputs$vars$y,
-      i_nm = i_nm,
-      j_nm = j_nm_t
-    )
+    data_risk <- reactive(profiling_prep_risk(
+      x(), x_t = x_t(), n = inputs$n$org(), dist_args = dist_args_t,
+      i_nm = i_nm(), j_nm = j_nm_t()
+    )())
 
-    output$plot <- renderHighchart(
-      hchart(data.table(x = x(), y = y()), "line", hcaes(x = x, y = y))
-    )
+    output$risk_plot <- bindEvent(renderHighchart(
+      profiling_plot_risk(data_risk(), i_nm = i_nm(), j_nm = j_nm_t())
+    ), inputs$calc(), ignoreNULL = FALSE, label = "profiling_risk_plot()")
+
+    data_benefit <- reactive(profiling_prep_benefit(data_risk()))
+
+    output$benefit_plot <- bindEvent(renderHighchart(
+      profiling_plot_benefit(data_benefit(), i_nm = i_nm(), j_nm = j_nm_t())
+    ), inputs$calc(), ignoreNULL = FALSE, label = "profiling_benefit_plot()")
+
+    data_vac <- reactive(profiling_prep_vac(
+      x(), x_t = x_t(), n = inputs$n$org(), dist_args = dist_args_t,
+      i_nm = i_nm(), j_nm = j_nm_t()
+    )())
+
+    output$vac_plot <- bindEvent(renderHighchart(
+      profiling_plot_vac(data_vac(), i_nm = i_nm(), j_nm = j_nm_t())
+    ), inputs$calc(), ignoreNULL = FALSE, label = "profiling_vac_plot()")
   })
 }
 

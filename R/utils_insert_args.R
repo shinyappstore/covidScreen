@@ -22,7 +22,6 @@ insert_args <- function(
   )
   # Create a new reactiveValues() object
   new_args <- reactiveValues()
-
   # Pass the unselected sub-list on directly (by reference)
   if (i_nm != "vac") {
     new_args$vac <- reactive(dist_args$vac())

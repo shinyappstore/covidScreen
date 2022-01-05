@@ -12,7 +12,11 @@ mod_profiling_input_ui <- function(id){
   tagList(
     fluidRow(span(style = "margin-left: auto", select_input(ns("x_var"))),
              span(style = "width: 3rem"),
-             span(style = "margin-right: auto", select_output(ns("y_var")))
+             span(select_output(ns("y_var"))),
+             span(style = "width: 3rem"),
+             span(
+               style = "margin-right: auto; margin-top: auto; margin-bottom: auto",
+               actionButton(ns("calc"), "Calculate"))
     ),
     fluidRow(
       # Organization inputs
@@ -139,8 +143,11 @@ mod_profiling_input_server <- function(id){
       y = reactive(input$y_var)
     )
 
+    # Calculate button
+    calc <- reactive(input$calc)
+
     # Return named list of reactiveValues objects
-    list(n = n, dist_args = dist_args, vars = vars)
+    list(n = n, dist_args = dist_args, vars = vars, calc = calc)
   })
 }
 
