@@ -1,5 +1,6 @@
 # Export -----------------------------------------------------------------------
 
+
 #' Calculate the Steady-State Joint Distribution for a Population
 #'
 #' `calc_dist()` calculates the discrete joint distribution of vaccination,
@@ -42,15 +43,118 @@
 #' @return A `data.table`
 #'
 #' @export
-calc_dist <- function(
+ct_dist <- function(
   # Vaccination parameters
-  vac = list(p_comm = 0.5, p_org = 0.5, eff = 0.7),
+  vac = list(p_comm = 0.5, p_org = 0.5, eff = 0.5),
   # Infection parameters
-  inf = list(p_incid = 1e-3, t_symp = 10, t_presymp = 3),
+  inf = list(p_incid = 1e-3, t_symp = 5, t_presymp = 5),
   # Symptom parameters
   symp   = list(p_inf_vac = 0.5, p_inf_unvac = 0.5, p_uninf = 0),
   # Test parameters
-  test   = list(p_symp = 0.95, p_asymp_vac = 1/7, p_asymp_unvac = 1/7),
+  test   = list(p_symp = 1, p_asymp_vac = 1/7, p_asymp_unvac = 1/7),
+  # Detection parameters
+  detect = list(sens = 0.85, spec = 1)
+) {
+  # Get default arguments
+  fmls <- purrr::map(rlang::fn_fmls(), eval)
+
+  # Check param structure
+  assert_param(vac, fmls$vac)
+  assert_param(inf, fmls$inf)
+  assert_param(symp, fmls$symp)
+  assert_param(test, fmls$test)
+  assert_param(detect, fmls$detect)
+
+  # Check `vac`
+  v_nms <- names(vac)
+  if ("p_comm" %in% v_nms) assert_scalar_prob(vac$p_comm)
+  if ("p_org"  %in% v_nms) assert_scalar_prob(vac$p_org)
+  if ("eff"    %in% v_nms) assert_scalar_prob(vac$eff)
+
+  # Check `inf`
+  i_nms <- names(inf)
+  if ("p_incid"   %in% i_nms) assert_scalar_prob(inf$p_incid)
+  if ("t_symp"    %in% i_nms) assert_scalar_num(inf$t_symp,    lower = 0)
+  if ("t_presymp" %in% i_nms) assert_scalar_num(inf$t_presymp, lower = 0)
+
+  # Check `symp`
+  s_nms <- names(symp)
+  if ("p_inf_vac"   %in% s_nms) assert_scalar_prob(symp$p_inf_vac)
+  if ("p_inf_unvac" %in% s_nms) assert_scalar_prob(symp$p_inf_unvac)
+  if ("p_uninf"     %in% s_nms) assert_scalar_prob(symp$p_uninf)
+
+  # Check `test`
+  t_nms <- names(test)
+  if ("p_symp"        %in% t_nms) assert_scalar_prob(test$p_symp)
+  if ("p_asymp_vac"   %in% t_nms) assert_scalar_prob(test$p_asymp_vac)
+  if ("p_asymp_unvac" %in% t_nms) assert_scalar_prob(test$p_asymp_unvac)
+
+  # Check `detect`
+  d_nms <- names(detect)
+  if ("sens" %in% d_nms) assert_scalar_prob(detect$sens)
+  if ("spec" %in% d_nms) assert_scalar_prob(detect$spec)
+
+  # Fill in defaults
+  v <- c(fmls$vac[!names(fmls$vac) %in% v_nms], vac)
+  i <- c(fmls$inf[!names(fmls$inf) %in% i_nms], inf)
+  s <- c(fmls$symp[!names(fmls$symp) %in% s_nms], symp)
+  t <- c(fmls$test[!names(fmls$test) %in% t_nms], test)
+  d <- c(fmls$detect[!names(fmls$detect) %in% d_nms], detect)
+
+  # Calculate distribution
+  calc_dist(vac = v, inf = i, symp = s, test = t, detect = d)
+}
+
+
+#' Calculate the Steady-State Joint Distribution for a Population
+#'
+#' `calc_dist()` calculates the discrete joint distribution of vaccination,
+#' infection, symptoms, tests, and detections in a population.
+#'
+#' @param vac `[list(3)]` A named list containing vaccination parameters:
+#'   \describe{
+#'     \item{p_comm `[numeric(1)]`}{Proportion vaccinated in the community}
+#'     \item{p_org `[numeric(1)]`}{Proportion vaccinated in the organization of interest}
+#'     \item{eff `[numeric(1)]`}{Vaccine efficacy}
+#'   }
+#'
+#' @param inf `[list(3)]` A named list containing infection parameters:
+#'   \describe{
+#'     \item{p_incid `[numeric(1)]`}{Proportion of community newly infected each day}
+#'     \item{t_symp `[numeric(1)]`}{Duration of symptomatic period}
+#'     \item{t_presymp `[numeric(1)]`}{Duration of presymptomatic period}
+#'   }
+#'
+#' @param symp `[list(3)]` A named lust containing symptom parameters:
+#'   \describe{
+#'     \item{p_inf_vac}{Proportion of vaccinated infections who are symptomatic}
+#'     \item{p_inf_unvac}{Proportion of unvaccinated infections who are symptomatic}
+#'     \item{p_uninf}{Proportion of uninfected people who are symptomatic}
+#'   }
+#'
+#' @param test `[list(3)]` A named list containing testing parameters:
+#'   \describe{
+#'     \item{p_symp `[numeric(1)]`}{Probability of being tested if symptomatic}
+#'     \item{p_asymp_vac `[numeric(1)]`}{Probability of being tested if asymptomatic and vaccinated}
+#'     \item{p_asymp_unvac `[numeric(1)]`}{Probability of being tested if asymptomatic and unvaccinated}
+#'   }
+#'
+#' @param detect `[list(2)]` A named list containing detection parameters:
+#'   \describe{
+#'     \item{sens `[numeric(1)]`}{Test sensitivity}
+#'     \item{spec `[numeric(1)]`}{Test specificity}
+#'   }
+#'
+#' @return A `data.table`
+calc_dist <- function(
+  # Vaccination parameters
+  vac = list(p_comm = 0.5, p_org = 0.5, eff = 0.5),
+  # Infection parameters
+  inf = list(p_incid = 1e-3, t_symp = 5, t_presymp = 5),
+  # Symptom parameters
+  symp   = list(p_inf_vac = 0.5, p_inf_unvac = 0.5, p_uninf = 0),
+  # Test parameters
+  test   = list(p_symp = 1, p_asymp_vac = 1/7, p_asymp_unvac = 1/7),
   # Detection parameters
   detect = list(sens = 0.85, spec = 1)
 ) {
@@ -245,4 +349,47 @@ order_dist <- function(dist) {
   # Set column and row orders
   setcolorder(dist, cols)
   setorderv(dist, order = -1L, na.last = TRUE)
+}
+
+
+assert_scalar_num <- function(x, lower = -Inf, upper = Inf, finite = FALSE) {
+  checkmate::assert_numeric(
+    x,
+    lower = lower,
+    upper = upper,
+    finite = finite,
+    any.missing = FALSE,
+    len = 1L,
+    null.ok = FALSE
+  )
+}
+
+
+assert_scalar_prob <- function(x) {
+  assert_scalar_num(x, lower = 0, upper = 1, finite = TRUE)
+}
+
+
+assert_param <- function(x, ref) {
+  # Get name for error messages
+  lbl <- rlang::expr_label(rlang::enexpr(x))
+  force(lbl)
+
+  # Check list
+  checkmate::assert_list(
+    x,
+    types = "numeric",
+    any.missing = FALSE,
+    max.len = 3L,
+    names = "unique",
+    null.ok = FALSE,
+    .var.name = lbl
+  )
+  # Check names
+  checkmate::assert_subset(
+    names(x),
+    choices = names(ref),
+    empty.ok = FALSE,
+    .var.name = paste0("names(", lbl, ")")
+  )
 }

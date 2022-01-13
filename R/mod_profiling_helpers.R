@@ -213,7 +213,7 @@ reactive_detect_mapper <- function(new_arg, dist_args, i_nm, j_nm) {
   ), label = "detect_mapper()")
 }
 
-#' @export
+
 undetected <- function(dt) {
   sum(dt$p[dt$inf & !dt$detect])
 }
@@ -228,24 +228,6 @@ detected <- function(dt, symp = NULL) {
   } else {
     sum(dt$p[dt$inf & dt$detect & !dt$symp])
   }
-}
-
-
-#' @export
-risk_reduction <- function(dt, relative = TRUE) {
-  checkmate::assert_logical(relative, any.missing = FALSE, len = 1)
-  p0 <- const_testing(attr(dt, "params", exact = TRUE), p_vac = 0, p_unvac = 0)
-  u0 <- undetected(do.call(calc_dist, p0))
-  reduction <- u0 - undetected(dt)
-  if (relative) reduction / u0 else reduction
-}
-
-false_positive <- function(dt) {
-  sum(dt$p[!dt$inf & dt$detect])
-}
-
-false_negative <- function(dt) {
-  sum(dt$p[dt$inf & !dt$detect])
 }
 
 seq_profile <- function(x, n = 55, intervals = c(1, 2, 5, 10)) {
