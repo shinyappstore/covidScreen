@@ -69,7 +69,12 @@ calc_dist <- function(
     join_dist(dt_test) %>%
     join_dist(dt_detect) %>%
     # Set key and reorder columns
-    order_dist()
+    order_dist() %>%
+    # Add params as attribute
+    magrittr::set_attr(
+      "params",
+      list(vac = vac, inf = inf, symp = symp, test = test, detect = detect)
+    )
 }
 
 
