@@ -70,14 +70,12 @@ mod_scenarios_input_ui <- function(id) {
         # Test specificity
         slider_pct(ns("detect_spec"),
                    label = "Test Specificity (%)",
-                   value = 99.5,
-                   min   = 90,
-                   step  = 0.1
+                   value = 100
         ),
         # % of symptomatic people that are tested
         slider_pct(ns("test_p_symp"),
                    label = "% Symptomatics Tested",
-                   value = 95
+                   value = 100
         )
       ),
       # Symptom-related inputs
@@ -90,12 +88,12 @@ mod_scenarios_input_ui <- function(id) {
         # Symptomatic period
         num_input(ns("inf_t_symp"),
                   label = "Symptomatic Period (Days)",
-                  value = 10
+                  value = 5
         ),
         # Pre-symptomatic period
         num_input(ns("inf_t_presymp"),
                   label = "Pre-Symptomatic Period (Days)",
-                  value = 3
+                  value = 5
         ),
         # % of unvaccinated cases that are symptomatic
         slider_pct(ns("symp_p_inf_unvac"),
