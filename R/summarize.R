@@ -205,7 +205,7 @@ ct_sum <- function(
   v <- if (is.null(vac) || is.na(vac)) TRUE else dt$vac == vac
   i <- if (is.null(inf) || is.na(inf)) TRUE else dt$inf == inf
   s <- if (is.null(symp) || is.na(symp)) TRUE else dt$symp == symp
-  s <- if (is.null(test) || is.na(test)) TRUE else dt$test == test
+  t <- if (is.null(test) || is.na(test)) TRUE else dt$test == test
   d <- if (is.null(detect) || is.na(detect)) TRUE else dt$detect == detect
 
   sum(dt$p[v & i & s & t & d])
