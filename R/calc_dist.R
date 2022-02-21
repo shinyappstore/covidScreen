@@ -175,7 +175,7 @@ calc_dist <- function(
     # Set key and reorder columns
     order_dist() %>%
     # Add params as attribute
-    magrittr::set_attr(
+    setattr(
       "params",
       list(vac = vac, inf = inf, symp = symp, test = test, detect = detect)
     )
@@ -219,7 +219,8 @@ join_dist <- function(x, y) {
   setnames(y, "p", "p_y", skip_absent = TRUE)
 
   # Join by all common columns (now except probability `p`)
-  by <- intersect(colnames(x), colnames(y))
+  nms_x <- names(x)
+  by <- nms_x[nms_x %in% names(y)]
 
   # Left join
   d <- y[x, on = by, allow.cartesian = TRUE]
@@ -307,10 +308,10 @@ probs_inf <- function(inf, vac) {
 
 probs_symp <- function(symp, inf) {
   # Account for presymptomatic illness
-  p_presymp <- (1 - inf$t_presymp / (inf$t_presymp + inf$t_symp))
+  p_t_symp <- (inf$t_symp / (inf$t_presymp + inf$t_symp))
 
-  # Combine symptoms probs for infections into scaled vector
-  p_symp_inf <- c(symp$p_inf_vac, symp$p_inf_unvac) * p_presymp
+  # Scale symptom probs by proportion of infection time spent symptomatic
+  p_symp_inf <- c(symp$p_inf_vac, symp$p_inf_unvac) * p_t_symp
 
   # Combine all symptom probs
   # (order is {inf_vac, inf_unvac, uninf_vac, uninf_unvac})
@@ -344,11 +345,10 @@ probs_detect <- function(detect) {
 }
 
 order_dist <- function(dist) {
-  all_cols <- c("p", "vac", "inf", "symp", "test", "detect")
-  cols     <- intersect(all_cols, colnames(dist))
+  cols <- c("p", "vac", "inf", "symp", "test", "detect")
   # Set column and row orders
   setcolorder(dist, cols)
-  setorderv(dist, order = -1L, na.last = TRUE)
+  setorderv(dist, cols[2L:6L], order = -1L, na.last = TRUE)
 }
 
 

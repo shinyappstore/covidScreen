@@ -212,6 +212,31 @@ ct_sum <- function(
 }
 
 
+ct_subset <- function(
+  dt,
+  vac = NULL,
+  inf = NULL,
+  symp = NULL,
+  test = NULL,
+  detect = NULL
+) {
+  assert_summary_filters(
+    vac = vac,
+    inf = inf,
+    symp = symp,
+    test = test,
+    detect = detect
+  )
+  v <- if (is.null(vac) || is.na(vac)) TRUE else dt$vac == vac
+  i <- if (is.null(inf) || is.na(inf)) TRUE else dt$inf == inf
+  s <- if (is.null(symp) || is.na(symp)) TRUE else dt$symp == symp
+  t <- if (is.null(test) || is.na(test)) TRUE else dt$test == test
+  d <- if (is.null(detect) || is.na(detect)) TRUE else dt$detect == detect
+
+  dt[v & i & s & t & d]
+}
+
+
 assert_summary_filters <- function(
   vac = NULL,
   inf = NULL,

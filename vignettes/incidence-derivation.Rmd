@@ -1,0 +1,64 @@
+---
+title: "Derivation of Incidence by Vaccination"
+output: rmarkdown::html_vignette
+author: "Jesse Smith"
+date: "1/10/2022"
+vignette: >
+  %\VignetteIndexEntry{incidence-derivation}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+### Short-Hand
+
+$$ \begin{align}
+p_i &= \mathbf{P}(I=1) \\
+p_v &= \mathbf{P}(V=1) \\
+p_u &= \mathbf{P}(V=0) \\
+p_{i \mid v} &= \mathbf{P}(I=1 \mid V=1) \\
+p_{i \mid u} &= \mathbf{P}(I=1 \mid V=0) \\
+e_v &= 1 - \frac{p_{i \mid v}}{p_{i \mid u}} 
+\end{align} $$
+
+### Total Incidence as Weighted Sum of Group Incidence
+
+$$
+p_i = p_v \cdot p_{i|v} + p_u \cdot p_{i|u}
+$$
+
+### Proportion Unvaccinated as a Function of Proportion Vaccinated
+
+$$
+p_u = 1-p_v
+$$
+
+### Unvaccinated Incidence as a Function of Vaccinated Incidence
+
+$$ \begin{align}
+e_v &= 1 - \frac{p_{i \mid v}}{p_{i \mid u}} \\
+e_v-1 &= - \frac{p_{i \mid v}}{p_{i \mid u}} \\
+1-e_v &= \frac{p_{i \mid v}}{p_{i \mid u}} \\
+p_{i \mid u} &= \frac{p_{i \mid v}}{1-e_v}
+\end{align} $$
+
+### Derive Incidence in Vaccinated Group
+
+$$ \begin{align}
+p_i &= p_v \cdot p_{i|v} + p_u \cdot p_{i|u} \\
+p_i &= p_v \cdot p_{i|v} + (1-p_v) \cdot \frac{p_{i \mid v}}{1-e_v} \\
+p_i &= p_{i \mid v} (p_v + \frac{1-p_v}{1-e_v}) \\
+p_{i \mid v} &= p_i \frac{1}{p_v (1 - \frac{1}{1-e_v}) + \frac{1}{1-e_v}} \\
+p_{i \mid v} &= p_i \frac{1}{-p_v \frac{e_v}{1-e_v} + \frac{1}{1-e_v}} \\
+p_{i \mid v} &= p_i \frac{1}{\frac{1}{1-e_v} (1 - p_v \cdot e_v)} \\
+p_{i \mid v} &= p_i \frac{1}{\frac{1}{1-e_v}} \frac{1}{1 - p_v \cdot e_v} \\
+p_{i \mid v} &= p_i (1-e_v)(\frac{1}{1 - p_v \cdot e_v}) \\
+p_{i \mid v} &= p_i \frac{1-e_v}{1 - p_v \cdot e_v}
+\end{align} $$
+
+### Derive Incidence in Unvaccinated Group
+
+$$ \begin{align}
+p_{i \mid u} &= \frac{p_{i \mid v}}{1-e_v} \\
+p_{i \mid u} &= p_i \frac{1-e_v}{1 - p_v \cdot e_v} \frac{1}{1-e_v} \\
+p_{i \mid u} &= p_i \frac{1}{1 - p_v \cdot e_v}
+\end{align} $$

@@ -13,23 +13,23 @@ app_ui <- function(request) {
     # Set up other JS
     head_js(),
     # UI definition
-    navbarPage(h3("covidtest"), theme = ct_theme(), fluid = TRUE,
+    navbarPage(h3("covidtest"),
+      theme = ct_theme(), fluid = TRUE, selected = "scenarios",
       bslib::nav_spacer(),
       # Home/landing page
-      tabPanel("", icon = ct_h5(icon("home"), tooltip = "Home")),
+      tabPanel("", value = "home", icon = ct_h5(icon("home"), tooltip = "Home")),
       ct_nav_pad("3rem"),
       # Scenario calculation
       tabPanel(ct_h5("Scenarios", tooltip = "Explore infection risks and potential benefits of regular testing"),
+               value = "scenarios",
                mod_scenarios_ui("scenarios")
       ),
       ct_nav_pad("3rem"),
       # Input profiling
       tabPanel(ct_h5("Profiling", tooltip = "See risks and benefits change across input values"),
+               value = "profiling",
                mod_profiling_ui("profiling")
       ),
-      ct_nav_pad("3rem"),
-      # Tutorial and explanation of use
-      tabPanel(ct_h5("Tutorial", tooltip = "A walkthrough of covidtest functionality")),
       ct_nav_pad("3rem"),
       # FAQs
       tabPanel(ct_h5("FAQs", tooltip = "Frequently Asked Questions")),
