@@ -28,6 +28,7 @@ golem
 mathbf
 modalButton
 nav
+navbarMenu
 npv
 pos
 ppv
@@ -40,6 +41,7 @@ rr
 selectPointRange
 sendInputMessage
 specifiying
+tabPanel
 tagList
 tooltip
 tooltips
