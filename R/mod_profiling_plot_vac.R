@@ -52,3 +52,25 @@ profiling_prep_vac <- function(x, x_t, n, dist_args, i_nm, j_nm) {
     ))
   }
 }
+
+
+reactive_map_vac <- function(new_arg_seq, dist_args, i_nm, j_nm) {
+  reactive(purrr::flatten_dbl(purrr::map(
+    new_arg_seq,
+    ~ reactive_vac_mapper(
+      .x,
+      dist_args = dist_args,
+      i_nm = i_nm,
+      j_nm = j_nm
+    )()
+  )))
+}
+
+
+reactive_vac_mapper <- function(new_arg, dist_args, i_nm, j_nm) {
+  args <- insert_args(new_arg, dist_args = dist_args, i_nm = i_nm, j_nm = j_nm)
+  d0 <- reactive_dist(const_testing(args))
+  d1 <- reactive_dist(const_testing(args, 1, 1))
+
+  reactive(calc_vac_slopes(data_test0 = d0(), data_test1 = d1()))
+}
