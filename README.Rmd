@@ -43,8 +43,90 @@ To run the Shiny app, you can use `run_app()` or visit an [online version](https
 
 To access the underlying model in **R**, you can use `ct_dist()` with the desired parameters. Running with no inputs uses the defaults; the output is a `data.table`:
 
-```{r ct_dist, eval=FALSE, include=FALSE}
-ct_dist()
+```{r ct_dist}
+# Create some data using default parameters
+data <- ct_dist()
+
+# Show data
+data
+```
+
+You can access the risk-based metrics used in the Shiny app using corresponding
+functions in the R package. Undetected cases are calculated using
+`ct_undetected()`, relative risk reduction is calculated using `ct_rr()`, and
+cost effectiveness per test is calculated using `ct_cost_eff()`.
+
+```{r risk-metrics}
+# Cost effectiveness
+ct_undetected(data)
+
+# Relative risk reduction
+ct_rr(data)
+
+# Cost effectiveness
+ct_cost_eff(data)
+```
+
+Additionally, test performance metrics are included in the R package to
+facilitate analysis not performed in the Shiny app. These include:
+
+* `ct_pos()`: the proportion of positive tests (out of the organization)
+* `ct_neg()`: the proportion of negative tests (out of the organization)
+* `ct_true_pos()`: the proportion of true positive tests (out of org)
+* `ct_true_neg()`: the proportion of true negative tests (out of org)
+* `ct_false_pos()`: the proportion of false positive tests (out of org)
+* `ct_false_neg()`: the proportion of false negative tests (out of org)
+* `ct_ppv()`: the positive predictive value of a test
+* `ct_npv()`: the negative predictive value of a test
+* `ct_fdr()`: the false discovery rate of a test
+* `ct_for()`: the false omission rate of a test
+* `ct_sens()`: the sensitivity (true positive rate, recall) of a test
+* `ct_spec()`: the specificity (true negative rate) of a test
+* `ct_fpr()`: the false positive rate of a test
+* `ct_fnr()`: the false negative rate of a test
+
+```{r test-metrics}
+# Positive tests
+ct_pos(data)
+
+# Negative tests
+ct_neg(data)
+
+# True positives
+ct_true_pos(data)
+
+# True negatives
+ct_true_neg(data)
+
+# False positives
+ct_false_pos(data)
+
+# False negatives
+ct_false_neg(data)
+
+# Positive predictive value (precision)
+ct_ppv(data)
+
+# Negative predictive value
+ct_npv(data)
+
+# False discovery rate
+ct_fdr(data)
+
+# False omission rate
+ct_for(data)
+
+# True positive rate (sensitivity/recall)
+ct_sens(data)
+
+# True negative rate (specificity)
+ct_spec(data)
+
+# False positive rate
+ct_fpr(data)
+
+# False negative rate
+ct_fnr(data)
 ```
 
 ## Code of Conduct
