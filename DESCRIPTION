@@ -9,7 +9,7 @@ Description: Covidtest is a Shiny app that allows decision-makers to
     assess the benefits of performing asymptomatic testing in their
     organizations. It is primarily aimed at healthcare organizations,
     though it is applicable in a much wider range of settings.
-License: MIT + file LICENSE
+License: GPL (>= 3)
 URL: https://github.com/jesse-smith/covidtest,
     https://jesse-smith.github.io/covidtest
 BugReports: https://github.com/jesse-smith/covidtest/issues
