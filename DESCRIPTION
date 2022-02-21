@@ -34,6 +34,7 @@ Imports:
     shinyWidgets,
     stringr
 Suggests: 
+    jsonlite,
     covr,
     knitr,
     rmarkdown,
