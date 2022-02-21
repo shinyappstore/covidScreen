@@ -48,3 +48,4 @@ on whether it is selected in a trigger variable. It always returns both the
 point and the range; use `chooseConditionalRange()` to choose the one
 currently displayed in the UI.
 }
+\keyword{internal}

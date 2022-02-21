@@ -7,7 +7,7 @@
 #' @noRd
 #'
 #' @importFrom shiny NS tagList
-mod_profiling_ui <- function(id){
+mod_profiling_ui <- function(id) {
   ns <- NS(id)
   id_input <- ns("input")
   tags$div(
@@ -21,8 +21,8 @@ mod_profiling_ui <- function(id){
 #' profiling Server Functions
 #'
 #' @noRd
-mod_profiling_server <- function(id){
-  moduleServer(id, function(input, output, session){
+mod_profiling_server <- function(id) {
+  moduleServer(id, function(input, output, session) {
     ns <- session$ns
 
     inputs <- mod_profiling_input_server("input")

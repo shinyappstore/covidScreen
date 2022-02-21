@@ -120,8 +120,8 @@ mod_scenarios_input_ui <- function(id) {
 #' scenarios_input Server Functions
 #'
 #' @noRd
-mod_scenarios_input_server <- function(id){
-  moduleServer(id, function(input, output, session){
+mod_scenarios_input_server <- function(id) {
+  moduleServer(id, function(input, output, session) {
     ns <- session$ns
 
     # Input panel toggles and info
@@ -135,7 +135,7 @@ mod_scenarios_input_server <- function(id){
 
     # Input validation
     iv <- shinyvalidate::InputValidator$new()
-    iv$add_rule("n_org", shinyvalidate::sv_required())
+    # iv$add_rule("n_org", shinyvalidate::sv_required())
     iv$add_rule("n_org", shinyvalidate::sv_gte(0))
     iv$add_rule("test_f_asymp_vac", shinyvalidate::sv_required())
     iv$add_rule("test_f_asymp_vac", shinyvalidate::sv_gte(0))

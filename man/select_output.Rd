@@ -15,3 +15,4 @@ A string
 \description{
 Select an Output Type for Plotting
 }
+\keyword{internal}

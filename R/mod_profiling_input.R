@@ -7,7 +7,7 @@
 #' @noRd
 #'
 #' @importFrom shiny NS tagList
-mod_profiling_input_ui <- function(id){
+mod_profiling_input_ui <- function(id) {
   ns <- NS(id)
   tagList(
     fluidRow(span(style = "margin-left: auto", select_input(ns("x_var"))),
@@ -15,7 +15,11 @@ mod_profiling_input_ui <- function(id){
              span(select_output(ns("y_var"))),
              span(style = "width: 3rem"),
              span(
-               style = "margin-right: auto; margin-top: auto; margin-bottom: auto",
+               style = htmltools::css(
+                 "margin-right" = "auto",
+                 "margin-top" = "auto",
+                 "margin-bottom" = "auto"
+               ),
                actionButton(ns("calc"), "Calculate"))
     ),
     fluidRow(
@@ -30,8 +34,8 @@ mod_profiling_input_ui <- function(id){
 #' profiling_input2 Server Functions
 #'
 #' @noRd
-mod_profiling_input_server <- function(id){
-  moduleServer( id, function(input, output, session){
+mod_profiling_input_server <- function(id) {
+  moduleServer( id, function(input, output, session) {
     ns <- session$ns
 
     # Validate inputs
@@ -164,6 +168,8 @@ mod_profiling_input_server <- function(id){
 #' @param width the UI element width
 #'
 #' @return A UI element
+#'
+#' @keywords internal
 select_input <- function(id, label = "Input (X-axis)", width = "21rem") {
   selectInput(
     id,
@@ -203,6 +209,8 @@ select_input <- function(id, label = "Input (X-axis)", width = "21rem") {
 #' @param id An HTML id for the UI element
 #'
 #' @return A string
+#'
+#' @keywords internal
 select_output <- function(id) {
   shinyWidgets::radioGroupButtons(
     inputId = id,
@@ -229,6 +237,8 @@ select_output <- function(id) {
 #' @param br Add a line break below the input element
 #'
 #' @inherit conditionalNumericRangeInput return
+#'
+#' @keywords internal
 num_input2 <- function(
   id,
   label,
@@ -268,6 +278,8 @@ num_input2 <- function(
 #' @param br Add a line break below the input element
 #'
 #' @inherit conditionalSliderRangeInput return
+#'
+#' @keywords internal
 slider_pct2 <- function(
   id,
   label,
@@ -306,6 +318,8 @@ slider_pct2 <- function(
 #' @inheritParams reactivePointRange
 #'
 #' @inherit reactivePointRange return
+#'
+#' @keywords internal
 reactive_range <- function(id) {
   reactivePointRange(id)
 }

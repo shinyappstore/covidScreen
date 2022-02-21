@@ -12,6 +12,8 @@
 #' @param session The shiny `session` object; the default is usually appropriate
 #'
 #' @return The output of a `bindEvent` call
+#'
+#' @keywords internal
 input_panel_server <- function(
   id,
   toggle_time,

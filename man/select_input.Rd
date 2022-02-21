@@ -19,3 +19,4 @@ A UI element
 \description{
 Create a dropdown UI element for selecting an input variable to profile over
 }
+\keyword{internal}

@@ -51,3 +51,4 @@ a `modalButton()` or from a call to `removeModal()` on the server.}
 `info_ui()` adds an `actionLink()` to the that brings up the modal in
 `info_server()`.
 }
+\keyword{internal}

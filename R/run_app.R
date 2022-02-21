@@ -1,4 +1,6 @@
-#' Run the Shiny Application
+#' Run the covidtest Application
+#'
+#' Use this function to run the Shiny interface to {covidtest} in an R session
 #'
 #' @param ... arguments to pass to golem_opts.
 #' See `?golem::get_golem_options` for more details.

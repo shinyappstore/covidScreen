@@ -16,7 +16,11 @@ profiling_plot_benefit <- function(data, i_nm, j_nm) {
     ) %>%
     hc_colors(c("#90caf9", "#e57373")) %>%
     hc_xAxis(title = list(text = x_title)) %>%
-    hc_yAxis(title = list(text = "% of Asymptomatic Cases"), max = 101, endOnTick = FALSE) %>%
+    hc_yAxis(
+      title = list(text = "% of Asymptomatic Cases"),
+      max = 101,
+      endOnTick = FALSE
+    ) %>%
     hc_tooltip(
       shared = TRUE,
       valueDecimals = tt_decimals,
@@ -42,5 +46,10 @@ profiling_prep_benefit <- function(data_risk) {
     by = "x"
   ]
 
-  set(d, i = which(d$group == "Detected w/ Testing"), j = "group", value = "Detected")
+  set(
+    d,
+    i = which(d$group == "Detected w/ Testing"),
+    j = "group",
+    value = "Detected"
+  )
 }

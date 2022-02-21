@@ -28,3 +28,4 @@ An updated reactiveValues object
 `reactive_dist()` without overwriting values elsewhere. It can either update
 an entire sublist or a selected vector within a sub-list.
 }
+\keyword{internal}

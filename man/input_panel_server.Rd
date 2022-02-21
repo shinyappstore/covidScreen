@@ -32,3 +32,4 @@ The output of a `bindEvent` call
 clicking on the title, as well as get more information by clicking on the
 info link. The info link should be named `"{id}_info"`.
 }
+\keyword{internal}

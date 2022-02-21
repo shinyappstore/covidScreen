@@ -19,6 +19,8 @@
 #' @param fade If `FALSE`, the modal dialog will have no fade-in animation
 #'
 #' @name info_modal
+#'
+#' @keywords internal
 NULL
 
 #' @rdname info_modal

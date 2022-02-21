@@ -18,3 +18,4 @@ A `reactive` containing the results of `calc_dist()`
 \description{
 Takes a `reactiveValues` object and returns a `reactive`
 }
+\keyword{internal}

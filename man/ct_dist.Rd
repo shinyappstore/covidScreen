@@ -6,9 +6,9 @@
 \usage{
 ct_dist(
   vac = list(p_comm = 0.5, p_org = 0.5, eff = 0.5),
-  inf = list(p_incid = 0.001, t_symp = 5, t_presymp = 5),
+  inf = list(p_incid = 0.005, t_symp = 5, t_presymp = 5),
   symp = list(p_inf_vac = 0.5, p_inf_unvac = 0.5, p_uninf = 0),
-  test = list(p_symp = 1, p_asymp_vac = 1/7, p_asymp_unvac = 1/7),
+  test = list(p_symp = 1, p_asymp_vac = 0, p_asymp_unvac = 1/7),
   detect = list(sens = 0.85, spec = 1)
 )
 }

@@ -1,7 +1,12 @@
 plot_benefit <- function(data_benefit) {
   data_benefit %>%
     hchart("column",
-      hcaes(y = .data$n, name = .data$group, group = .data$group, color = .data$color),
+      hcaes(
+        y = .data$n,
+        name = .data$group,
+        group = .data$group,
+        color = .data$color
+      ),
       showInLegend = FALSE,
       stacking = "normal",
       dataLabels = list(
@@ -19,7 +24,10 @@ plot_benefit <- function(data_benefit) {
       title = list(text = "N")
     ) %>%
     hc_tooltip(
-      headerFormat = "<span style='color: {point.color}'>{point.key}</span><br>",
+      headerFormat = paste0(
+        "<span style='color: {point.color}'>",
+        "{point.key}</span><br>"
+      ),
       pointFormat = "<b>N = {point.y:.0f}</b>"
     )
 }

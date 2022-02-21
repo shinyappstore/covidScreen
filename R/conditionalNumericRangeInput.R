@@ -18,6 +18,8 @@
 #' @param sep The separator between the range input boxes
 #'
 #' @return A UI element
+#'
+#' @keywords internal
 conditionalNumericRangeInput <- function(
   id,
   label,
@@ -125,6 +127,8 @@ conditionalNumericRangeInput <- function(
 #' @param session The shiny `session` object; the default is usually appropriate
 #'
 #' @return The output of `session$sendInputMessage()`
+#'
+#' @keywords internal
 updateConditionalNumericRangeInput <- function(
   id,
   label = NULL,
@@ -149,6 +153,8 @@ updateConditionalNumericRangeInput <- function(
 #' @param session The Shiny `session`; the default is usually appropriate
 #'
 #' @return Either a length 1 ("point") or length 2 ("range") numeric
+#'
+#' @keywords internal
 selectPointRange <- function(x, session = getDefaultReactiveDomain()) {
   trigger <- attr(x, "trigger")
   id      <- attr(x, "id")
@@ -167,6 +173,8 @@ selectPointRange <- function(x, session = getDefaultReactiveDomain()) {
 #' @inheritParams selectPointRange
 #'
 #' @return A reactive expression containing the chose input value
+#'
+#' @keywords internal
 reactivePointRange <- function(id, session = getDefaultReactiveDomain()) {
   trigger <- isolate(attr(session$input[[id]], "trigger"))
   reactive({

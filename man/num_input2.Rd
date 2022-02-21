@@ -43,3 +43,4 @@ A UI element
 Wraps the `conditionalNumericRangeInput()` defined elsewhere in covidtest for
 brevity.
 }
+\keyword{internal}

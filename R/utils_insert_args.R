@@ -10,6 +10,8 @@
 #' @param j_nm The name of the specific vector to be updated, if any
 #'
 #' @return An updated reactiveValues object
+#'
+#' @keywords internal
 insert_args <- function(
   new_arg,
   dist_args,

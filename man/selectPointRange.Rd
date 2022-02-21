@@ -19,3 +19,4 @@ Use this function to choose the point or range from either a
 `conditionalNumericRangeInput()` or `conditionalSliderRangeInput()`. It
 finds the trigger dependency and choose the value accordingly.
 }
+\keyword{internal}

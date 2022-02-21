@@ -16,7 +16,10 @@ explain_vac <- function(data_vac) {
   if (!is.na(ratio) && ratio >= 1) grp_tag <- rev(grp_tag)
 
   pct <- data_vac$benefit
-  pct_tag <- purrr::map2(pct, color, ~ tags$b(style = .y, paste0(round(.x, 1), "%")))
+  pct_tag <- purrr::map2(
+    pct, color,
+    ~ tags$b(style = .y, paste0(round(.x, 1), "%"))
+  )
   names(pct_tag) <- grp_names
 
   if (is.na(pct[1]) || is.infinite(pct[1])) {

@@ -7,7 +7,7 @@
 #' @noRd
 #'
 #' @importFrom shiny NS tagList
-mod_profiling_output_ui <- function(id, id_input){
+mod_profiling_output_ui <- function(id, id_input) {
   ns <- NS(id)
   ns_input  <- NS(id_input)
   tagList(
@@ -32,8 +32,8 @@ mod_profiling_output_ui <- function(id, id_input){
 #' profiling_output2 Server Functions
 #'
 #' @noRd
-mod_profiling_output_server <- function(id, inputs){
-  moduleServer(id, function(input, output, session){
+mod_profiling_output_server <- function(id, inputs) {
+  moduleServer(id, function(input, output, session) {
     ns <- session$ns
 
     # Get name of list that contains profile variable
@@ -158,8 +158,28 @@ trans_j_nm <- function(j_nm) {
 }
 
 
-## To be copied in the UI
-# mod_profiling_output2_ui("profiling_output2_ui_1")
+seq_profile <- function(x, n = 55, intervals = c(1, 2, 5, 10)) {
+  if (NROW(x) == 1) return(x)
+  # Ensure that x is length 2 numeric
+  checkmate::assert_numeric(x, len = 2L, finite = TRUE, any.missing = FALSE)
 
-## To be copied in the server
-# mod_profiling_output2_server("profiling_output2_ui_1")
+  # Range
+  r <- abs(diff(x))
+
+  # Magnitude of intervals
+  m <- floor(log10(r)) - floor(log10(n))
+
+  # Scale candidate intervals
+  intervals <- intervals * 10^m
+  # Expand to +/- 1 order of magnitude
+  intervals <- unique(c(intervals * 1e-1, intervals, intervals * 1e1))
+
+  # Must yield `n` intervals or fewer; pick smallest from remaining
+  by <- min(intervals[r / intervals <= n])
+
+  # Create sequence; count down if x[[1]] is larger than x[[2]]
+  s <- seq(x[[1]], x[[2]], by = if (x[[1]] > x[[2]]) -by else by)
+
+  # Ensure endpoints are always included
+  if (x[[2]] != s[[NROW(s)]]) c(s, x[[2]]) else s
+}

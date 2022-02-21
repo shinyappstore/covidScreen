@@ -47,11 +47,11 @@ ct_dist <- function(
   # Vaccination parameters
   vac = list(p_comm = 0.5, p_org = 0.5, eff = 0.5),
   # Infection parameters
-  inf = list(p_incid = 1e-3, t_symp = 5, t_presymp = 5),
+  inf = list(p_incid = 5e-3, t_symp = 5, t_presymp = 5),
   # Symptom parameters
   symp   = list(p_inf_vac = 0.5, p_inf_unvac = 0.5, p_uninf = 0),
   # Test parameters
-  test   = list(p_symp = 1, p_asymp_vac = 1/7, p_asymp_unvac = 1/7),
+  test   = list(p_symp = 1, p_asymp_vac = 0, p_asymp_unvac = 1/7),
   # Detection parameters
   detect = list(sens = 0.85, spec = 1)
 ) {
@@ -102,7 +102,39 @@ ct_dist <- function(
   d <- c(fmls$detect[!names(fmls$detect) %in% d_nms], detect)
 
   # Calculate distribution
-  calc_dist(vac = v, inf = i, symp = s, test = t, detect = d)
+  calc_dist(vac = v, inf = i, symp = s, test = t, detect = d)[]
+}
+
+
+#' Reactive Version of `calc_dist()`
+#'
+#' Takes a `reactiveValues` object and returns a `reactive`
+#'
+#' @param dist_args List of arguments to `calc_dist()`
+#' @param isolate Should the reactive expression be isolated? Will not return
+#'   a reactive or take reactive dependencies if `TRUE`.
+#'
+#' @return A `reactive` containing the results of `calc_dist()`
+#'
+#' @keywords internal
+reactive_dist <- function(dist_args, isolate = FALSE) {
+  if (isolate) {
+    shiny::isolate(calc_dist(
+      vac = dist_args$vac(),
+      inf = dist_args$inf(),
+      symp = dist_args$symp(),
+      test = dist_args$test(),
+      detect = dist_args$detect()
+    ))
+  } else {
+    reactive(calc_dist(
+      vac = dist_args$vac(),
+      inf = dist_args$inf(),
+      symp = dist_args$symp(),
+      test = dist_args$test(),
+      detect = dist_args$detect()
+    ), label = "reactive_dist()")
+  }
 }
 
 
@@ -146,6 +178,8 @@ ct_dist <- function(
 #'   }
 #'
 #' @return A `data.table`
+#'
+#' @keywords internal
 calc_dist <- function(
   # Vaccination parameters
   vac = list(p_comm = 0.5, p_org = 0.5, eff = 0.5),
@@ -179,36 +213,6 @@ calc_dist <- function(
       "params",
       list(vac = vac, inf = inf, symp = symp, test = test, detect = detect)
     )
-}
-
-
-#' Reactive Version of `calc_dist()`
-#'
-#' Takes a `reactiveValues` object and returns a `reactive`
-#'
-#' @param dist_args List of arguments to `calc_dist()`
-#' @param isolate Should the reactive expression be isolated? Will not return
-#'   a reactive or take reactive dependencies if `TRUE`.
-#'
-#' @return A `reactive` containing the results of `calc_dist()`
-reactive_dist <- function(dist_args, isolate = FALSE) {
-  if (isolate) {
-    shiny::isolate(calc_dist(
-      vac = dist_args$vac(),
-      inf = dist_args$inf(),
-      symp = dist_args$symp(),
-      test = dist_args$test(),
-      detect = dist_args$detect()
-    ))
-  } else {
-    reactive(calc_dist(
-      vac = dist_args$vac(),
-      inf = dist_args$inf(),
-      symp = dist_args$symp(),
-      test = dist_args$test(),
-      detect = dist_args$detect()
-    ), label = "reactive_dist()")
-  }
 }
 
 

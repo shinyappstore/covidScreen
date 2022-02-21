@@ -45,3 +45,4 @@ A UI element
 Wraps the `conditionalSliderRangeInput()` defined elsewhere in covidtest for
 brevity.
 }
+\keyword{internal}

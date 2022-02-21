@@ -11,7 +11,10 @@ explain_benefit <- function(data_benefit) {
   pct <- round(data_benefit$pct)
   pct_tag <- purrr::map2(pct, color, ~ tags$b(style = .y, paste0(.x, "%")))
   names(pct_tag) <- grp_names
-  pct_tag_m <- purrr::map2(pct, color, ~ tags$b(style = paste0(.y, margin), paste0(.x, "%")))
+  pct_tag_m <- purrr::map2(
+    pct, color,
+    ~ tags$b(style = paste0(.y, margin), paste0(.x, "%"))
+  )
   names(pct_tag_m) <- grp_names
 
   lbl <- fifelse(n == 1, "case", "cases")

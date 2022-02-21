@@ -20,3 +20,4 @@ Use this function to select the point or range value from a
 finds the trigger dependency and selects the appropriate value. Unlike
 `selectPointRange()`, this returns a reactive expression.
 }
+\keyword{internal}

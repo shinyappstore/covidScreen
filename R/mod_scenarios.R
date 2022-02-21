@@ -8,13 +8,10 @@
 #' @noRd
 #'
 #' @importFrom shiny NS tagList
-mod_scenarios_ui <- function(id){
+mod_scenarios_ui <- function(id) {
   ns <- NS(id)
   tags$div(
     style = "max-width: 1280px; margin: auto",
-    p("Step through the scenario builder to see your organization's",
-      "risk profile and testing strategies"
-      ),
     fluidRow(
       column(width = 8, mod_scenarios_output_ui(ns("output"))),
       column(width = 4, mod_scenarios_input_ui(ns("input")))
@@ -31,8 +28,8 @@ mod_scenarios_ui <- function(id){
 #' @param id,input,output,session Internal parameters for {shiny}
 #'
 #' @noRd
-mod_scenarios_server <- function(id){
-  moduleServer(id, function(input, output, session){
+mod_scenarios_server <- function(id) {
+  moduleServer(id, function(input, output, session) {
     ns <- session$ns
 
     dist_args <- mod_scenarios_input_server("input")

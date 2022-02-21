@@ -54,3 +54,4 @@ A `data.table`
 `calc_dist()` calculates the discrete joint distribution of vaccination,
 infection, symptoms, tests, and detections in a population.
 }
+\keyword{internal}

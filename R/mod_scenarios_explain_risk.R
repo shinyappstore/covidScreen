@@ -9,7 +9,7 @@ explain_risk <- function(data_risk, n) {
     "#29434e"  # c
   ))
 
-  n_cases <- rev(data_risk[1:3,"n"][[1]])
+  n_cases <- rev(data_risk[1:3, "n"][[1]])
   n_cases <- c(n_cases, sum(n_cases))
 
   lbl_p <- fifelse(n_cases == 1, "person", "people")
@@ -29,7 +29,10 @@ explain_risk <- function(data_risk, n) {
   names(pct_tag) <- grp_names
 
   grp <- c("symptoms", "testing", "undetected", "cases")
-  grp_tag <- purrr::map2(grp, color, ~ tags$b(style = paste0(.y, "; margin-right: -4px"), .x))
+  grp_tag <- purrr::map2(
+    grp, color,
+    ~ tags$b(style = paste0(.y, "; margin-right: -4px"), .x)
+  )
   names(grp_tag) <- grp_names
 
   verb <- fifelse(n_cases == 1, "is", "are")
@@ -37,7 +40,7 @@ explain_risk <- function(data_risk, n) {
 
   tagList(
     tags$p(
-      "About", n_tag["c"], lbl_p_tag["c"], "in the organization ", verb["c"] ,
+      "About", n_tag["c"], lbl_p_tag["c"], "in the organization ", verb["c"],
       " expected to bring COVID-19 with them each day.", n_tag["cu"],
       "of these cases ", verb["cu"], " expected to remain", grp_tag["cu"],
       "; that's roughly", pct_tag["cu"], "of the organization."

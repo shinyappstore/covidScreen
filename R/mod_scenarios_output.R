@@ -7,7 +7,7 @@
 #' @noRd
 #'
 #' @importFrom shiny NS tagList
-mod_scenarios_output_ui <- function(id){
+mod_scenarios_output_ui <- function(id) {
   ns <- NS(id)
   tagList(
     risk_panel_ui(ns("risk_link"), ns = ns),
@@ -19,8 +19,8 @@ mod_scenarios_output_ui <- function(id){
 #' scenarios_output Server Functions
 #'
 #' @noRd
-mod_scenarios_output_server <- function(id, dist_args){
-  moduleServer( id, function(input, output, session){
+mod_scenarios_output_server <- function(id, dist_args) {
+  moduleServer(id, function(input, output, session) {
     ns <- session$ns
 
     data_test  <- reactive_dist(dist_args)

@@ -116,3 +116,45 @@ profiling_prep_risk <- function(x, x_t, n, dist_args, i_nm, j_nm) {
     ))
   }
 }
+
+
+reactive_map_detect <- function(new_arg_seq, dist_args, i_nm, j_nm) {
+  reactive(rbindlist(purrr::map(
+    new_arg_seq,
+    ~ reactive_detect_mapper(
+      .x,
+      dist_args = dist_args,
+      i_nm = i_nm,
+      j_nm = j_nm
+    )()
+  )), label = "map_detect()")
+}
+
+
+reactive_detect_mapper <- function(new_arg, dist_args, i_nm, j_nm) {
+  d <- reactive_dist(insert_args(new_arg, dist_args, i_nm, j_nm))
+
+  reactive(data.table(
+    p_risk = undetected(d()),
+    p_d_all  = detected(d()),
+    p_d_symp = detected(d(), symp = TRUE),
+    p_d_test = detected(d(), symp = FALSE)
+  ), label = "detect_mapper()")
+}
+
+
+detected <- function(dt, symp = NULL) {
+  checkmate::assert_logical(symp, max.len = 1, null.ok = TRUE)
+  if (is.null(symp) || is.na(symp)) {
+    sum(dt$p[dt$inf & dt$detect])
+  } else if (symp) {
+    sum(dt$p[dt$inf & dt$detect & dt$symp])
+  } else {
+    sum(dt$p[dt$inf & dt$detect & !dt$symp])
+  }
+}
+
+
+undetected <- function(dt) {
+  sum(dt$p[dt$inf & !dt$detect])
+}
