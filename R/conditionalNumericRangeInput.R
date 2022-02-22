@@ -2,8 +2,8 @@
 #'
 #' This input will display either a single input box or a range input, depending
 #' on whether it is selected in a trigger variable. It always returns both the
-#' point and the range; use `chooseConditionalRange()` to choose the one
-#' currently displayed in the UI.
+#' point and the range; `reactivePointRange()` to choose the one currently
+#' displayed in the UI.
 #'
 #' @param id The element ID
 #' @param label A label for the UI element
@@ -143,42 +143,23 @@ updateConditionalNumericRangeInput <- function(
 }
 
 
-#' Statically elect the Point or Range from a Conditional Range Input
-#'
-#' Use this function to choose the point or range from either a
-#' `conditionalNumericRangeInput()` or `conditionalSliderRangeInput()`. It
-#' finds the trigger dependency and choose the value accordingly.
-#'
-#' @param x The value from a conditional range input
-#' @param session The Shiny `session`; the default is usually appropriate
-#'
-#' @return Either a length 1 ("point") or length 2 ("range") numeric
-#'
-#' @keywords internal
-selectPointRange <- function(x, session = getDefaultReactiveDomain()) {
-  trigger <- attr(x, "trigger")
-  id      <- attr(x, "id")
-  isolate(if (session$input[[trigger]] == id) x$range else x$point)
-}
-
-
 #' Reactively Select the Point or Range from a Conditional Range Input
 #'
 #' Use this function to select the point or range value from a
 #' `conditionalNumericRangeInput()` or a `conditionalSliderRangeInput()`. It
-#' finds the trigger dependency and selects the appropriate value. Unlike
-#' `selectPointRange()`, this returns a reactive expression.
+#' finds the trigger dependency and selects the appropriate value.
 #'
 #' @param id The ID of the input
-#' @inheritParams selectPointRange
+#' @param session The Shiny `session`; the default is usually appropriate
 #'
-#' @return A reactive expression containing the chose input value
+#' @return A reactive expression containing the chose input value (either a
+#'   length 1 or length 2 vector)
 #'
 #' @keywords internal
 reactivePointRange <- function(id, session = getDefaultReactiveDomain()) {
-  trigger <- isolate(attr(session$input[[id]], "trigger"))
   reactive({
     x <- session$input[[id]]
+    trigger <- attr(x, "trigger")
     if (session$input[[trigger]] == id) x$range else x$point
   }, label = paste0("range_if(", id, ")"))
 }

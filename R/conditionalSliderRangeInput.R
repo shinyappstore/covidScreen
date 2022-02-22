@@ -2,9 +2,8 @@
 #'
 #' This input will display a slider with either a single or a double handle,
 #' depending on whether it is selected in a trigger variable. It always returns
-#' both the point (single) and the range (double) values;
-#' use `choosePointRange()` to statically choose the one currently
-#' displayed in the UI, or `reactivePointRange()` to choose reactively.
+#' both the point (single) and the range (double) values; use
+#' `reactivePointRange()` to choose the one currently displayed in the UI.
 #'
 #' @param id The input element ID
 #' @param label The input element label

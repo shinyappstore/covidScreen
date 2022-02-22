@@ -12,12 +12,12 @@ reactivePointRange(id, session = getDefaultReactiveDomain())
 \item{session}{The Shiny `session`; the default is usually appropriate}
 }
 \value{
-A reactive expression containing the chose input value
+A reactive expression containing the chose input value (either a
+  length 1 or length 2 vector)
 }
 \description{
 Use this function to select the point or range value from a
 `conditionalNumericRangeInput()` or a `conditionalSliderRangeInput()`. It
-finds the trigger dependency and selects the appropriate value. Unlike
-`selectPointRange()`, this returns a reactive expression.
+finds the trigger dependency and selects the appropriate value.
 }
 \keyword{internal}

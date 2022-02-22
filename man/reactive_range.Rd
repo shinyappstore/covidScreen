@@ -10,7 +10,8 @@ reactive_range(id)
 \item{id}{The ID of the input}
 }
 \value{
-A reactive expression containing the chose input value
+A reactive expression containing the chose input value (either a
+  length 1 or length 2 vector)
 }
 \description{
 Wrap `reactivePointRange()` for Consistent Nomenclature in Main App

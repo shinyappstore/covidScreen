@@ -90,5 +90,5 @@ $.extend(conditionalNumericRangeInput, {
 
 Shiny.inputBindings.register(
   conditionalNumericRangeInput,
-  "covidtest.conditionalNumericRange"
+  "covidtest.conditionalNumericRangeInput"
 );

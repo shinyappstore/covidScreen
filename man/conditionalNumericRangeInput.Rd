@@ -45,7 +45,7 @@ A UI element
 \description{
 This input will display either a single input box or a range input, depending
 on whether it is selected in a trigger variable. It always returns both the
-point and the range; use `chooseConditionalRange()` to choose the one
-currently displayed in the UI.
+point and the range; `reactivePointRange()` to choose the one currently
+displayed in the UI.
 }
 \keyword{internal}
