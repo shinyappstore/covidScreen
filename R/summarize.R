@@ -1,3 +1,40 @@
+#' Internal Summary Functions
+#'
+#' @description
+#' * `detected()` returns the proportion of detected cases
+#' * `undetected()` returns the proportion of undetected cases
+#'
+#' @param dt `[data.table]` Joint distribution from `calc_dist()`
+#'   (or `ct_dist()`)
+#'
+#' @param symp Should proportion be out of all (`NULL`), symptomatic (`TRUE`),
+#'   or asymptomatic (`FALSE`) population?
+#'
+#' @return Summary number
+#'
+#' @keywords internal
+#'
+#' @name internal-summary
+
+
+#' @rdname internal-summary
+detected <- function(dt, symp = NULL) {
+  checkmate::assert_logical(symp, max.len = 1, null.ok = TRUE)
+  if (is.null(symp) || is.na(symp)) {
+    sum(dt$p[dt$inf & dt$detect])
+  } else if (symp) {
+    sum(dt$p[dt$inf & dt$detect & dt$symp])
+  } else {
+    sum(dt$p[dt$inf & dt$detect & !dt$symp])
+  }
+}
+
+
+#' @rdname internal-summary
+undetected <- function(dt) {
+  sum(dt$p[dt$inf & !dt$detect])
+}
+
 #' Risk-Based Metrics
 #'
 #' @description
@@ -17,6 +54,7 @@
 #'
 #' @name risk-metrics
 NULL
+
 
 #' @rdname risk-metrics
 #' @export

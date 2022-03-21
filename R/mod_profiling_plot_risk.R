@@ -141,20 +141,3 @@ reactive_detect_mapper <- function(new_arg, dist_args, i_nm, j_nm) {
     p_d_test = detected(d(), symp = FALSE)
   ), label = "detect_mapper()")
 }
-
-
-detected <- function(dt, symp = NULL) {
-  checkmate::assert_logical(symp, max.len = 1, null.ok = TRUE)
-  if (is.null(symp) || is.na(symp)) {
-    sum(dt$p[dt$inf & dt$detect])
-  } else if (symp) {
-    sum(dt$p[dt$inf & dt$detect & dt$symp])
-  } else {
-    sum(dt$p[dt$inf & dt$detect & !dt$symp])
-  }
-}
-
-
-undetected <- function(dt) {
-  sum(dt$p[dt$inf & !dt$detect])
-}
