@@ -4,16 +4,16 @@
 #' Undetected cases are the primary measure of risk in the model. From them,
 #' one can calculate the risk reduction and the cost effectiveness of testing.
 #'
-#' `cs_undetected()` calculates the proportion of undetected cases
-#' `cs_rr()` calculates the reduction in risk relative to no screening
-#' `cs_cost_eff()` calculates the number of cases detected per test
+#' \code{cs_undetected()} calculates the proportion of undetected cases
+#' \code{cs_rr()} calculates the reduction in risk relative to no screening
+#' \code{cs_cost_eff()} calculates the number of cases detected per test
 #'
-#' @param dt `[data.table]` The joint distribution from a `cs_dist()`
-#' @param relative `[logical(1)]` Whether to return risk reduction relative
-#'   to baseline risk (`TRUE`) or as an absolute proportion of the organization
-#'   (`FALSE`)
+#' @param dt \code{[data.table]} The joint distribution from a \code{cs_dist()}
+#' @param relative \code{[logical(1)]} Whether to return risk reduction relative
+#'   to baseline risk (\code{TRUE}) or as an absolute proportion of the
+#'   organization (\code{FALSE})
 #'
-#' @return `[double]` A proportion
+#' @return \code{[double(1)]} A proportion
 #'
 #' @name risk-metrics
 NULL
@@ -51,24 +51,24 @@ cs_cost_eff <- function(dt) {
 #' \href{https://en.wikipedia.org/wiki/Confusion_matrix#Table_of_confusion}{confusion matrix}
 #' for more information on each metric.
 #'
-#' `cs_pos()` is the proportion of positive tests (out of the organization)
-#' `cs_neg()` is the proportion of negative tests (out of the organization)
-#' `cs_true_pos()` is the proportion of true positive tests (out of org)
-#' `cs_true_neg()` is the proportion of true negative tests (out of org)
-#' `cs_false_pos()` is the proportion of false positive tests (out of org)
-#' `cs_false_neg()` is the proportion of false negative tests (out of org)
-#' `cs_ppv()` is the positive predictive value of a test
-#' `cs_npv()` is the negative predictive value of a test
-#' `cs_fdr()` is the false discovery rate of a test
-#' `cs_for()` is the false omission rate of a test
-#' `cs_sens()` is the sensitivity (true positive rate) of a test
-#' `cs_spec()` is the specificity (true negative rate) of a test
-#' `cs_fpr()` is the false positive rate of a test
-#' `cs_fnr()` is the false negative rate of a test
+#' \code{cs_pos()} is the proportion of positive tests (out of the organization)
+#' \code{cs_neg()} is the proportion of negative tests (out of the organization)
+#' \code{cs_true_pos()} is the proportion of true positive tests (out of org)
+#' \code{cs_true_neg()} is the proportion of true negative tests (out of org)
+#' \code{cs_false_pos()} is the proportion of false positive tests (out of org)
+#' \code{cs_false_neg()} is the proportion of false negative tests (out of org)
+#' \code{cs_ppv()} is the positive predictive value of a test
+#' \code{cs_npv()} is the negative predictive value of a test
+#' \code{cs_fdr()} is the false discovery rate of a test
+#' \code{cs_for()} is the false omission rate of a test
+#' \code{cs_sens()} is the sensitivity (true positive rate) of a test
+#' \code{cs_spec()} is the specificity (true negative rate) of a test
+#' \code{cs_fpr()} is the false positive rate of a test
+#' \code{cs_fnr()} is the false negative rate of a test
 #'
-#' @param dt `[data.table]` A distribution from `cs_dist()`
+#' @param dt \code{[data.table]} A distribution from \code{cs_dist()}
 #'
-#' @return `[numeric]` The specified metric
+#' @return \code{[numeric]} The specified metric
 #'
 #' @name test-metrics
 NULL
@@ -172,18 +172,18 @@ cs_fpr <- function(dt) {
 }
 
 
-#' Summarize Joint Distribution from `cs_dist()`
+#' Summarize Joint Distribution from \code{cs_dist()}
 #'
-#' `cs_sum()` calculates the proportion of the organization
+#' \code{cs_sum()} calculates the proportion of the organization
 #' that falls within the specified group. Variables are joined
-#' with `and`; not specifiying a variable (or setting it to `NULL`)
+#' with \code{&}; not specifiying a variable (or setting it to \code{NULL})
 #' includes all of its values.
 #'
-#' @param dt `[data.table]` A distribution from `cs_dist()`
-#' @param vac,inf,symp,test,detect `[logical(1)]` Variables values specifying
-#'   which sub-group to sum over. If `NULL`, will sum over all values.
+#' @param dt \code{[data.table]} A distribution from \code{cs_dist()}
+#' @param vac,inf,symp,test,detect \code{[logical(1)]} Variables values specifying
+#'   which sub-group to sum over. If \code{NULL}, will sum over all values.
 #'
-#' @return `[double]` The proportion of the organization with all the specified
+#' @return \code{[double(1)]} The proportion of the organization with all the specified
 #'   characteristics
 #'
 #' @export

@@ -2,23 +2,23 @@
 % Please edit documentation in R/summarize.R
 \name{cs_sum}
 \alias{cs_sum}
-\title{Summarize Joint Distribution from `cs_dist()`}
+\title{Summarize Joint Distribution from \code{cs_dist()}}
 \usage{
 cs_sum(dt, vac = NULL, inf = NULL, symp = NULL, test = NULL, detect = NULL)
 }
 \arguments{
-\item{dt}{`[data.table]` A distribution from `cs_dist()`}
+\item{dt}{\code{[data.table]} A distribution from \code{cs_dist()}}
 
-\item{vac, inf, symp, test, detect}{`[logical(1)]` Variables values specifying
-which sub-group to sum over. If `NULL`, will sum over all values.}
+\item{vac, inf, symp, test, detect}{\code{[logical(1)]} Variables values specifying
+which sub-group to sum over. If \code{NULL}, will sum over all values.}
 }
 \value{
-`[double]` The proportion of the organization with all the specified
+\code{[double(1)]} The proportion of the organization with all the specified
   characteristics
 }
 \description{
-`cs_sum()` calculates the proportion of the organization
+\code{cs_sum()} calculates the proportion of the organization
 that falls within the specified group. Variables are joined
-with `and`; not specifiying a variable (or setting it to `NULL`)
+with \code{&}; not specifiying a variable (or setting it to \code{NULL})
 includes all of its values.
 }

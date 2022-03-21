@@ -3,7 +3,7 @@
 #' Use this function to run the Shiny interface to {covidscreen} in an R session
 #'
 #' @param ... arguments to pass to golem_opts.
-#' See `?golem::get_golem_options` for more details.
+#' See \code{?golem::get_golem_options} for more details.
 #' @inheritParams shiny::shinyApp
 #'
 #' @export

@@ -3,44 +3,44 @@
 
 #' Calculate the Steady-State Joint Distribution for a Population
 #'
-#' `cs_dist()` calculates the discrete joint distribution of vaccination,
+#' \code{cs_dist()} calculates the discrete joint distribution of vaccination,
 #' infection, symptoms, tests, and detections in a population.
 #'
-#' @param vac `[list(3)]` A named list containing vaccination parameters:
+#' @param vac \code{[list(3)]} A named list containing vaccination parameters:
 #'   \describe{
-#'     \item{p_comm `[numeric(1)]`}{Proportion vaccinated in the community}
-#'     \item{p_org `[numeric(1)]`}{Proportion vaccinated in the organization of interest}
-#'     \item{eff `[numeric(1)]`}{Vaccine efficacy}
+#'     \item{p_comm \code{[numeric(1)]}}{Proportion vaccinated in the community}
+#'     \item{p_org \code{[numeric(1)]}}{Proportion vaccinated in the organization of interest}
+#'     \item{eff \code{[numeric(1)]}}{Vaccine efficacy}
 #'   }
 #'
-#' @param inf `[list(3)]` A named list containing infection parameters:
+#' @param inf \code{[list(3)]} A named list containing infection parameters:
 #'   \describe{
-#'     \item{p_incid `[numeric(1)]`}{Proportion of community newly infected each day}
-#'     \item{t_symp `[numeric(1)]`}{Duration of symptomatic period}
-#'     \item{t_presymp `[numeric(1)]`}{Duration of presymptomatic period}
+#'     \item{p_incid \code{[numeric(1)]}}{Proportion of community newly infected each day}
+#'     \item{t_symp \code{[numeric(1)]}}{Duration of symptomatic period}
+#'     \item{t_presymp \code{[numeric(1)]}}{Duration of presymptomatic period}
 #'   }
 #'
-#' @param symp `[list(3)]` A named lust containing symptom parameters:
+#' @param symp \code{[list(3)]} A named lust containing symptom parameters:
 #'   \describe{
-#'     \item{p_inf_vac}{Proportion of vaccinated infections who are symptomatic}
-#'     \item{p_inf_unvac}{Proportion of unvaccinated infections who are symptomatic}
-#'     \item{p_uninf}{Proportion of uninfected people who are symptomatic}
+#'     \item{p_inf_vac \code{[numeric(1)]}}{Proportion of vaccinated infections who are symptomatic}
+#'     \item{p_inf_unvac \code{[numeric(1)]}}{Proportion of unvaccinated infections who are symptomatic}
+#'     \item{p_uninf \code{[numeric(1)]}}{Proportion of uninfected people who are symptomatic}
 #'   }
 #'
-#' @param test `[list(3)]` A named list containing testing parameters:
+#' @param test \code{[list(3)]} A named list containing testing parameters:
 #'   \describe{
-#'     \item{p_symp `[numeric(1)]`}{Probability of being tested if symptomatic}
-#'     \item{p_asymp_vac `[numeric(1)]`}{Probability of being tested if asymptomatic and vaccinated}
-#'     \item{p_asymp_unvac `[numeric(1)]`}{Probability of being tested if asymptomatic and unvaccinated}
+#'     \item{p_symp \code{[numeric(1)]}}{Probability of being tested if symptomatic}
+#'     \item{p_asymp_vac \code{[numeric(1)]}}{Probability of being tested if asymptomatic and vaccinated}
+#'     \item{p_asymp_unvac \code{[numeric(1)]}}{Probability of being tested if asymptomatic and unvaccinated}
 #'   }
 #'
-#' @param detect `[list(2)]` A named list containing detection parameters:
+#' @param detect \code{[list(2)]} A named list containing detection parameters:
 #'   \describe{
-#'     \item{sens `[numeric(1)]`}{Test sensitivity}
-#'     \item{spec `[numeric(1)]`}{Test specificity}
+#'     \item{sens \code{[numeric(1)]}}{Test sensitivity}
+#'     \item{spec \code{[numeric(1)]}}{Test specificity}
 #'   }
 #'
-#' @return A `data.table`
+#' @return A \code{data.table}
 #'
 #' @export
 cs_dist <- function(

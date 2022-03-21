@@ -12,6 +12,8 @@
 #' @param init_visible Should the panel initialize as visible or invisible?
 #'
 #' @return A UI element
+#'
+#' @keywords internal
 toggle_panel_ui <- function(
   id,
   ...,
@@ -39,6 +41,8 @@ toggle_panel_ui <- function(
 #' @inheritParams shinyjs::toggle
 #'
 #' @return The return value of `bindEvent()`
+#'
+#' @keywords internal
 toggle_panel_server <- function(
   id,
   input,

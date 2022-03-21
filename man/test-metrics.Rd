@@ -47,10 +47,10 @@ cs_fnr(dt)
 cs_fpr(dt)
 }
 \arguments{
-\item{dt}{`[data.table]` A distribution from `cs_dist()`}
+\item{dt}{\code{[data.table]} A distribution from \code{cs_dist()}}
 }
 \value{
-`[numeric]` The specified metric
+\code{[numeric]} The specified metric
 }
 \description{
 There are a number of metrics available to evaluate test performance.
@@ -59,18 +59,18 @@ Wikipedia page on the
 \href{https://en.wikipedia.org/wiki/Confusion_matrix#Table_of_confusion}{confusion matrix}
 for more information on each metric.
 
-`cs_pos()` is the proportion of positive tests (out of the organization)
-`cs_neg()` is the proportion of negative tests (out of the organization)
-`cs_true_pos()` is the proportion of true positive tests (out of org)
-`cs_true_neg()` is the proportion of true negative tests (out of org)
-`cs_false_pos()` is the proportion of false positive tests (out of org)
-`cs_false_neg()` is the proportion of false negative tests (out of org)
-`cs_ppv()` is the positive predictive value of a test
-`cs_npv()` is the negative predictive value of a test
-`cs_fdr()` is the false discovery rate of a test
-`cs_for()` is the false omission rate of a test
-`cs_sens()` is the sensitivity (true positive rate) of a test
-`cs_spec()` is the specificity (true negative rate) of a test
-`cs_fpr()` is the false positive rate of a test
-`cs_fnr()` is the false negative rate of a test
+\code{cs_pos()} is the proportion of positive tests (out of the organization)
+\code{cs_neg()} is the proportion of negative tests (out of the organization)
+\code{cs_true_pos()} is the proportion of true positive tests (out of org)
+\code{cs_true_neg()} is the proportion of true negative tests (out of org)
+\code{cs_false_pos()} is the proportion of false positive tests (out of org)
+\code{cs_false_neg()} is the proportion of false negative tests (out of org)
+\code{cs_ppv()} is the positive predictive value of a test
+\code{cs_npv()} is the negative predictive value of a test
+\code{cs_fdr()} is the false discovery rate of a test
+\code{cs_for()} is the false omission rate of a test
+\code{cs_sens()} is the sensitivity (true positive rate) of a test
+\code{cs_spec()} is the specificity (true negative rate) of a test
+\code{cs_fpr()} is the false positive rate of a test
+\code{cs_fnr()} is the false negative rate of a test
 }

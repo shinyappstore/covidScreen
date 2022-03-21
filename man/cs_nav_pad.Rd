@@ -15,3 +15,4 @@ A `tags$span()` element with `style = paste("width:", width)`
 \description{
 Add Padding to a Navbar or Navbar Menu
 }
+\keyword{internal}

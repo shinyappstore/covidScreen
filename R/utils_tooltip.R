@@ -8,6 +8,8 @@
 #' @return A `tag` wrapped in a `div` element
 #'
 #' @name tag_tooltip
+#'
+#' @keywords internal
 NULL
 
 #' @rdname tag_tooltip
@@ -46,6 +48,8 @@ cs_h6 <- function(..., tooltip = NULL) {
 #' @param tooltip Tooltip text - passed to the `title` of `tags$div()`
 #'
 #' @return A `div` element
+#'
+#' @keywords internal
 cs_tooltip <- function(..., tooltip = NULL) {
   tags$div(title = tooltip, ...)
 }

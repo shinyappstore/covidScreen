@@ -19,3 +19,4 @@ A `bslib::nav_item`
 \description{
 Add a Hyper-linked Item to a Navbar or Navbar Menu
 }
+\keyword{internal}

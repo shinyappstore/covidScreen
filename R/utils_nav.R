@@ -5,6 +5,8 @@
 #' @param icon An optional icon for the item
 #'
 #' @return A `bslib::nav_item`
+#'
+#' @keywords internal
 cs_nav_ext_link <- function(title, href, icon = NULL) {
   bslib::nav_item(tags$a(href = href, tags$span(icon, title)))
 }
@@ -14,6 +16,8 @@ cs_nav_ext_link <- function(title, href, icon = NULL) {
 #' @param width The width of the padding element (a `span`)
 #'
 #' @return A `tags$span()` element with `style = paste("width:", width)`
+#'
+#' @keywords internal
 cs_nav_pad <- function(width = "1rem") {
   bslib::nav_item(tags$span(style = paste("width:", width)))
 }

@@ -50,3 +50,4 @@ depending on whether it is selected in a trigger variable. It always returns
 both the point (single) and the range (double) values; use
 `reactivePointRange()` to choose the one currently displayed in the UI.
 }
+\keyword{internal}

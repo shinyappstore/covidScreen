@@ -14,20 +14,20 @@ cs_rr(dt, relative = TRUE)
 cs_cost_eff(dt)
 }
 \arguments{
-\item{dt}{`[data.table]` The joint distribution from a `cs_dist()`}
+\item{dt}{\code{[data.table]} The joint distribution from a \code{cs_dist()}}
 
-\item{relative}{`[logical(1)]` Whether to return risk reduction relative
-to baseline risk (`TRUE`) or as an absolute proportion of the organization
-(`FALSE`)}
+\item{relative}{\code{[logical(1)]} Whether to return risk reduction relative
+to baseline risk (\code{TRUE}) or as an absolute proportion of the
+organization (\code{FALSE})}
 }
 \value{
-`[double]` A proportion
+\code{[double(1)]} A proportion
 }
 \description{
 Undetected cases are the primary measure of risk in the model. From them,
 one can calculate the risk reduction and the cost effectiveness of testing.
 
-`cs_undetected()` calculates the proportion of undetected cases
-`cs_rr()` calculates the reduction in risk relative to no screening
-`cs_cost_eff()` calculates the number of cases detected per test
+\code{cs_undetected()} calculates the proportion of undetected cases
+\code{cs_rr()} calculates the reduction in risk relative to no screening
+\code{cs_cost_eff()} calculates the number of cases detected per test
 }

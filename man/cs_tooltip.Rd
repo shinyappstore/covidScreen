@@ -17,3 +17,4 @@ A `div` element
 \description{
 Add a tooltip to an HTML Element from `tags`
 }
+\keyword{internal}

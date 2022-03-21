@@ -18,6 +18,8 @@
 #' @param suffix A suffix to append to the value labels
 #'
 #' @return A UI element
+#'
+#' @keywords internal
 conditionalSliderRangeInput <- function(
   id,
   label,

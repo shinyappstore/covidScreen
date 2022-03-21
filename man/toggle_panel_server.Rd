@@ -25,3 +25,4 @@ A toggle panel is a panel with show/hide functionality by clicking on the
 title and additional info by clicking on an info button.
 `toggle_panel_server()` defines the logic for show/hide and click events.
 }
+\keyword{internal}

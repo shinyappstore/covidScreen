@@ -33,3 +33,4 @@ A `tag` wrapped in a `div` element
 \description{
 Shiny `tags$h()` functions with tooltips
 }
+\keyword{internal}
