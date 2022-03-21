@@ -2,25 +2,25 @@
 % Please edit documentation in R/utils_tooltip.R
 \name{tag_tooltip}
 \alias{tag_tooltip}
-\alias{ct_h1}
-\alias{ct_h2}
-\alias{ct_h3}
-\alias{ct_h4}
-\alias{ct_h5}
-\alias{ct_h6}
+\alias{cs_h1}
+\alias{cs_h2}
+\alias{cs_h3}
+\alias{cs_h4}
+\alias{cs_h5}
+\alias{cs_h6}
 \title{HTML Headers with tooltips}
 \usage{
-ct_h1(..., tooltip = NULL)
+cs_h1(..., tooltip = NULL)
 
-ct_h2(..., tooltip = NULL)
+cs_h2(..., tooltip = NULL)
 
-ct_h3(..., tooltip = NULL)
+cs_h3(..., tooltip = NULL)
 
-ct_h4(..., tooltip = NULL)
+cs_h4(..., tooltip = NULL)
 
-ct_h5(..., tooltip = NULL)
+cs_h5(..., tooltip = NULL)
 
-ct_h6(..., tooltip = NULL)
+cs_h6(..., tooltip = NULL)
 }
 \arguments{
 \item{...}{Inputs to the header function}

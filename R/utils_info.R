@@ -24,7 +24,7 @@
 NULL
 
 #' @rdname info_modal
-ct_info_ui <- function(
+cs_info_ui <- function(
   id,
   label = NULL,
   icon = shiny::icon("info-circle"),
@@ -34,7 +34,7 @@ ct_info_ui <- function(
 }
 
 #' @rdname info_modal
-ct_info_server <- function(
+cs_info_server <- function(
   ...,
   title = NULL,
   footer = modalButton("Dismiss"),

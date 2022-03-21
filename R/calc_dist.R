@@ -3,7 +3,7 @@
 
 #' Calculate the Steady-State Joint Distribution for a Population
 #'
-#' `calc_dist()` calculates the discrete joint distribution of vaccination,
+#' `cs_dist()` calculates the discrete joint distribution of vaccination,
 #' infection, symptoms, tests, and detections in a population.
 #'
 #' @param vac `[list(3)]` A named list containing vaccination parameters:
@@ -43,7 +43,7 @@
 #' @return A `data.table`
 #'
 #' @export
-ct_dist <- function(
+cs_dist <- function(
   # Vaccination parameters
   vac = list(p_comm = 0.5, p_org = 0.5, eff = 0.5),
   # Infection parameters

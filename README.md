@@ -39,13 +39,13 @@ library(covidscreen)
 To run the Shiny app, you can use `run_app()` or visit an [online
 version](https://jesse-shiny.shinyapps.io/covidscreen/).
 
-To access the underlying model in **R**, you can use `ct_dist()` with
+To access the underlying model in **R**, you can use `cs_dist()` with
 the desired parameters. Running with no inputs uses the defaults; the
 output is a `data.table`:
 
 ``` r
 # Create some data using default parameters
-data <- ct_dist()
+data <- cs_dist()
 
 # Show data
 data
@@ -87,101 +87,101 @@ data
 
 You can access the risk-based metrics used in the Shiny app using
 corresponding functions in the R package. Undetected cases are
-calculated using `ct_undetected()`, relative risk reduction is
-calculated using `ct_rr()`, and cost effectiveness per test is
-calculated using `ct_cost_eff()`.
+calculated using `cs_undetected()`, relative risk reduction is
+calculated using `cs_rr()`, and cost effectiveness per test is
+calculated using `cs_cost_eff()`.
 
 ``` r
 # Cost effectiveness
-ct_undetected(data)
+cs_undetected(data)
 #> [1] 0.03633929
 
 # Relative risk reduction
-ct_rr(data)
+cs_rr(data)
 #> [1] 0.07709751
 
 # Cost effectiveness
-ct_cost_eff(data)
+cs_cost_eff(data)
 #> [1] 0.1651079
 ```
 
 Additionally, test performance metrics are included in the R package to
 facilitate analysis not performed in the Shiny app. These include:
 
--   `ct_pos()`: the proportion of positive tests (out of the
+-   `cs_pos()`: the proportion of positive tests (out of the
     organization)
--   `ct_neg()`: the proportion of negative tests (out of the
+-   `cs_neg()`: the proportion of negative tests (out of the
     organization)
--   `ct_true_pos()`: the proportion of true positive tests (out of org)
--   `ct_true_neg()`: the proportion of true negative tests (out of org)
--   `ct_false_pos()`: the proportion of false positive tests (out of
+-   `cs_true_pos()`: the proportion of true positive tests (out of org)
+-   `cs_true_neg()`: the proportion of true negative tests (out of org)
+-   `cs_false_pos()`: the proportion of false positive tests (out of
     org)
--   `ct_false_neg()`: the proportion of false negative tests (out of
+-   `cs_false_neg()`: the proportion of false negative tests (out of
     org)
--   `ct_ppv()`: the positive predictive value of a test
--   `ct_npv()`: the negative predictive value of a test
--   `ct_fdr()`: the false discovery rate of a test
--   `ct_for()`: the false omission rate of a test
--   `ct_sens()`: the sensitivity (true positive rate, recall) of a test
--   `ct_spec()`: the specificity (true negative rate) of a test
--   `ct_fpr()`: the false positive rate of a test
--   `ct_fnr()`: the false negative rate of a test
+-   `cs_ppv()`: the positive predictive value of a test
+-   `cs_npv()`: the negative predictive value of a test
+-   `cs_fdr()`: the false discovery rate of a test
+-   `cs_for()`: the false omission rate of a test
+-   `cs_sens()`: the sensitivity (true positive rate, recall) of a test
+-   `cs_spec()`: the specificity (true negative rate) of a test
+-   `cs_fpr()`: the false positive rate of a test
+-   `cs_fnr()`: the false negative rate of a test
 
 ``` r
 # Positive tests
-ct_pos(data)
+cs_pos(data)
 #> [1] 0.01366071
 
 # Negative tests
-ct_neg(data)
+cs_neg(data)
 #> [1] 0.06907738
 
 # True positives
-ct_true_pos(data)
+cs_true_pos(data)
 #> [1] 0.01366071
 
 # True negatives
-ct_true_neg(data)
+cs_true_neg(data)
 #> [1] 0.06666667
 
 # False positives
-ct_false_pos(data)
+cs_false_pos(data)
 #> [1] 0
 
 # False negatives
-ct_false_neg(data)
+cs_false_neg(data)
 #> [1] 0.002410714
 
 # Positive predictive value (precision)
-ct_ppv(data)
+cs_ppv(data)
 #> [1] 1
 
 # Negative predictive value
-ct_npv(data)
+cs_npv(data)
 #> [1] 0.9651012
 
 # False discovery rate
-ct_fdr(data)
+cs_fdr(data)
 #> [1] 0
 
 # False omission rate
-ct_for(data)
+cs_for(data)
 #> [1] 0.03489875
 
 # True positive rate (sensitivity/recall)
-ct_sens(data)
+cs_sens(data)
 #> [1] 0.85
 
 # True negative rate (specificity)
-ct_spec(data)
+cs_spec(data)
 #> [1] 1
 
 # False positive rate
-ct_fpr(data)
+cs_fpr(data)
 #> [1] 0
 
 # False negative rate
-ct_fnr(data)
+cs_fnr(data)
 #> [1] 0.15
 ```
 

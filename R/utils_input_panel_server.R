@@ -23,7 +23,7 @@ input_panel_server <- function(
 ) {
   toggle_panel_server(id, input = session$input, time = toggle_time)
   bindEvent(
-    observe(ct_info_server(info)),
+    observe(cs_info_server(info)),
     session$input[[paste0(id, "_info")]],
     label = info_label
   )

@@ -208,7 +208,7 @@ num_input <- function(
 ) {
 
   if (NROW(label) > 0 && nchar(label) > 0) {
-    label <- tags$span(label, ct_info_ui(paste0(id, "_info")))
+    label <- tags$span(label, cs_info_ui(paste0(id, "_info")))
   }
 
   input <- numericInput(id,
@@ -231,7 +231,7 @@ slider_pct <- function(
 ) {
 
   if (NROW(label) > 0 && nchar(label) > 0) {
-    label <- tags$span(label, ct_info_ui(paste0(id, "_info")))
+    label <- tags$span(label, cs_info_ui(paste0(id, "_info")))
   }
 
   sliderInput(id,
@@ -243,7 +243,7 @@ slider_pct <- function(
 
 action_link <- function(id, label, icon = NULL, tag_fn = NULL) {
 
-  icon_label_info <- tags$span(icon, label, ct_info_ui(paste0(id, "_info")))
+  icon_label_info <- tags$span(icon, label, cs_info_ui(paste0(id, "_info")))
 
   a_link <- actionLink(id, label = icon_label_info)
 

@@ -2,18 +2,18 @@
 % Please edit documentation in R/utils_info.R
 \name{info_modal}
 \alias{info_modal}
-\alias{ct_info_ui}
-\alias{ct_info_server}
+\alias{cs_info_ui}
+\alias{cs_info_server}
 \title{Add Info Modal to UI}
 \usage{
-ct_info_ui(
+cs_info_ui(
   id,
   label = NULL,
   icon = shiny::icon("info-circle"),
   container = tags$sup
 )
 
-ct_info_server(
+cs_info_server(
   ...,
   title = NULL,
   footer = modalButton("Dismiss"),

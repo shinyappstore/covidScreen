@@ -2,52 +2,52 @@
 % Please edit documentation in R/summarize.R
 \name{test-metrics}
 \alias{test-metrics}
-\alias{ct_pos}
-\alias{ct_neg}
-\alias{ct_true_pos}
-\alias{ct_false_pos}
-\alias{ct_true_neg}
-\alias{ct_false_neg}
-\alias{ct_ppv}
-\alias{ct_npv}
-\alias{ct_fdr}
-\alias{ct_for}
-\alias{ct_sens}
-\alias{ct_spec}
-\alias{ct_fnr}
-\alias{ct_fpr}
+\alias{cs_pos}
+\alias{cs_neg}
+\alias{cs_true_pos}
+\alias{cs_false_pos}
+\alias{cs_true_neg}
+\alias{cs_false_neg}
+\alias{cs_ppv}
+\alias{cs_npv}
+\alias{cs_fdr}
+\alias{cs_for}
+\alias{cs_sens}
+\alias{cs_spec}
+\alias{cs_fnr}
+\alias{cs_fpr}
 \title{Testing Metrics}
 \usage{
-ct_pos(dt)
+cs_pos(dt)
 
-ct_neg(dt)
+cs_neg(dt)
 
-ct_true_pos(dt)
+cs_true_pos(dt)
 
-ct_false_pos(dt)
+cs_false_pos(dt)
 
-ct_true_neg(dt)
+cs_true_neg(dt)
 
-ct_false_neg(dt)
+cs_false_neg(dt)
 
-ct_ppv(dt)
+cs_ppv(dt)
 
-ct_npv(dt)
+cs_npv(dt)
 
-ct_fdr(dt)
+cs_fdr(dt)
 
-ct_for(dt)
+cs_for(dt)
 
-ct_sens(dt)
+cs_sens(dt)
 
-ct_spec(dt)
+cs_spec(dt)
 
-ct_fnr(dt)
+cs_fnr(dt)
 
-ct_fpr(dt)
+cs_fpr(dt)
 }
 \arguments{
-\item{dt}{`[data.table]` A distribution from `ct_dist()`}
+\item{dt}{`[data.table]` A distribution from `cs_dist()`}
 }
 \value{
 `[numeric]` The specified metric
@@ -59,18 +59,18 @@ Wikipedia page on the
 \href{https://en.wikipedia.org/wiki/Confusion_matrix#Table_of_confusion}{confusion matrix}
 for more information on each metric.
 
-`ct_pos()` is the proportion of positive tests (out of the organization)
-`ct_neg()` is the proportion of negative tests (out of the organization)
-`ct_true_pos()` is the proportion of true positive tests (out of org)
-`ct_true_neg()` is the proportion of true negative tests (out of org)
-`ct_false_pos()` is the proportion of false positive tests (out of org)
-`ct_false_neg()` is the proportion of false negative tests (out of org)
-`ct_ppv()` is the positive predictive value of a test
-`ct_npv()` is the negative predictive value of a test
-`ct_fdr()` is the false discovery rate of a test
-`ct_for()` is the false omission rate of a test
-`ct_sens()` is the sensitivity (true positive rate) of a test
-`ct_spec()` is the specificity (true negative rate) of a test
-`ct_fpr()` is the false positive rate of a test
-`ct_fnr()` is the false negative rate of a test
+`cs_pos()` is the proportion of positive tests (out of the organization)
+`cs_neg()` is the proportion of negative tests (out of the organization)
+`cs_true_pos()` is the proportion of true positive tests (out of org)
+`cs_true_neg()` is the proportion of true negative tests (out of org)
+`cs_false_pos()` is the proportion of false positive tests (out of org)
+`cs_false_neg()` is the proportion of false negative tests (out of org)
+`cs_ppv()` is the positive predictive value of a test
+`cs_npv()` is the negative predictive value of a test
+`cs_fdr()` is the false discovery rate of a test
+`cs_for()` is the false omission rate of a test
+`cs_sens()` is the sensitivity (true positive rate) of a test
+`cs_spec()` is the specificity (true negative rate) of a test
+`cs_fpr()` is the false positive rate of a test
+`cs_fnr()` is the false negative rate of a test
 }

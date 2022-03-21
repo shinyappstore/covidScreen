@@ -1,10 +1,10 @@
-test_that("ct_dist() output has not changed", {
-  expect_snapshot(ct_dist())
+test_that("cs_dist() output has not changed", {
+  expect_snapshot(cs_dist())
 })
 
 
-test_that("ct_dist() works with partial args", {
-  data <- ct_dist(
+test_that("cs_dist() works with partial args", {
+  data <- cs_dist(
     vac = list(p_org = 0.7),
     inf = list(t_symp = 7),
     symp = list(p_uninf = 0.01),
@@ -18,8 +18,8 @@ test_that("ct_dist() works with partial args", {
 })
 
 
-test_that("ct_dist() works with no testing", {
-  data <- ct_dist(test = list(p_symp = 0, p_asymp_vac = 0, p_asymp_unvac = 0))
+test_that("cs_dist() works with no testing", {
+  data <- cs_dist(test = list(p_symp = 0, p_asymp_vac = 0, p_asymp_unvac = 0))
   expect_equal(sum(data$p[data$test]), 0)
   expect_equal(sum(data$p[data$detect]), 0)
 })

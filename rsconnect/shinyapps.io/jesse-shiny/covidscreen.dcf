@@ -4,8 +4,8 @@ username:
 account: jesse-shiny
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
-appId: 5263578
-bundleId: 5438103
+appId: 5901909
+bundleId: 5710068
 url: https://jesse-shiny.shinyapps.io/covidscreen/
-when: 1641418382.54338
-lastSyncTime: 1641418382.54338
+when: 1647888605.3783
+lastSyncTime: 1647888605.3783

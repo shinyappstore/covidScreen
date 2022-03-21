@@ -4,11 +4,11 @@
 #' Undetected cases are the primary measure of risk in the model. From them,
 #' one can calculate the risk reduction and the cost effectiveness of testing.
 #'
-#' `ct_undetected()` calculates the proportion of undetected cases
-#' `ct_rr()` calculates the reduction in risk relative to no screening
-#' `ct_cost_eff()` calculates the number of cases detected per test
+#' `cs_undetected()` calculates the proportion of undetected cases
+#' `cs_rr()` calculates the reduction in risk relative to no screening
+#' `cs_cost_eff()` calculates the number of cases detected per test
 #'
-#' @param dt `[data.table]` The joint distribution from a `ct_dist()`
+#' @param dt `[data.table]` The joint distribution from a `cs_dist()`
 #' @param relative `[logical(1)]` Whether to return risk reduction relative
 #'   to baseline risk (`TRUE`) or as an absolute proportion of the organization
 #'   (`FALSE`)
@@ -20,14 +20,14 @@ NULL
 
 #' @rdname risk-metrics
 #' @export
-ct_undetected <- function(dt) {
-  ct_sum(dt, inf = TRUE, detect = FALSE)
+cs_undetected <- function(dt) {
+  cs_sum(dt, inf = TRUE, detect = FALSE)
 }
 
 
 #' @rdname risk-metrics
 #' @export
-ct_rr <- function(dt, relative = TRUE) {
+cs_rr <- function(dt, relative = TRUE) {
   checkmate::assert_logical(relative, any.missing = FALSE, len = 1)
   p0 <- const_testing(attr(dt, "params", exact = TRUE), p_vac = 0, p_unvac = 0)
   u0 <- undetected(do.call(calc_dist, p0))
@@ -37,8 +37,8 @@ ct_rr <- function(dt, relative = TRUE) {
 
 #' @rdname risk-metrics
 #' @export
-ct_cost_eff <- function(dt) {
-  ct_true_pos(dt) / sum(dt$p[dt$test])
+cs_cost_eff <- function(dt) {
+  cs_true_pos(dt) / sum(dt$p[dt$test])
 }
 
 
@@ -51,22 +51,22 @@ ct_cost_eff <- function(dt) {
 #' \href{https://en.wikipedia.org/wiki/Confusion_matrix#Table_of_confusion}{confusion matrix}
 #' for more information on each metric.
 #'
-#' `ct_pos()` is the proportion of positive tests (out of the organization)
-#' `ct_neg()` is the proportion of negative tests (out of the organization)
-#' `ct_true_pos()` is the proportion of true positive tests (out of org)
-#' `ct_true_neg()` is the proportion of true negative tests (out of org)
-#' `ct_false_pos()` is the proportion of false positive tests (out of org)
-#' `ct_false_neg()` is the proportion of false negative tests (out of org)
-#' `ct_ppv()` is the positive predictive value of a test
-#' `ct_npv()` is the negative predictive value of a test
-#' `ct_fdr()` is the false discovery rate of a test
-#' `ct_for()` is the false omission rate of a test
-#' `ct_sens()` is the sensitivity (true positive rate) of a test
-#' `ct_spec()` is the specificity (true negative rate) of a test
-#' `ct_fpr()` is the false positive rate of a test
-#' `ct_fnr()` is the false negative rate of a test
+#' `cs_pos()` is the proportion of positive tests (out of the organization)
+#' `cs_neg()` is the proportion of negative tests (out of the organization)
+#' `cs_true_pos()` is the proportion of true positive tests (out of org)
+#' `cs_true_neg()` is the proportion of true negative tests (out of org)
+#' `cs_false_pos()` is the proportion of false positive tests (out of org)
+#' `cs_false_neg()` is the proportion of false negative tests (out of org)
+#' `cs_ppv()` is the positive predictive value of a test
+#' `cs_npv()` is the negative predictive value of a test
+#' `cs_fdr()` is the false discovery rate of a test
+#' `cs_for()` is the false omission rate of a test
+#' `cs_sens()` is the sensitivity (true positive rate) of a test
+#' `cs_spec()` is the specificity (true negative rate) of a test
+#' `cs_fpr()` is the false positive rate of a test
+#' `cs_fnr()` is the false negative rate of a test
 #'
-#' @param dt `[data.table]` A distribution from `ct_dist()`
+#' @param dt `[data.table]` A distribution from `cs_dist()`
 #'
 #' @return `[numeric]` The specified metric
 #'
@@ -76,110 +76,110 @@ NULL
 
 #' @rdname test-metrics
 #' @export
-ct_pos <- function(dt) {
+cs_pos <- function(dt) {
   sum(dt$p[dt$detect])
 }
 
 
 #' @rdname test-metrics
 #' @export
-ct_neg <- function(dt) {
+cs_neg <- function(dt) {
   sum(dt$p[dt$test & !dt$detect])
 }
 
 
 #' @rdname test-metrics
 #' @export
-ct_true_pos <- function(dt) {
+cs_true_pos <- function(dt) {
   sum(dt$p[dt$inf & dt$detect])
 }
 
 
 #' @rdname test-metrics
 #' @export
-ct_false_pos <- function(dt) {
+cs_false_pos <- function(dt) {
   sum(dt$p[!dt$inf & dt$detect])
 }
 
 
 #' @rdname test-metrics
 #' @export
-ct_true_neg <- function(dt) {
+cs_true_neg <- function(dt) {
   sum(dt$p[!dt$inf & dt$test & !dt$detect])
 }
 
 
 #' @rdname test-metrics
 #' @export
-ct_false_neg <- function(dt) {
+cs_false_neg <- function(dt) {
   sum(dt$p[dt$inf & dt$test & !dt$detect])
 }
 
 
 #' @rdname test-metrics
 #' @export
-ct_ppv <- function(dt) {
-  ct_true_pos(dt) / ct_pos(dt)
+cs_ppv <- function(dt) {
+  cs_true_pos(dt) / cs_pos(dt)
 }
 
 
 #' @rdname test-metrics
 #' @export
-ct_npv <- function(dt) {
-  ct_true_neg(dt) / ct_neg(dt)
+cs_npv <- function(dt) {
+  cs_true_neg(dt) / cs_neg(dt)
 }
 
 
 #' @rdname test-metrics
 #' @export
-ct_fdr <- function(dt) {
-  1 - ct_ppv(dt)
+cs_fdr <- function(dt) {
+  1 - cs_ppv(dt)
 }
 
 
 #' @rdname test-metrics
 #' @export
-ct_for <- function(dt) {
-  1 - ct_npv(dt)
+cs_for <- function(dt) {
+  1 - cs_npv(dt)
 }
 
 
 #' @rdname test-metrics
 #' @export
-ct_sens <- function(dt) {
+cs_sens <- function(dt) {
   attr(dt, "params", exact = TRUE)$detect$sens
 }
 
 
 #' @rdname test-metrics
 #' @export
-ct_spec <- function(dt) {
+cs_spec <- function(dt) {
   attr(dt, "params", exact = TRUE)$detect$spec
 }
 
 
 #' @rdname test-metrics
 #' @export
-ct_fnr <- function(dt) {
-  1 - ct_sens(dt)
+cs_fnr <- function(dt) {
+  1 - cs_sens(dt)
 }
 
 
 #' @rdname test-metrics
 #' @export
-ct_fpr <- function(dt) {
-  1 - ct_spec(dt)
+cs_fpr <- function(dt) {
+  1 - cs_spec(dt)
 }
 
 
-#' Summarize Joint Distribution from `ct_dist()`
+#' Summarize Joint Distribution from `cs_dist()`
 #'
-#' `ct_sum()` calculates the proportion of the organization
+#' `cs_sum()` calculates the proportion of the organization
 #' that falls within the specified group. Variables are joined
 #' with `and`; not specifiying a variable (or setting it to `NULL`)
 #' includes all of its values.
 #'
-#' @param dt `[data.table]` A distribution from `ct_dist()`
+#' @param dt `[data.table]` A distribution from `cs_dist()`
 #' @param vac,inf,symp,test,detect `[logical(1)]` Variables values specifying
 #'   which sub-group to sum over. If `NULL`, will sum over all values.
 #'
@@ -187,7 +187,7 @@ ct_fpr <- function(dt) {
 #'   characteristics
 #'
 #' @export
-ct_sum <- function(
+cs_sum <- function(
   dt,
   vac = NULL,
   inf = NULL,
@@ -212,7 +212,7 @@ ct_sum <- function(
 }
 
 
-ct_subset <- function(
+cs_subset <- function(
   dt,
   vac = NULL,
   inf = NULL,

@@ -2,19 +2,19 @@
 % Please edit documentation in R/summarize.R
 \name{risk-metrics}
 \alias{risk-metrics}
-\alias{ct_undetected}
-\alias{ct_rr}
-\alias{ct_cost_eff}
+\alias{cs_undetected}
+\alias{cs_rr}
+\alias{cs_cost_eff}
 \title{Risk-Based Metrics}
 \usage{
-ct_undetected(dt)
+cs_undetected(dt)
 
-ct_rr(dt, relative = TRUE)
+cs_rr(dt, relative = TRUE)
 
-ct_cost_eff(dt)
+cs_cost_eff(dt)
 }
 \arguments{
-\item{dt}{`[data.table]` The joint distribution from a `ct_dist()`}
+\item{dt}{`[data.table]` The joint distribution from a `cs_dist()`}
 
 \item{relative}{`[logical(1)]` Whether to return risk reduction relative
 to baseline risk (`TRUE`) or as an absolute proportion of the organization
@@ -27,7 +27,7 @@ to baseline risk (`TRUE`) or as an absolute proportion of the organization
 Undetected cases are the primary measure of risk in the model. From them,
 one can calculate the risk reduction and the cost effectiveness of testing.
 
-`ct_undetected()` calculates the proportion of undetected cases
-`ct_rr()` calculates the reduction in risk relative to no screening
-`ct_cost_eff()` calculates the number of cases detected per test
+`cs_undetected()` calculates the proportion of undetected cases
+`cs_rr()` calculates the reduction in risk relative to no screening
+`cs_cost_eff()` calculates the number of cases detected per test
 }

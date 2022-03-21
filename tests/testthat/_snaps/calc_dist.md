@@ -1,7 +1,7 @@
-# ct_dist() output has not changed
+# cs_dist() output has not changed
 
     Code
-      ct_dist()
+      cs_dist()
     Output
                      p   vac   inf  symp  test detect
        1: 0.0035416667  TRUE  TRUE  TRUE  TRUE   TRUE
@@ -38,7 +38,7 @@
       32: 0.4000000000 FALSE FALSE FALSE FALSE  FALSE
                      p   vac   inf  symp  test detect
 
-# ct_dist() works with partial args
+# cs_dist() works with partial args
 
     Code
       data
