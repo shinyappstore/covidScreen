@@ -1,6 +1,6 @@
 Package: covidscreen
 Title: COVID-19 Asymtomatic Screening Strategy Assessment
-Version: 0.0.0.9000
+Version: 0.0.0.9001
 Authors@R: c(
     person("Jesse", "Smith", , "Jesse.Smith@stjude.org", role = c("cre", "aut")),
     person("Tomi", "Mori", , "Tomi.Mori@stjude.org", role = "aut")
