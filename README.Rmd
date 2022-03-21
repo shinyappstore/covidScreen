@@ -13,22 +13,22 @@ knitr::opts_chunk$set(
 )
 ```
 
-# covidtest
+# covidscreen
 
 <!-- badges: start -->
-[![CI-CD](https://github.com/jesse-smith/covidtest/workflows/CI-CD/badge.svg)](https://github.com/jesse-smith/covidtest/actions)
-[![Codecov test coverage](https://codecov.io/gh/jesse-smith/covidtest/branch/master/graph/badge.svg)](https://codecov.io/gh/jesse-smith/covidtest?branch=master)
+[![CI-CD](https://github.com/jesse-smith/covidscreen/workflows/CI-CD/badge.svg)](https://github.com/jesse-smith/covidscreen/actions)
+[![Codecov test coverage](https://codecov.io/gh/jesse-smith/covidscreen/branch/master/graph/badge.svg)](https://codecov.io/gh/jesse-smith/covidscreen?branch=master)
 <!-- badges: end -->
 
-{covidtest} is an R package and Shiny app designed to help organizations evaluate their risk from COVID-19 and the potential benefits of regular asymptomatic testing.
+{covidscreen} is an R package and Shiny app designed to help organizations evaluate their risk from COVID-19 and the potential benefits of regular asymptomatic testing.
 
 ## Installation
 
-You can install the development version of {covidtest} from Github with:
+You can install the development version of {covidscreen} from Github with:
 
 ``` r
 if (!"remotes" %in% installed.packages()) install.packages("remotes")
-remotes::install_github("jesse-smith/covidtest")
+remotes::install_github("jesse-smith/covidscreen")
 ```
 
 If you are using R on Windows, you will need to first install Rtools [here](https://cran.r-project.org/bin/windows/Rtools/).
@@ -36,10 +36,10 @@ If you are using R on Windows, you will need to first install Rtools [here](http
 ## Example
 
 ```{r library}
-library(covidtest)
+library(covidscreen)
 ```
 
-To run the Shiny app, you can use `run_app()` or visit an [online version](https://jesse-shiny.shinyapps.io/covidtest/).
+To run the Shiny app, you can use `run_app()` or visit an [online version](https://jesse-shiny.shinyapps.io/covidscreen/).
 
 To access the underlying model in **R**, you can use `ct_dist()` with the desired parameters. Running with no inputs uses the defaults; the output is a `data.table`:
 
@@ -131,4 +131,4 @@ ct_fnr(data)
 
 ## Code of Conduct
 
-Please note that the {covidtest} project is released with a [Contributor Code of Conduct](https://contributor-covenant.org/version/2/0/CODE_OF_CONDUCT.html). By contributing to this project, you agree to abide by its terms.
+Please note that the {covidscreen} project is released with a [Contributor Code of Conduct](https://contributor-covenant.org/version/2/0/CODE_OF_CONDUCT.html). By contributing to this project, you agree to abide by its terms.

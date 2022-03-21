@@ -4,7 +4,7 @@ $.extend(conditionalNumericRangeInput, {
     return $(scope).find(".shiny-conditional-numeric-range-input");
   },
   getType: function(el) {
-    return "covidtest.conditionalRangeInput";
+    return "covidscreen.conditionalRangeInput";
   },
   getValue: function(el) {
     // Find inputs in element
@@ -90,5 +90,5 @@ $.extend(conditionalNumericRangeInput, {
 
 Shiny.inputBindings.register(
   conditionalNumericRangeInput,
-  "covidtest.conditionalNumericRangeInput"
+  "covidscreen.conditionalNumericRangeInput"
 );

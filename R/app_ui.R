@@ -13,7 +13,7 @@ app_ui <- function(request) {
     # Set up other JS
     head_js(),
     # UI definition
-    navbarPage(h3("covidtest"),
+    navbarPage(h3("covidscreen"),
       theme = ct_theme(), fluid = TRUE, selected = "scenarios",
       bslib::nav_spacer(),
       # Home/landing page
@@ -83,12 +83,12 @@ nav_menu <- function() {
   paper_link <- ct_nav_ext_link("Paper", href = NULL, icon = icon("file-alt"))
   pkg_link   <- ct_nav_ext_link(
     "Package",
-    href = "https://jesse-smith.github.io/covidtest",
+    href = "https://jesse-smith.github.io/covidscreen",
     icon = icon("r-project")
   )
   code_link  <- ct_nav_ext_link(
     "Source Code",
-    href = "https://github.com/jesse-smith/covidtest",
+    href = "https://github.com/jesse-smith/covidscreen",
     icon = icon("github")
   )
   # Icon
@@ -103,9 +103,9 @@ nav_menu <- function() {
 }
 
 
-#' Bootstrap Theme for {covidtest} Shiny App
+#' Bootstrap Theme for {covidscreen} Shiny App
 #'
-#' Wrapper for `bslib::bs_theme()` with options set to the covidtest theme.
+#' Wrapper for `bslib::bs_theme()` with options set to the covidscreen theme.
 #'
 #' @return A `bs_theme`
 #' @noRd
@@ -147,7 +147,7 @@ golem_add_external_resources <- function() {
     favicon(),
     bundle_resources(
       path = app_sys("app/www"),
-      app_title = "covidtest"
+      app_title = "covidscreen"
     )
     # Add here other external resources
     # for example, you can add shinyalert::useShinyalert()

@@ -4,7 +4,7 @@ $.extend(conditionalSliderRangeInput, {
     return $(scope).find('.shiny-conditional-slider-range-input');
   },
   getType: function(el) {
-    return "covidtest.conditionalRangeInput";
+    return "covidscreen.conditionalRangeInput";
   },
   getValue: function(el) {
     // Find inputs in element
@@ -92,5 +92,5 @@ $.extend(conditionalSliderRangeInput, {
 
 Shiny.inputBindings.register(
   conditionalSliderRangeInput,
-  'covidtest.conditionalSliderRangeInput'
+  'covidscreen.conditionalSliderRangeInput'
 );

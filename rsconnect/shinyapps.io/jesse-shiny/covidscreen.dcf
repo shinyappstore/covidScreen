@@ -1,4 +1,4 @@
-name: covidtest
+name: covidscreen
 title:
 username:
 account: jesse-shiny
@@ -6,6 +6,6 @@ server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 5263578
 bundleId: 5438103
-url: https://jesse-shiny.shinyapps.io/covidtest/
+url: https://jesse-shiny.shinyapps.io/covidscreen/
 when: 1641418382.54338
 lastSyncTime: 1641418382.54338

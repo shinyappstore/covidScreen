@@ -43,7 +43,7 @@
 # Documentation
 
 ## Vignette ----
-usethis::use_vignette("covidtest")
+usethis::use_vignette("covidscreen")
 devtools::build_vignettes()
 
 ## CI ----

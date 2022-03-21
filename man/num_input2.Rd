@@ -40,7 +40,7 @@ point and range}
 A UI element
 }
 \description{
-Wraps the `conditionalNumericRangeInput()` defined elsewhere in covidtest for
-brevity.
+Wraps the `conditionalNumericRangeInput()` defined elsewhere in covidscreen
+for brevity.
 }
 \keyword{internal}

@@ -42,7 +42,7 @@ slider_pct2(
 A UI element
 }
 \description{
-Wraps the `conditionalSliderRangeInput()` defined elsewhere in covidtest for
-brevity.
+Wraps the `conditionalSliderRangeInput()` defined elsewhere in covidscreen
+for brevity.
 }
 \keyword{internal}

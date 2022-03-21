@@ -2,7 +2,7 @@
 % Please edit documentation in R/run_app.R
 \name{run_app}
 \alias{run_app}
-\title{Run the covidtest Application}
+\title{Run the covidscreen Application}
 \usage{
 run_app(
   onStart = NULL,
@@ -37,5 +37,5 @@ expression in order for the match to be considered successful.}
 See `?golem::get_golem_options` for more details.}
 }
 \description{
-Use this function to run the Shiny interface to {covidtest} in an R session
+Use this function to run the Shiny interface to {covidscreen} in an R session
 }

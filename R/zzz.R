@@ -1,6 +1,6 @@
 .onLoad <- function(...) {
   shiny::registerInputHandler(
-    "covidtest.conditionalRangeInput", function(x, session, name){
+    "covidscreen.conditionalRangeInput", function(x, session, name){
       # Unlist values
       x_out <- list(point = x$values$point, range = unlist(x$values$range))
       # Set attributes
@@ -14,5 +14,5 @@
 }
 
 .onUnload <- function(...) {
-  shiny::removeInputHandler("covidtest.conditionalRangeInput")
+  shiny::removeInputHandler("covidscreen.conditionalRangeInput")
 }

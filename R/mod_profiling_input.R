@@ -230,8 +230,8 @@ select_output <- function(id) {
 
 #' Wrap `conditionalNumericRangeInput()` for Ease of Use
 #'
-#' Wraps the `conditionalNumericRangeInput()` defined elsewhere in covidtest for
-#' brevity.
+#' Wraps the `conditionalNumericRangeInput()` defined elsewhere in covidscreen
+#' for brevity.
 #'
 #' @inheritParams conditionalNumericRangeInput
 #' @param br Add a line break below the input element
@@ -271,8 +271,8 @@ num_input2 <- function(
 
 #' Wrap `conditionalSliderRangeInput()` for Ease of Use
 #'
-#' Wraps the `conditionalSliderRangeInput()` defined elsewhere in covidtest for
-#' brevity.
+#' Wraps the `conditionalSliderRangeInput()` defined elsewhere in covidscreen
+#' for brevity.
 #'
 #' @inheritParams conditionalSliderRangeInput
 #' @param br Add a line break below the input element

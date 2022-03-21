@@ -1,18 +1,18 @@
-Package: covidtest
-Title: COVID-19 Testing Strategy Assessment
+Package: covidscreen
+Title: COVID-19 Asymtomatic Screening Strategy Assessment
 Version: 0.0.0.9000
 Authors@R: c(
     person("Jesse", "Smith", , "Jesse.Smith@stjude.org", role = c("cre", "aut")),
     person("Tomi", "Mori", , "Tomi.Mori@stjude.org", role = "aut")
   )
-Description: Covidtest is a Shiny app that allows decision-makers to
+Description: Covidscreen is a Shiny app that allows decision-makers to
     assess the benefits of performing asymptomatic testing in their
     organizations. It is primarily aimed at healthcare organizations,
     though it is applicable in a much wider range of settings.
 License: GPL (>= 3)
-URL: https://github.com/jesse-smith/covidtest,
-    https://jesse-smith.github.io/covidtest
-BugReports: https://github.com/jesse-smith/covidtest/issues
+URL: https://github.com/jesse-smith/covidscreen,
+    https://jesse-smith.github.io/covidscreen
+BugReports: https://github.com/jesse-smith/covidscreen/issues
 Imports: 
     bslib,
     checkmate,

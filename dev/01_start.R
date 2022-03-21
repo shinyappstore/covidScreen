@@ -19,10 +19,10 @@
 ## to change the name in the app_sys() function in app_config.R /!\
 ##
 golem::fill_desc(
-  pkg_name = "covidtest", # The Name of the package containing the App
+  pkg_name = "covidscreen", # The Name of the package containing the App
   pkg_title = "COVID-19 Testing Strategy Assessment", # The Title of the package containing the App
   pkg_description = paste0(
-    "Covidtest is a Shiny app that allows decision-makers to assess the",
+    "Covidscreen is a Shiny app that allows decision-makers to assess the",
     " benefits of performing asymptomatic testing in their organizations.",
     " It is primarily aimed at healthcare organizations,",
     " though it is applicable in a much wider range of settings."
