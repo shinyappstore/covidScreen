@@ -6,8 +6,8 @@
 <!-- badges: start -->
 
 [![CI-CD](https://github.com/jesse-smith/covidscreen/workflows/CI-CD/badge.svg)](https://github.com/jesse-smith/covidscreen/actions)
-[![Codecov test
-coverage](https://codecov.io/gh/jesse-smith/covidscreen/branch/master/graph/badge.svg)](https://codecov.io/gh/jesse-smith/covidscreen?branch=master)
+[![CRAN
+status](https://www.r-pkg.org/badges/version/covidscreen)](https://CRAN.R-project.org/package=covidscreen)
 <!-- badges: end -->
 
 {covidscreen} is an R package and Shiny app designed to help
