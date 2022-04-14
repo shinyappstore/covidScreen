@@ -60,9 +60,20 @@ org_panel_server <- function(id = "org_link", time = 0.5) {
 
 # Community input panel show/hide and info link
 comm_panel_server <- function(id = "comm_link", time = 0.3) {
-  info <- p(
+  info <- tagList(
+    p(
     "Community inputs define the context in which the organization resides.",
     " They help determine the baseline infection risk of an organization."
+    ),
+    p(HTML(
+      "<b>% Vaccinated (in Community)</b> is the percentage of people in the",
+      "surrounding area who are fully vaccinated."
+    )),
+    p(HTML(
+      "<b>Case Rate (per 100k per day)</b> is the number of new COVID-19 cases per day",
+      "per 100,000 people in the area. This is likely higher than the reported",
+      "case rate; see 'How do I choose the community case rate?' in the FAQ."
+    ))
   )
   input_panel_server(id = id, toggle_time = time, info = info)
 }
@@ -76,7 +87,7 @@ advanced_panel_server <- function(id = "advanced_link", time = 0.4) {
     " user is likely not an expert on COVID-19, and may not know reasonable",
     " values for these inputs. The defaults should suffice for many",
     " settings, but users are encouraged to change the defaults if they do",
-    " not match your setting. The <b>Inputs</b> tab allows users to explore",
+    " not match your setting. The <b>Profiling</b> tab allows users to explore",
     " the effects of these parameters (and others) in detail."
   ))
   input_panel_server(id = id, toggle_time = time, info = info)
@@ -85,22 +96,39 @@ advanced_panel_server <- function(id = "advanced_link", time = 0.4) {
 
 # Vaccine efficacy input panel show/hide and info link
 vac_eff_panel_server <- function(id = "vac_eff_link", time = 0.2) {
-  info <- p(
-    "Vaccine efficacy is the average amount of risk it mitigates. For example",
+  info <- p(HTML(
+    "<b>Vaccine efficacy</b> is the average amount of risk it mitigates. For example",
     " a vaccine that is 70% effective takes away 70% of the unvaccinated risk",
     " of infection, but 30% of the original risk remains. A 100% effective",
     " vaccine would give complete immunity; a 0% effective one would have no",
     " effect."
-  )
+  ))
   input_panel_server(id = id, toggle_time = time, info = info)
 }
 
 
 # Testing input panel show/hide and info link
 test_panel_server <- function(id = "test_link", time = 0.4) {
-  info <- p(
-    "Testing inputs define properties of COVID-19 tests and the likelihood of",
-    " testing based on symptoms alone."
+  info <- tagList(
+    p(
+      "Testing inputs define properties of COVID-19 tests and the likelihood of",
+      " testing based on symptoms alone."
+    ),
+    p(HTML(
+      "<b>Test Sensitivity (%)</b> is the chance that a person with COVID-19",
+      "will actually test positive. See 'How do I choose test sensitivity and",
+      "specificity?' for help choosing non-default values."
+    )),
+    p(HTML(
+      "<b>Test Specificity (%)</b> is the chance that a person who does not have",
+      "COVID-19 will actually test negative. See 'How do I choose test",
+      "sensitivity and specificity?' for help choosing non-default values."
+    )),
+    p(HTML(
+      "<b>% Syptomatics Tested</b> is the percentage of people with COVID-19 symptoms",
+      "who are tested based on symptoms alone (not due to screening, travel, or",
+      "other reasons)."
+    ))
   )
   input_panel_server(id = id, toggle_time = time, info = info)
 }

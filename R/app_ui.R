@@ -45,7 +45,12 @@ app_ui <- function(request) {
 
 #' @rdname tabs
 tab_home <- function() {
-  tabPanel("", value = "home", icon = cs_h5(icon("home"), tooltip = "Home"))
+  tabPanel(
+    "",
+    value = "home",
+    icon = cs_h5(icon("home"), tooltip = "Home"),
+    mod_home_ui("home")
+  )
 }
 
 
@@ -73,14 +78,18 @@ tab_profiling <- function() {
 
 #' @rdname tabs
 tab_faq <- function() {
-  tabPanel(cs_h5("FAQs", tooltip = "Frequently Asked Questions"))
+  tabPanel(
+    cs_h5("FAQs", tooltip = "Frequently Asked Questions"),
+    value = "faq",
+    mod_faq_ui("faq")
+  )
 }
 
 
 #' @rdname tabs
 nav_menu <- function() {
   # Links in menu
-  paper_link <- cs_nav_ext_link("Paper", href = NULL, icon = icon("file-alt"))
+  paper_link <- cs_nav_ext_link("Paper (TBD)", href = NULL, icon = icon("file-alt"))
   pkg_link   <- cs_nav_ext_link(
     "Package",
     href = "https://jesse-smith.github.io/covidscreen",

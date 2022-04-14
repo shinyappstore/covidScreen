@@ -207,10 +207,6 @@ num_input <- function(
   width = "120px"
 ) {
 
-  if (NROW(label) > 0 && nchar(label) > 0) {
-    label <- tags$span(label, cs_info_ui(paste0(id, "_info")))
-  }
-
   input <- numericInput(id,
     label = NULL, width = width,
     value = value, min = min, max = max, step = step
@@ -229,10 +225,6 @@ slider_pct <- function(
   width = NULL,
   pre = NULL
 ) {
-
-  if (NROW(label) > 0 && nchar(label) > 0) {
-    label <- tags$span(label, cs_info_ui(paste0(id, "_info")))
-  }
 
   sliderInput(id,
     label = label,
