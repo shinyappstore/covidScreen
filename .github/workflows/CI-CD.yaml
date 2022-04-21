@@ -43,10 +43,9 @@ jobs:
           use-public-rspm: true
 
       - name: Setup igraph on Windows
+        if: runner.os == 'Windows'
         run: |
-          if (${{ env.RUNNER_OS }} == "Windows") {
-            install.packages('igraph', type = 'binary')
-          }
+          install.packages('igraph', type = 'binary')
         shell: Rscript {0}
 
       - name: Setup R dependencies
