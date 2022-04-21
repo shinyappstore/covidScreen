@@ -43,6 +43,10 @@ jobs:
           use-public-rspm: true
 
       - name: Setup R dependencies
+        run: |
+          if (Sys.info()[["sysname"]] == "Windows") {
+            install.packages('igraph', type = 'binary')
+          }
         uses: r-lib/actions/setup-r-dependencies@v1
         with:
           extra-packages: rcmdcheck
