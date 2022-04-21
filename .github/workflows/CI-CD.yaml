@@ -47,6 +47,7 @@ jobs:
           if (${{ env.RUNNER_OS }} == "Windows") {
             install.packages('igraph', type = 'binary')
           }
+        shell: Rscript {0}
 
       - name: Setup R dependencies
         uses: r-lib/actions/setup-r-dependencies@v1
