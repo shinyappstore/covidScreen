@@ -42,6 +42,12 @@ jobs:
           http-user-agent: ${{ matrix.config.http-user-agent }}
           use-public-rspm: true
 
+      - name: Setup igraph on Windows
+        if: runner.os == 'Windows'
+        run: |
+          install.packages('igraph', type = 'binary')
+        shell: Rscript {0}
+
       - name: Setup R dependencies
         uses: r-lib/actions/setup-r-dependencies@v1
         with:
